@@ -1,3 +1,4 @@
+
 export const LoginCard = () => {
 	return (
 		<>
@@ -117,6 +118,7 @@ export const LoginCard = () => {
                     mt-4"
 			>
 				<button
+					onClick = {""}
 					className="px-4
                         w-[432px] h-[48px]
                         bg-secondary-light

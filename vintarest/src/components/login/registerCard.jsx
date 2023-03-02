@@ -1,4 +1,7 @@
+
 export const RegisterCard = () => {
+      
+      const isClicked = true
 	return (
 		<>
 			<div
@@ -93,15 +96,16 @@ export const RegisterCard = () => {
 			<div
 				id="card2"
 				className="
-                    w-[560px] h-auto
-                    bg-secondary-light
-                    rounded-2xl
-                    flex flex-col place-items-center
-                    font-inter
-                    text-primary-dark
-                    mt-4"
+                        w-[560px] h-auto
+                        bg-secondary-light
+                        rounded-2xl
+                        flex flex-col place-items-center
+                        font-inter
+                        text-primary-dark
+                        mt-4"
 			>
 				<button
+                              onCLick = {""}
 					className="px-4
                         w-[432px] h-[48px]
                         bg-secondary-light
@@ -110,7 +114,7 @@ export const RegisterCard = () => {
                         my-4
                         "
 				>
-					Create account
+					Login
 				</button>
 			</div>
 		</>
