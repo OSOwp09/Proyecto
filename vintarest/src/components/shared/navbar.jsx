@@ -10,20 +10,13 @@ export const Navbar = () => {
                 font-inter
                 px-4"
 			>
-				<div
-					id="image-container"
+				<img
+					id="logo"
+					src="src/assets/Logo.svg"
 					className="
-                        w-[48px] h-[48px] flex-none
-                        rounded-full"
-				>
-					<img
-						src="https://images.pexels.com/photos/15326426/pexels-photo-15326426.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load"
-						className="
-                            w-[inherit] h-[inherit]
-                            rounded-[inherit]
-                            object-cover"
-					/>
-				</div>
+					w-[40px] h-[40px]"
+				/>
+
 				<div
 					id="search"
 					className="

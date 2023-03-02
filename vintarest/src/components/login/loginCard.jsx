@@ -11,21 +11,13 @@ export const LoginCard = () => {
                     font-inter
                     text-primary-dark"
 			>
-				<div
-					id="image-container"
+				<img
+					src="src/assets/Logo.svg"
 					className="
-                        w-[80px] h-[80px]
-                        rounded-full
-                        mt-[16px] mb-4"
-				>
-					<img
-						src="https://images.pexels.com/photos/15326426/pexels-photo-15326426.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load"
-						className="
-                            w-[inherit] h-[inherit]
-                            rounded-[inherit]
-                            object-cover"
-					/>
-				</div>
+					w-[56px] h-[56px]
+					mt-6"
+				/>
+
 				<h1
 					id="logo-name"
 					className="

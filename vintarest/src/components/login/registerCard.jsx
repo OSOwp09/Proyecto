@@ -4,28 +4,19 @@ export const RegisterCard = () => {
 			<div
 				id="card1"
 				className="
-                    w-[560px] h-auto
-                    bg-secondary-light
-                    rounded-2xl
-                    flex flex-col place-items-center
-                    font-inter
-                    text-primary-dark"
+                        w-[560px] h-auto
+                        bg-secondary-light
+                        rounded-2xl
+                        flex flex-col place-items-center
+                        font-inter
+                        text-primary-dark"
 			>
-				<div
-					id="image-container"
+				<img
+					src="src/assets/Logo.svg"
 					className="
-                        w-[80px] h-[80px]
-                        rounded-full
-                        mt-[16px] mb-4"
-				>
-					<img
-						src="https://images.pexels.com/photos/15326426/pexels-photo-15326426.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load"
-						className="
-                            w-[inherit] h-[inherit]
-                            rounded-[inherit]
-                            object-cover"
-					/>
-				</div>
+					w-[56px] h-[56px]
+					mt-6"
+				/>
 				<h1
 					id="logo-name"
 					className="
@@ -35,7 +26,7 @@ export const RegisterCard = () => {
 				>
 					Vintarest
 				</h1>
-                <input
+				<input
 					id="user"
 					type="text"
 					placeholder="User"
@@ -74,7 +65,7 @@ export const RegisterCard = () => {
                         placeholder:text-secondary-dark
                         mb-4"
 				/>
-                <input
+				<input
 					id="confirm-password"
 					type="text"
 					placeholder="Confirm password"
@@ -88,7 +79,7 @@ export const RegisterCard = () => {
                         mb-4"
 				/>
 				<button
-                    id="Register-btn"
+					id="Register-btn"
 					className="
                         bg-primary-red
                         rounded-full
@@ -98,7 +89,6 @@ export const RegisterCard = () => {
 				>
 					Register
 				</button>
-                
 			</div>
 			<div
 				id="card2"

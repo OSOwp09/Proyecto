@@ -13,7 +13,7 @@ function App() {
 	return (
 		<>
 			<div className="w-full h-full bg-primary-light">
-				<UserCard />
+				<RegisterCard />
 			</div>
 		</>
 	);
