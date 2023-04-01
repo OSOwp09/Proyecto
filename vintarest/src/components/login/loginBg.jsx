@@ -1,66 +1,41 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
+import img11 from "../../assets/imgs/11.jpeg";
+import img12 from "../../assets/imgs/12.jpeg";
+import img13 from "../../assets/imgs/13.jpeg";
+
+import img21 from "../../assets/imgs/21.jpeg";
+import img22 from "../../assets/imgs/22.jpeg";
+import img23 from "../../assets/imgs/23.jpeg";
+
+import img31 from "../../assets/imgs/31.jpeg";
+import img32 from "../../assets/imgs/32.jpeg";
+import img33 from "../../assets/imgs/33.jpeg";
+
+import img41 from "../../assets/imgs/41.jpeg";
+import img42 from "../../assets/imgs/42.jpeg";
+import img43 from "../../assets/imgs/43.jpeg";
+
+import img51 from "../../assets/imgs/51.jpeg";
+import img52 from "../../assets/imgs/52.jpeg";
+import img53 from "../../assets/imgs/53.jpeg";
+
+import img61 from "../../assets/imgs/61.jpeg";
+import img62 from "../../assets/imgs/62.jpeg";
+import img63 from "../../assets/imgs/63.jpeg";
 
 export const LoginBg = () => {
-	const images1 = [
-		"https://i.pinimg.com/474x/bf/03/5e/bf035ea8a81953b94d1ae8bf73346516.jpg",
-		"https://i.pinimg.com/474x/e7/7b/c1/e77bc1d8d58d99f01fb36a61186e6f18.jpg",
-		"https://i.pinimg.com/474x/22/58/5f/22585f1c269b30cf64406f78993c9eb4.jpg",
+	const [startAnim, setStartAnim] = useState(false);
+	const images1 = [img11, img12, img13, img11, img12, img13];
 
-		"https://i.pinimg.com/474x/bf/03/5e/bf035ea8a81953b94d1ae8bf73346516.jpg",
-		"https://i.pinimg.com/474x/e7/7b/c1/e77bc1d8d58d99f01fb36a61186e6f18.jpg",
-		"https://i.pinimg.com/474x/22/58/5f/22585f1c269b30cf64406f78993c9eb4.jpg",
-	];
+	const images2 = [img21, img22, img23, img21, img22, img23];
 
-	const images2 = [
-		"https://i.pinimg.com/474x/27/31/31/2731317928b14b44ccdd7b9ea0deaa31.jpg",
-		"https://i.pinimg.com/474x/e0/5c/86/e05c8696f2806b3b0da67e1678eb53e0.jpg",
-		"https://i.pinimg.com/474x/96/b2/51/96b251cb1c4b5d15bf974b2f263b2670.jpg",
+	const images3 = [img31, img32, img33, img31, img32, img33];
 
-		"https://i.pinimg.com/474x/27/31/31/2731317928b14b44ccdd7b9ea0deaa31.jpg",
-		"https://i.pinimg.com/474x/e0/5c/86/e05c8696f2806b3b0da67e1678eb53e0.jpg",
-		"https://i.pinimg.com/474x/96/b2/51/96b251cb1c4b5d15bf974b2f263b2670.jpg",
-	];
+	const images4 = [img41, img42, img43, img41, img42, img43];
 
-	const images3 = [
-		"https://i.pinimg.com/474x/e9/9f/6c/e99f6c6bcfb53c7a9dfd5cf995de70f1.jpg",
-		"https://i.pinimg.com/474x/86/2f/11/862f111b85b3eba472d8690074faf638.jpg",
-		"https://i.pinimg.com/474x/95/83/79/958379a29f14efe14e080633ace91ccb.jpg",
-
-		"https://i.pinimg.com/474x/e9/9f/6c/e99f6c6bcfb53c7a9dfd5cf995de70f1.jpg",
-		"https://i.pinimg.com/474x/86/2f/11/862f111b85b3eba472d8690074faf638.jpg",
-		"https://i.pinimg.com/474x/95/83/79/958379a29f14efe14e080633ace91ccb.jpg",
-	];
-
-	const images4 = [
-		"https://i.pinimg.com/474x/69/29/0b/69290be224b3d45809cf3e433c083f90.jpg",
-		"https://i.pinimg.com/474x/73/fe/55/73fe5587a8c4bf730e9a3f2ef7c3c2a3.jpg",
-		"https://i.pinimg.com/474x/a3/1e/82/a31e823d51f8a6ef6e755a8e92073101.jpg",
-
-		"https://i.pinimg.com/474x/69/29/0b/69290be224b3d45809cf3e433c083f90.jpg",
-		"https://i.pinimg.com/474x/73/fe/55/73fe5587a8c4bf730e9a3f2ef7c3c2a3.jpg",
-		"https://i.pinimg.com/474x/a3/1e/82/a31e823d51f8a6ef6e755a8e92073101.jpg",
-	];
-
-	const images5 = [
-		"https://i.pinimg.com/474x/25/09/01/250901af3a4cd49cd552058f767221af.jpg",
-		"https://i.pinimg.com/474x/57/cd/7a/57cd7a6175f96cbc95414b08052156d5.jpg",
-		"https://i.pinimg.com/474x/88/16/c1/8816c13301c81066bc8384b76e14e331.jpg",
-
-		"https://i.pinimg.com/474x/25/09/01/250901af3a4cd49cd552058f767221af.jpg",
-		"https://i.pinimg.com/474x/57/cd/7a/57cd7a6175f96cbc95414b08052156d5.jpg",
-		"https://i.pinimg.com/474x/88/16/c1/8816c13301c81066bc8384b76e14e331.jpg",
-	];
-
-	const images6 = [
-		"https://i.pinimg.com/474x/01/c2/81/01c281f493247895ed6f67cc0adc4a4a.jpg",
-		"https://i.pinimg.com/474x/de/e4/0d/dee40d1067635703d8fdfd84a91ffaa0.jpg",
-		"https://i.pinimg.com/474x/33/b9/37/33b937a699460b37764bf39733aa2147.jpg",
-
-		"https://i.pinimg.com/474x/01/c2/81/01c281f493247895ed6f67cc0adc4a4a.jpg",
-		"https://i.pinimg.com/474x/de/e4/0d/dee40d1067635703d8fdfd84a91ffaa0.jpg",
-		"https://i.pinimg.com/474x/33/b9/37/33b937a699460b37764bf39733aa2147.jpg",
-
-	];
+	const images5 = [img51, img52, img53, img51, img52, img53];
+	const images6 = [img61, img62, img63, img61, img62, img63];
 
 	document.body.classList.add("overflow-hidden");
 
@@ -78,7 +53,8 @@ export const LoginBg = () => {
 		));
 		return images;
 	}
-	const vel = 60
+	const vel = 9999999;
+
 	return (
 		<>
 			<div className="relative h-[800px] overflow-hidden text-transparent">
@@ -89,12 +65,10 @@ export const LoginBg = () => {
                         w-[1920px] relative"
 					>
 						<div>
-							<div
-								className="absolute top-0 left-[-60px] flex gap-2"
-							>
+							<div className="absolute top-0 left-[-60px] flex gap-2">
 								<motion.div
-									initial={{ y: `-${2371/2}px` }}
-									animate={{ y: `0px` }}
+									initial={{ y: `-${2371 / 2}px` }}
+									animate={startAnim ? { y: `0px` } : ""}
 									transition={{
 										duration: vel,
 										ease: "linear",
@@ -105,8 +79,8 @@ export const LoginBg = () => {
 								</motion.div>
 
 								<motion.div
-									initial={{ y: `-${2397/2}px` }}
-									animate={{ y: `0px` }}
+									initial={{ y: `-${2397 / 2}px` }}
+									animate={startAnim ? { y: `0px` } : ""}
 									transition={{
 										duration: vel,
 										ease: "linear",
@@ -115,10 +89,10 @@ export const LoginBg = () => {
 								>
 									<div className="">{arr(images2)}</div>
 								</motion.div>
-								
+
 								<motion.div
-									initial={{ y: `-${2063/2}px` }}
-									animate={{ y: `0px` }}
+									initial={{ y: `-${2063 / 2}px` }}
+									animate={startAnim ? { y: `0px` } : ""}
 									transition={{
 										duration: vel,
 										ease: "linear",
@@ -130,8 +104,8 @@ export const LoginBg = () => {
 
 								<motion.div
 									className="invisible sm:visible"
-									initial={{ y: `-${2066/2}px` }}
-									animate={{ y: `0px` }}
+									initial={{ y: `-${2066 / 2}px` }}
+									animate={startAnim ? { y: `0px` } : ""}
 									transition={{
 										duration: vel,
 										ease: "linear",
@@ -143,8 +117,8 @@ export const LoginBg = () => {
 
 								<motion.div
 									className="invisible md:visible"
-									initial={{ y: `-${2344/2}px` }}
-									animate={{ y: `0px` }}
+									initial={{ y: `-${2344 / 2}px` }}
+									animate={startAnim ? { y: `0px` } : ""}
 									transition={{
 										duration: vel,
 										ease: "linear",
@@ -156,8 +130,8 @@ export const LoginBg = () => {
 
 								<motion.div
 									className="invisible lg:visible"
-									initial={{ y: `-${2680/2}px` }}
-									animate={{ y: `0px` }}
+									initial={{ y: `-${2680 / 2}px` }}
+									animate={startAnim ? { y: `0px` } : ""}
 									transition={{
 										duration: vel,
 										ease: "linear",
@@ -166,67 +140,20 @@ export const LoginBg = () => {
 								>
 									<div className="">{arr(images6)}</div>
 								</motion.div>
-
-								
 							</div>
 						</div>
 					</div>
 				</div>
-
-				{/* <div className="absolute top-0 left-0">
-					<motion.div
-						initial={{ x: "-120px" }}
-						//animate={{ y: "820px" }}
-						transition={{
-							duration: 30,
-							ease: "linear",
-							repeat: Infinity,
-						}}
-					>
-						<div
-							id="container"
-							className="
-                        flex gap-2 w-[1920px] relative"
-						>
-							<div className="">{images1}</div>
-							<div className="">{images2}</div>
-							<div className="">{images1}</div>
-							<div className="invisible sm:visible">{images1}</div>
-							<div className="invisible md:visible">{images1}</div>
-							<div className="invisible lg:visible">{images1}</div>
-							<div className="invisible xl:visible">{images1}</div>
-							<div className="invisible 2xl:visible">{images1}</div>
-						</div>
-					</motion.div>
-				</div>
-
-				<div className="absolute top-0 left-0">
-					<motion.div
-						initial={{ y: "-820px", x: "-120px" }}
-						//animate={{ y: "0px" }}
-						transition={{
-							duration: 30,
-							repeat: Infinity,
-							ease: "linear",
-						}}
-					>
-						<div
-							id="container"
-							className="
-                        flex gap-2 w-[1920px] relative"
-						>
-							<div className="">{images1}</div>
-							<div className="relative">{images2}</div>
-							<div className="">{images1}</div>
-							<div className="invisible sm:visible">{images1}</div>
-							<div className="invisible md:visible">{images1}</div>
-							<div className="invisible lg:visible">{images1}</div>
-							<div className="invisible xl:visible">{images1}</div>
-							<div className="invisible 2xl:visible">{images1}</div>
-						</div>
-					</motion.div>
-				</div> */}
 			</div>
+			<motion.div
+				onHoverStart={() => setStartAnim(true)}
+				onHoverEnd={() => setStartAnim(false)}>
+				<div
+					id="darkOverlay"
+					className="absolute top-0 left-0 bg-primary-dark/60 h-screen w-screen
+						max-h-[800px] max-w-[1400px]"
+				></div>
+			</motion.div>
 		</>
 	);
 };

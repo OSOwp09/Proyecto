@@ -1,25 +1,44 @@
-import React from "react";
+import React, { useContext } from "react";
+import { motion } from "framer-motion";
+import usericon from "../../assets/person-circle.svg";
+import { ImageContext } from "../../context/imageSelectedContext";
 
-export const ImageCard = ({ image, description, userName }) => {
+export const ImageCard = ({ image, description, userName, selectImg }) => {
+	const { handleImageSelected } = useContext(ImageContext);
 	return (
 		<>
 			<div
 				id="container"
 				className="
-                
                 bg-secondary-light
                 h-full w-[240px] rounded-2xl
                 mx-2 mb-2
                 font-inter text-[14px] text-primary-dark break-inside-avoid
-                hover:drop-shadow-md"
-			> 
-				<img
-					src={image}
-					alt=""
+				drop-shadow
+				hover:drop-shadow-xl"
+			>
+				<div
 					className="w-[240px] h-auto max-h-[448px] min-h-[120px]
-                        rounded-2xl object-cover
-                        mb-2"
-				/>
+                        rounded-t-2xl object-fit
+                        mb-2 select-none
+						overflow-hidden"
+				>
+					{/* <motion.div
+						className="box"
+						whileHover={{ scale: 1.1 }}
+						whileTap={{ scale: 0.9 }}
+						transition={{ type: "spring", stiffness: 400, damping: 17 }}
+					> */}
+						<img
+							onClick={() => handleImageSelected(image)}
+							src={image}
+							alt=""
+							className="w-[240px] h-auto max-h-[448px] min-h-[120px]
+							rounded-t-2xl object-fit
+							mb-2 select-none"
+						/>
+					{/* </motion.div> */}
+				</div>
 				<div id="description-container" className="p-1">
 					<h1
 						id="description"
@@ -31,12 +50,9 @@ export const ImageCard = ({ image, description, userName }) => {
 						id="user"
 						className="h-[32px] flex place-items-center gap-1 mt-1"
 					>
-						<img
-							src="src/assets/person-circle.svg"
-							alt=""
-							className="h-[32px]"
-						/>
+						<img src={usericon} alt="" className="h-[32px] select-none" />
 						<h1>{userName}</h1>
+						<h1></h1>
 					</div>
 				</div>
 			</div>

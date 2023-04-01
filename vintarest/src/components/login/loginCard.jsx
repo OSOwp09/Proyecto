@@ -1,10 +1,53 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import logo from "../../assets/Logo.svg";
+import googleLogo from "../../assets/google.svg"
+import facbookLogo from "../../assets/facebook.svg"
 
 export const LoginCard = () => {
+	const navigate = useNavigate();
+	const [password, setPassword] = useState("");
+	const [email, setEmail] = useState("");
+	const [inputErrors, setInputErrors] = useState("");
+
+	const errors = {
+		id: "",
+		type: "",
+	};
+
+	const validateLogin = () => {
+		errors.id = "email";
+		if (email == "") {
+			errors.type = "errorEmpty";
+			setInputErrors(errors);
+			return;
+		}
+		if (email != "camilo.osorio.ca@gmail.com") {
+			errors.type = "errorInvalid";
+			setInputErrors(errors);
+			return;
+		}
+
+		errors.id = "password";
+		if (password == "") {
+			errors.type = "errorEmpty";
+			setInputErrors(errors);
+			return;
+		}
+		if (password != "123") {
+			errors.type = "errorInvalid";
+			setInputErrors(errors);
+			return;
+		}
+		navigate("/index");
+	};
+
 	return (
 		<>
 			<div
 				id="card1"
 				className="
+					relative
                     w-[560px] h-auto
                     bg-secondary-light
                     rounded-2xl
@@ -13,7 +56,7 @@ export const LoginCard = () => {
                     text-primary-dark"
 			>
 				<img
-					src="src/assets/Logo.svg"
+					src={logo}
 					className="
 					w-[56px] h-[56px]
 					mt-6"
@@ -22,39 +65,132 @@ export const LoginCard = () => {
 				<h1
 					id="logo-name"
 					className="
+					
                         font-semibold
                         text-[48px]
                         text-primary-dark mb-[12px]"
 				>
 					Vintarest
 				</h1>
+				<div
+					id="email-labelAndError"
+					className="
+					self-start ml-[80px]
+					h-5 w-[400px]
+					flex place-items-center
+					place-content-between
+					text-xs"
+				>
+					<label
+						htmlFor=""
+						className={`${email == "" ? "invisible" : "visible"}`}
+					>
+						Email
+					</label>
+					<p
+						className={`
+						${
+							inputErrors.id == "email" && inputErrors.type.startsWith("error")
+								? "visible"
+								: "invisible"
+						}
+					bg-secondary-red h-full rounded-t-md
+					flex gap-1 
+					place-items-center
+					px-2`}
+					>
+						<img
+							src="src/assets/exclamation-triangle.svg"
+							alt=""
+							className="h-3"
+						/>
+						Sorry,
+						{inputErrors.type == "errorEmpty" ? " empty field" : ""}
+						{inputErrors.type == "errorInvalid" ? " email not found" : ""}
+					</p>
+				</div>
 				<input
 					id="email"
 					type="text"
 					placeholder="Email"
-					className="
+					onChange={(e) => setEmail(e.target.value)}
+					className={`
                         px-[16px]
                         bg-secondary-light
-                        border-primary-dark border rounded-2xl
+                        border rounded-2xl
+						${
+							inputErrors.id == "email" && inputErrors.type.startsWith("error")
+								? "border-secondary-red"
+								: "border-primary-dark"
+						}
+						outline-none
                         h-[48px] w-[432px]
                         text-[16px]
                         placeholder:text-secondary-dark
-                        mb-4"
+                        mb-2`}
 				/>
-				<input
-					id="password"
-					type="text"
-					placeholder="Password"
+				<div
+					id="password-labelAndError"
 					className="
+					self-start ml-[80px]
+					h-5 w-[400px]
+					flex place-items-center
+					place-content-between
+					text-xs"
+				>
+					<label
+						htmlFor=""
+						className={`${password == "" ? "invisible" : "visible"}`}
+					>
+						Password
+					</label>
+					<p
+						className={`
+						${
+							inputErrors.id == "password" &&
+							inputErrors.type.startsWith("error")
+								? "visible"
+								: "invisible"
+						}
+					bg-secondary-red h-full rounded-t-md
+					flex gap-1 
+					place-items-center
+					px-2`}
+					>
+						<img
+							src="src/assets/exclamation-triangle.svg"
+							alt=""
+							className="h-3"
+						/>
+						Sorry,
+						{inputErrors.type == "errorEmpty" ? " empty field" : ""}
+						{inputErrors.type == "errorInvalid" ? " wrong password" : ""}
+					</p>
+				</div>
+
+				<input
+					id="password-input"
+					onChange={(e) => setPassword(e.target.value)}
+					type="password"
+					placeholder="Password"
+					className={`
                         px-[16px]
                         bg-secondary-light
-                        border-primary-dark border rounded-2xl
-                        h-[48px] w-[432px]
+						border rounded-2xl
+						${
+							inputErrors.id == "password" &&
+							inputErrors.type.startsWith("error")
+								? "border-secondary-red"
+								: "border-primary-dark"
+						}
+                        outline-none
+						h-[48px] w-[432px]
                         text-[16px]
                         placeholder:text-secondary-dark
-                        mb-[40px]"
+                        mb-[40px]`}
 				/>
 				<button
+					onClick={() => validateLogin()}
 					className="
                         bg-primary-red
                         rounded-full
@@ -65,12 +201,12 @@ export const LoginCard = () => {
 					Log in
 				</button>
 				<div
-					id="O"
+					id="o"
 					className="
                         bg-secondary-light
-                        h-[16px] w-[16px]
+                        h-[14px] w-[14px]
                         border-primary-dark border-2 rounded-full
-                        my-[24px]"
+                        my-[16px]"
 				/>
 				<button
 					className="
@@ -83,7 +219,7 @@ export const LoginCard = () => {
 				>
 					<img
 						className="w-[24px] mr-[90px]"
-						src="src/assets/facebook.svg"
+						src={facbookLogo}
 						alt="facebook"
 					/>
 					Log in with Facebook
@@ -100,8 +236,8 @@ export const LoginCard = () => {
 				>
 					<img
 						className="w-[24px] mr-[100px]"
-						src="src/assets/google.svg"
-						alt="facebook"
+						src={googleLogo}
+						alt="google"
 					/>
 					Log in with Google
 				</button>
@@ -118,7 +254,8 @@ export const LoginCard = () => {
                     mt-4"
 			>
 				<button
-					onClick = {""}
+					id="CreateAccount"
+					onClick={() => navigate("/login/register")}
 					className="px-4
                         w-[432px] h-[48px]
                         bg-secondary-light

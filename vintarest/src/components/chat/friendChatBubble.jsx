@@ -1,3 +1,5 @@
+import userIcon from "../../assets/person-circle.svg"
+
 export const FriendBubble = (messageList) => {
 	// const array = [messageList]
 
@@ -22,7 +24,7 @@ export const FriendBubble = (messageList) => {
 				<h1 className="ml-10 text-secondary-dark text-xs">User1</h1>
 				<div className="flex place-items-start">
 					<img
-						src="src/assets/person-circle.svg"
+						src={userIcon}
 						alt=""
 						className="h-8 mt-2 mr-2"
 					/>

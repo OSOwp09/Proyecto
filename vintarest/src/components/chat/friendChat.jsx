@@ -1,9 +1,11 @@
+import friendChat from "../../assets/person-circle.svg"
+
 export const FriendChat = ({user, message}) => {
 	return (
 		<>
 			<div className="font-inter text-primary-dark flex">
 				<img
-					src="src/assets/person-circle.svg"
+					src={friendChat}
 					alt=""
 					className="w-[32px] mx-1"
 				/>

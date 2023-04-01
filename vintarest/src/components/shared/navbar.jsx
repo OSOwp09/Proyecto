@@ -1,20 +1,41 @@
+import styles from "../shared/styles.module.css";
+import { useNavigate } from "react-router-dom";
+
+import { ChatContext } from "../../context/chatContext";
+
+import logo from "../../assets/Logo.svg";
+import search from "../../assets/search.svg";
+import chatIcon from "../../assets/chat-square-dots-fill.svg";
+import usericon from "../../assets/person-circle.svg";
+import arrow from "../../assets/arrow.svg";
+import closeIcon from "../../assets/x-circle.svg"
+
+import { useContext } from "react";
+
 export const Navbar = () => {
+	const {handleChatList, chatState, closeChat} = useContext(ChatContext)
+	const navigate = useNavigate();
+	const handdleOpenCloseChat = () =>{
+		chatState.code != "" ? closeChat():handleChatList()
+	}
+
 	return (
 		<>
 			<div
 				id="navbar-container"
 				className="
                 h-[80px] w-auto 
-                flex place-items-center gap-4
+                flex place-items-center gap-2
                 bg-secondary-light
-                font-inter
+                font-inter select-none
                 px-4"
 			>
 				<img
 					id="logo"
-					src="src/assets/Logo.svg"
+					src={logo}
 					className="
 					w-[40px] h-[40px]"
+					onClick={() => navigate("home")}
 				/>
 
 				<div
@@ -25,7 +46,7 @@ export const Navbar = () => {
                     bg-secondary-highlight
                     rounded-2xl"
 				>
-					<img src="src/assets/search.svg" alt="" className="h-[16px] ml-4" />
+					<img src={search} alt="" className="h-[16px] ml-4" />
 					<input
 						type="text"
 						placeholder="Search"
@@ -34,32 +55,54 @@ export const Navbar = () => {
                             bg-secondary-highlight 
                             rounded-2xl 
                             placeholder:text-secondary-dark
-                            text-primary-dark"
-					/>
-				</div>
-				<div id="chat-image" className="flex-none">
-					<img
-						src="src/assets/chat-square-dots-fill.svg"
-						alt=""
-						className="h-5"
+                            text-primary-dark
+							outline-none"
 					/>
 				</div>
 				<div
-					id="user-image-container"
-					className="
-                        w-[24px] h-[24px] flex-none
-                        rounded-full"
+					id="chat-icon-container"
+					onClick={()=> handdleOpenCloseChat()}
+					className={`h-[60%] 
+					flex place-items-center place-content-center
+					${chatState.code != "" ?styles.pressed:styles.navbtn}`}
 				>
-					<img
-						src="https://images.pexels.com/photos/15326426/pexels-photo-15326426.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load"
+					<div id="chat-image" className="flex-none mx-2">
+						<img src={
+							chatState.code != "" ? closeIcon:chatIcon
+						} alt="" className="h-5" />
+					</div>
+				</div>
+				<div
+					id="user-icon-container"
+					className={`h-[60%] 
+					flex place-items-center place-content-center
+					${location.pathname == "/index/user" ? styles.pressed : styles.navbtn}`}
+					onClick={() => navigate("user")}
+				>
+					<div
+						id="user-image-container"
 						className="
+                        w-[24px] h-[24px] flex-none
+                        rounded-full mx-1"
+					>
+						<img
+							src={usericon}
+							className="
                             w-[inherit] h-[inherit]
                             rounded-[inherit]
                             object-cover"
-					/>
+						/>
+					</div>
 				</div>
-				<div id="arrow" className="flex-none">
-					<img src="src/assets/arrow.svg" alt="" className="h-2" />
+				<div
+					id="chat-icon-container"
+					className={`h-[60%] 
+					flex place-items-center place-content-center
+					${styles.navbtn}`}
+				>
+					<div id="arrow" className="flex-none mx-2">
+						<img src={arrow} alt="" className="h-2" />
+					</div>
 				</div>
 			</div>
 		</>
