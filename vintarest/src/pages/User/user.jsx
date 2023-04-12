@@ -6,8 +6,10 @@ import add from "../../assets/plus-circle 1.svg";
 import share from "../../assets/Group 57share.svg";
 import link from "../../assets/Group 58link_user.svg";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const User = () => {
+	const navigate = useNavigate()
     const {image} = useContext(ImageContext)
 	return (
 		<>
@@ -26,6 +28,7 @@ export const User = () => {
 					>
 						<div className="min-[1100px]:absolute bottom-0 left-6 flex gap-2">
 							<img
+								onClick={()=>navigate("/index/upload")}
 								src={add}
 								alt=""
 								className="bg-secondary-light rounded-full"

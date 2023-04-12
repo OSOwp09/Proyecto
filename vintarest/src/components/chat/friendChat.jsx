@@ -1,11 +1,17 @@
-import friendChat from "../../assets/person-circle.svg"
+import { ChatContext } from "../../context/chatContext";
+import friendPhoto from "../../assets/person-circle.svg"
+import { useContext } from "react";
 
 export const FriendChat = ({user, message}) => {
+	const{handleOpenFriendChat} = useContext(ChatContext)
+
 	return (
 		<>
-			<div className="font-inter text-primary-dark flex">
+			<div
+			onClick={()=> handleOpenFriendChat()}
+			className="font-inter text-primary-dark flex">
 				<img
-					src={friendChat}
+					src={friendPhoto}
 					alt=""
 					className="w-[32px] mx-1"
 				/>

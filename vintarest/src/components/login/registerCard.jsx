@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-import logo from "../../assets/Logo.svg"
-import warning from "../../assets/exclamation-triangle.svg"
+import logo from "../../assets/Logo.svg";
+import warning from "../../assets/exclamation-triangle.svg";
 
 export const RegisterCard = () => {
-
-	const users =["user1", "user2"]
-	const emails =["camilo.osorio.ca@gmail.com", "user@gmail.com"]
+	const users = ["user1", "user2"];
+	const emails = ["camilo.osorio.ca@gmail.com", "user@gmail.com"];
 
 	const navigate = useNavigate();
 
 	const [fields, setFields] = useState({
+		name: "",
 		user: "",
 		email: "",
 		password: "",
@@ -23,10 +23,23 @@ export const RegisterCard = () => {
 	const errors = {
 		id: "",
 		type: "",
-		description:""
+		description: "",
 	};
 
 	const handleInput = () => {
+		//----- Name ----------
+		errors.id = "name";
+		if (fields.name == "") {
+			errors.type = "errorEmpty";
+			setInputErrors(errors);
+			return;
+		}
+		if (fields.name.length < 3 || fields.name.length > 25) {
+			errors.type = "errorInvalid";
+			errors.description = " Name must have betwen 3 and 25 characters";
+			setInputErrors(errors);
+			return;
+		}
 		//----- User ----------
 		errors.id = "user";
 		if (fields.user == "") {
@@ -36,18 +49,19 @@ export const RegisterCard = () => {
 		}
 		if (fields.user.length < 3 || fields.user.length > 10) {
 			errors.type = "errorInvalid";
-			errors.description = " user must have betwen 3 and 10 characters"
+			errors.description = " user must have betwen 3 and 10 characters";
 			setInputErrors(errors);
 			return;
 		}
 		if (users.includes(fields.user)) {
 			errors.type = "errorIsInUse";
-			errors.description = " user already is in use"
+			errors.description = " user already is in use";
 			setInputErrors(errors);
 			return;
 		}
 		//----- Email ----------
-		const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+		const validRegex =
+			/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 		errors.id = "email";
 
 		if (fields.email == "") {
@@ -57,26 +71,49 @@ export const RegisterCard = () => {
 		}
 		if (!fields.email.match(validRegex)) {
 			errors.type = "errorInvalid";
-			errors.description = " invalid email"
+			errors.description = " invalid email";
 			setInputErrors(errors);
 			return;
 		}
 		if (emails.includes(fields.email)) {
 			errors.type = "errorIsInUse";
-			errors.description = " email already is in use"
+			errors.description = " email already is in use";
 			setInputErrors(errors);
 			return;
 		}
 
 		//----- Password ----------
 		errors.id = "password";
+		const lowerCaseLetters = /[a-z]/g;
+		const upperCaseLetters = /[A-Z]/g;
+		const numbers = /[0-9]/g;
+
 		if (fields.password == "") {
 			errors.type = "errorEmpty";
 			setInputErrors(errors);
 			return;
 		}
-		if (fields.password != "valido") {
+		if (!fields.password.match(lowerCaseLetters)) {
 			errors.type = "errorInvalid";
+			errors.description = " must have at least one lowercase letter";
+			setInputErrors(errors);
+			return;
+		}
+		if (!fields.password.match(upperCaseLetters)) {
+			errors.type = "errorInvalid";
+			errors.description = " must have at least one uppercase letter";
+			setInputErrors(errors);
+			return;
+		}
+		if (!fields.password.match(numbers)) {
+			errors.type = "errorInvalid";
+			errors.description = " must have at least one number";
+			setInputErrors(errors);
+			return;
+		}
+		if (fields.password.length < 8) {
+			errors.type = "errorInvalid";
+			errors.description = " must have at least 8 caracteres";
 			setInputErrors(errors);
 			return;
 		}
@@ -90,7 +127,7 @@ export const RegisterCard = () => {
 		}
 		if (fields.confirmation != fields.password) {
 			errors.type = "errorInvalid";
-			errors.description = " passwords doesn't match"
+			errors.description = " passwords don't match";
 			setInputErrors(errors);
 			return;
 		}
@@ -134,7 +171,6 @@ export const RegisterCard = () => {
 				{inputErrors.type == "errorEmpty" ? " empty field" : ""}
 				{inputErrors.type == "errorInvalid" ? inputErrors.description : ""}
 				{inputErrors.type == "errorIsInUse" ? inputErrors.description : ""}
-
 			</p>
 		</div>
 	);
@@ -160,12 +196,34 @@ export const RegisterCard = () => {
 				<h1
 					id="logo-name"
 					className="
+						h-[48px] mb-2
                         font-semibold
                         text-[48px]
-                        text-primary-dark mb-[12px]"
+                        text-primary-dark"
 				>
 					Vintarest
 				</h1>
+				{labelAndError({ fieldLabel: "Name", fieldInput: fields.name })}
+				<input
+					id="name"
+					type="text"
+					placeholder="Name"
+					onChange={(e) => setFields({ ...fields, name: e.target.value })}
+					className={`
+                        px-[16px]
+                        bg-secondary-light
+                        border rounded-2xl
+						${
+							inputErrors.id == "name" && inputErrors.type.startsWith("error")
+								? "border-secondary-red"
+								: "border-primary-dark"
+						}
+						outline-none
+                        h-[48px] w-[432px]
+                        text-[16px]
+                        placeholder:text-secondary-dark
+                        mb-1`}
+				/>
 				{labelAndError({ fieldLabel: "User", fieldInput: fields.user })}
 				<input
 					id="user"
@@ -219,7 +277,8 @@ export const RegisterCard = () => {
                         bg-secondary-light
                         border rounded-2xl
 						${
-							inputErrors.id == "password" && inputErrors.type.startsWith("error")
+							inputErrors.id == "password" &&
+							inputErrors.type.startsWith("error")
 								? "border-secondary-red"
 								: "border-primary-dark"
 						}
@@ -245,7 +304,8 @@ export const RegisterCard = () => {
                         bg-secondary-light
                         border rounded-2xl
 						${
-							inputErrors.id == "confirm password" && inputErrors.type.startsWith("error")
+							inputErrors.id == "confirm password" &&
+							inputErrors.type.startsWith("error")
 								? "border-secondary-red"
 								: "border-primary-dark"
 						}

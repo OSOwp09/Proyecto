@@ -22,7 +22,7 @@ export const Login = () => {
 					<div id="background" className="">
 						<LoginBg />
 					</div>
-					<div id="LoginCard" className="absolute top-[3%] right-6">
+					<div id="LoginCard" className="absolute top-[1%] right-6">
 						<Routes>
 							<Route path="/" element={<LoginCard />} />
 							<Route path="/login" element={<LoginCard />} />

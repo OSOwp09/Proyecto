@@ -1,11 +1,15 @@
 import { motion } from "framer-motion";
 import { FriendBubble } from "./friendChatBubble";
 import { OurBubble } from "./ourChatBubble";
+import { ChatContext } from "../../context/chatContext";
+
 import heart from "../../assets/heart-fill-dark.svg";
 import send from "../../assets/send.svg";
 import backArrow from "../../assets/arrow.svg";
+import { useContext } from "react";
 
 export const Chat = () => {
+	const { handleChatList } = useContext(ChatContext);
 	const friendBubble = [...Array(1)].map((x, i) => (
 		<>
 			<FriendBubble />
@@ -38,7 +42,11 @@ export const Chat = () => {
 					border border-secondary-light"
 				>
 					<div className="flex">
-						<div id="arrow" className="place-self-center w-auto mx-4 ">
+						<div
+							onClick={() => handleChatList()}
+							id="arrow"
+							className="place-self-center w-auto mx-4 "
+						>
 							<div
 								id="click-area"
 								className="h-8 w-8 flex place-content-center"

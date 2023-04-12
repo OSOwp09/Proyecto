@@ -20,7 +20,7 @@ export const ImageSelected = ({ close, src }) => {
 		<div className="my-2">
 			<Commentary user={"user"} coment={"muy lindo"} heart={heart} />
 		</div>
-	));	
+	));
 
 	return (
 		<>
@@ -97,6 +97,7 @@ export const ImageSelected = ({ close, src }) => {
 					<div id="more-images" className="mr-4 mt-4">
 						<ImageLayout />
 					</div>
+					
 				</div>
 			</div>
 		</>

@@ -1,4 +1,5 @@
 import styles from "../shared/styles.module.css";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 import { ChatContext } from "../../context/chatContext";
@@ -8,16 +9,16 @@ import search from "../../assets/search.svg";
 import chatIcon from "../../assets/chat-square-dots-fill.svg";
 import usericon from "../../assets/person-circle.svg";
 import arrow from "../../assets/arrow.svg";
-import closeIcon from "../../assets/x-circle.svg"
+import closeIcon from "../../assets/x-circle.svg";
 
 import { useContext } from "react";
 
 export const Navbar = () => {
-	const {handleChatList, chatState, closeChat} = useContext(ChatContext)
+	const { handleChatList, chatState, closeChat } = useContext(ChatContext);
 	const navigate = useNavigate();
-	const handdleOpenCloseChat = () =>{
-		chatState.code != "" ? closeChat():handleChatList()
-	}
+	const handdleOpenCloseChat = () => {
+		chatState.code != "" ? closeChat() : handleChatList();
+	};
 
 	return (
 		<>
@@ -59,40 +60,59 @@ export const Navbar = () => {
 							outline-none"
 					/>
 				</div>
+
 				<div
 					id="chat-icon-container"
-					onClick={()=> handdleOpenCloseChat()}
-					className={`h-[60%] 
+					onClick={() => handdleOpenCloseChat()}
+					className={`h-[60%] w-[40px]
 					flex place-items-center place-content-center
-					${chatState.code != "" ?styles.pressed:styles.navbtn}`}
+					${chatState.code != "" ? styles.pressed : styles.navbtn}`}
 				>
-					<div id="chat-image" className="flex-none mx-2">
-						<img src={
-							chatState.code != "" ? closeIcon:chatIcon
-						} alt="" className="h-5" />
-					</div>
+					<motion.div
+						whileTap={{ scale: 0.9 }}
+						transition={{ type: "spring", stiffness: 400, damping: 17 }}
+						
+					>
+						<div id="chat-image" className="flex-none">
+							<img
+								src={chatState.code != "" ? closeIcon : chatIcon}
+								alt=""
+								className="h-[24px]"
+							/>
+						</div>
+					</motion.div>
 				</div>
 				<div
 					id="user-icon-container"
-					className={`h-[60%] 
+					className={`h-[60%] w-[40px]
 					flex place-items-center place-content-center
-					${location.pathname == "/index/user" ? styles.pressed : styles.navbtn}`}
+					${
+						location.pathname == "/index/user" ||
+						location.pathname == "/index/upload"
+							? styles.pressed
+							: styles.navbtn
+					}`}
 					onClick={() => navigate("user")}
 				>
-					<div
-						id="user-image-container"
-						className="
-                        w-[24px] h-[24px] flex-none
-                        rounded-full mx-1"
+					<motion.div
+						whileTap={{ scale: 0.9 }}
+						transition={{ type: "spring", stiffness: 400, damping: 17 }}
 					>
-						<img
-							src={usericon}
+						<div
+							id="user-image-container"
 							className="
+                        w-[24px] h-[24px] flex-none
+                        rounded-full "
+						>
+							<img
+								src={usericon}
+								className="
                             w-[inherit] h-[inherit]
                             rounded-[inherit]
                             object-cover"
-						/>
-					</div>
+							/>
+						</div>
+					</motion.div>
 				</div>
 				<div
 					id="chat-icon-container"

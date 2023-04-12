@@ -9,7 +9,6 @@ export const ImageProvider = ({ children }) => {
 	});
 
 	const handleImageSelected = (img) => {
-        
 		setImage({
 			...image,
 			code: (
