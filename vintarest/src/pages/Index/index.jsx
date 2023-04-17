@@ -1,5 +1,6 @@
 import { Navbar } from "../../components/shared/navbar";
 import { Home } from "../home/home";
+import { OpenPublication } from "../../components/index/openPublication";
 import { User } from "../User/user";
 import { UploadPhoto } from "../../components/userPage/uploadPhoto";
 import { ImageProvider } from "../../context/imageSelectedProvider";
@@ -28,6 +29,7 @@ export const Index = () => {
 						<Routes>
 							<Route path="/" element={<Home />} />
 							<Route path="/home" element={<Home />} />
+							<Route path="/publication/:id" element={<OpenPublication/>}/>
 							<Route path="/user" element={<User />} />
 							<Route path="/upload" element={<UploadPhoto />} />
 						</Routes>

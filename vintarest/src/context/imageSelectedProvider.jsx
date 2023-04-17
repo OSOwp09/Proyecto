@@ -4,11 +4,12 @@ import { ImageSelected } from "../components/shared/imageSelected";
 
 export const ImageProvider = ({ children }) => {
 	const [image, setImage] = useState({
+		id:"",
 		src: "",
+		title:"",
 		code: <></>,
 	});
-
-	const handleImageSelected = (img) => {
+	const handleImageSelected = (img,title,id) => {
 		setImage({
 			...image,
 			code: (
@@ -18,7 +19,9 @@ export const ImageProvider = ({ children }) => {
 					</div>
 				</>
 			),
-            src: img
+			id: id,
+            src: img,
+			title: title
 		});   
 	};
 

@@ -6,7 +6,7 @@ import {
 } from "../../src/store/amount/counter";
 
 export default function Prueba() {
-	const { count } = useSelector((state) => state.counter);
+	const { count } = useSelector((state) => state.counter.value);
 	const dispatch = useDispatch();
 	return (
 		<div className="App">

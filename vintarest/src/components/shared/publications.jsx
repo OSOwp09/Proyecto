@@ -1,6 +1,6 @@
-import { ImageCard } from "./imagecard";
+//fake storage of publications
 
-export const ImageLayout = ({ selectImg }) => {
+export const Publications = () => {
 	const imagesArray = [
 		"https://i.pinimg.com/474x/bf/03/5e/bf035ea8a81953b94d1ae8bf73346516.jpg",
 		"https://i.pinimg.com/474x/58/fb/6c/58fb6c4552240b643403a71443ed8a7c.jpg",
@@ -22,27 +22,59 @@ export const ImageLayout = ({ selectImg }) => {
 		"https://i.pinimg.com/474x/0d/cd/06/0dcd06021ba6560e56c4879fbb1b9365.jpg",
 	];
 
-	const images = [...Array(imagesArray.length)].map(
-		(image = imagesArray, i) => (
-			<ImageCard
-				id={i}
-				selectImg={selectImg}
-				image={image[i]}
-				description={"Image " + i}
-				userName={"User"}
-			/>
-		)
-	);
+	const publications = [
+		{
+			id: "0",
+			image: imagesArray[0],
+			title: "Manga tattoo",
+			description: "fuck yeahhhh",
+			userName: "Oso",
+		},
+		{
+			id: "1",
+			image: imagesArray[1],
+			title: "Saturn",
+			description: "fuck yeahhhh 1",
+			userName: "Oso 1",
+		},
+		{
+			id: "2",
+			image: imagesArray[2],
+			title: "Space cat",
+			description: "fuck yeahhhh 1",
+			userName: "Oso 1",
+		},
+		{
+			id: "3",
+			image: imagesArray[3],
+			title: "Body suit tattoo",
+			description: "fuck yeahhhh 1",
+			userName: "Oso 1",
+		},
+		{
+			id: "4",
+			image: imagesArray[4],
+			title: "Frog",
+			description: "fuck yeahhhh 1",
+			userName: "Oso 1",
+		},
+		{
+			id: "5",
+			image: imagesArray[5],
+			title: "Waves",
+			description: "fuck yeahhhh 1",
+			userName: "Oso 1",
+		},
+		{
+			id: "6",
+			image: imagesArray[6],
+			title: "SpaceMan",
+			description: "fuck yeahhhh 1",
+			userName: "Oso 1",
+		},
+	];
 
-	return (
-		<>
-			<div
-				className=" 
-				columns-[14rem] 
-				h-auto w-auto"
-			>
-				{images}
-			</div>
-		</>
-	);
+	return {
+		publications,
+	};
 };

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import usericon from "../../assets/person-circle.svg";
 import { ImageContext } from "../../context/imageSelectedContext";
 
-export const ImageCard = ({ image, description, userName, selectImg }) => {
+export const ImageCard = ({ image, description, userName, id }) => {
 	const { handleImageSelected } = useContext(ImageContext);
 	return (
 		<>
@@ -29,14 +29,16 @@ export const ImageCard = ({ image, description, userName, selectImg }) => {
 						whileTap={{ scale: 0.9 }}
 						transition={{ type: "spring", stiffness: 400, damping: 17 }}
 					> */}
-						<img
-							onClick={() => handleImageSelected(image)}
-							src={image}
-							alt=""
-							className="w-[240px] h-auto max-h-[448px] min-h-[120px]
+					<img
+						onClick={() => {
+							handleImageSelected(image, description, id);
+						}}
+						src={image}
+						alt=""
+						className="w-[240px] h-auto max-h-[448px] min-h-[120px]
 							rounded-t-2xl object-fit
 							mb-2 select-none"
-						/>
+					/>
 					{/* </motion.div> */}
 				</div>
 				<div id="description-container" className="p-1">
