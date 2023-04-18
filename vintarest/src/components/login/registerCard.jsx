@@ -1,12 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { auth } from "../../firebase/config";
+import { register } from "../../store/slices/auth/AuthSlice";
+import { registerAuth } from "../../store/slices/auth/Thunks";
 
 import logo from "../../assets/Logo.svg";
 import warning from "../../assets/exclamation-triangle.svg";
 
 export const RegisterCard = () => {
+	const dispatch = useDispatch();
+
 	const users = ["user1", "user2"];
-	const emails = ["camilo.osorio.ca@gmail.com", "user@gmail.com"];
 
 	const navigate = useNavigate();
 
@@ -53,12 +58,16 @@ export const RegisterCard = () => {
 			setInputErrors(errors);
 			return;
 		}
-		if (users.includes(fields.user)) {
-			errors.type = "errorIsInUse";
-			errors.description = " user already is in use";
-			setInputErrors(errors);
-			return;
-		}
+		
+		// const userRegex =/^[a-zA-Z0-9]/
+
+		// if (fields.user.match(userRegex)) {
+		// 	errors.type = "errorInvalid";
+		// 	errors.description = " only can use this special characters: ._-";
+		// 	setInputErrors(errors);
+		// 	return;
+		// }
+
 		//----- Email ----------
 		const validRegex =
 			/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -72,12 +81,6 @@ export const RegisterCard = () => {
 		if (!fields.email.match(validRegex)) {
 			errors.type = "errorInvalid";
 			errors.description = " invalid email";
-			setInputErrors(errors);
-			return;
-		}
-		if (emails.includes(fields.email)) {
-			errors.type = "errorIsInUse";
-			errors.description = " email already is in use";
 			setInputErrors(errors);
 			return;
 		}
@@ -132,9 +135,26 @@ export const RegisterCard = () => {
 			return;
 		}
 
-		console.log("object");
+		console.log(fields);
 
-		navigate("/login");
+		onSubmit(fields.email, fields.password, fields.name, fields.user);
+	};
+
+	const onSubmit = (email, password, name, user) => {
+		const promise = dispatch(registerAuth(email, password, name, user));
+		promise.then((value) => {
+			if (value == "auth/email-already-in-use") {
+				errors.id = "email";
+
+				errors.type = "errorIsInUse";
+				errors.description = " email already is in use";
+				setInputErrors(errors);
+				return;
+			}else{
+				navigate("/login");
+			}
+		});
+
 	};
 
 	const labelAndError = ({ fieldLabel, fieldInput, fieldError }) => (

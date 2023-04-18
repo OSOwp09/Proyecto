@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import {
+	loginAuth,
+	logoutAuth,
+	logWithGoogleAuth,
+} from "../../store/slices/auth/Thunks";
+import { login, logout, authSlice } from "../../store/slices/auth/AuthSlice";
+import { auth } from "../../firebase/config";
+
 import logo from "../../assets/Logo.svg";
-import googleLogo from "../../assets/google.svg"
-import facbookLogo from "../../assets/facebook.svg"
+import googleLogo from "../../assets/google.svg";
+import facbookLogo from "../../assets/facebook.svg";
 
 export const LoginCard = () => {
 	const navigate = useNavigate();
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
 	const [inputErrors, setInputErrors] = useState("");
+	const dispatch = useDispatch();
 
 	const errors = {
 		id: "",
@@ -22,11 +33,6 @@ export const LoginCard = () => {
 			setInputErrors(errors);
 			return;
 		}
-		if (email != "camilo.osorio.ca@gmail.com") {
-			errors.type = "errorInvalid";
-			setInputErrors(errors);
-			return;
-		}
 
 		errors.id = "password";
 		if (password == "") {
@@ -34,12 +40,31 @@ export const LoginCard = () => {
 			setInputErrors(errors);
 			return;
 		}
-		if (password != "123") {
-			errors.type = "errorInvalid";
-			setInputErrors(errors);
-			return;
-		}
-		navigate("/index");
+
+		handleSubmit();
+	};
+
+	const handleSubmit = () => {
+		const promise = dispatch(loginAuth(email, password));
+		promise.then((value) => {
+			switch (value) {
+				case "auth/wrong-password":
+					errors.id = "password";
+					errors.type = "errorInvalid";
+					setInputErrors(errors);
+					break;
+				case "auth/user-not-found":
+					errors.id = "email";
+					errors.type = "errorInvalid";
+					setInputErrors(errors);
+					break;
+				default:
+					console.log(auth.currentUser);
+					navigate("/index");
+					break;
+			}
+			
+		});
 	};
 
 	return (
@@ -234,11 +259,7 @@ export const LoginCard = () => {
                         font-semibold text-center
                         my-4"
 				>
-					<img
-						className="w-[24px] mr-[100px]"
-						src={googleLogo}
-						alt="google"
-					/>
+					<img className="w-[24px] mr-[100px]" src={googleLogo} alt="google" />
 					Log in with Google
 				</button>
 			</div>
