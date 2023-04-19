@@ -8,6 +8,9 @@ export const ImageCard = ({ image, description, userName, id }) => {
 	return (
 		<>
 			<div
+				onClick={() => {
+					handleImageSelected(image, description, id);
+				}}
 				id="container"
 				className="
                 bg-secondary-light
@@ -30,9 +33,6 @@ export const ImageCard = ({ image, description, userName, id }) => {
 						transition={{ type: "spring", stiffness: 400, damping: 17 }}
 					> */}
 					<img
-						onClick={() => {
-							handleImageSelected(image, description, id);
-						}}
 						src={image}
 						alt=""
 						className="w-[240px] h-auto max-h-[448px] min-h-[120px]

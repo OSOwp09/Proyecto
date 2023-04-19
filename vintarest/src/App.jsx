@@ -18,11 +18,11 @@ import { Error } from "./pages/ErrorPage/error";
 
 //---- Other ---
 import { ChatProvider } from "./context/chatProvider";
-import { AppRoutes } from "./routes/appRoutes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
 	document.body.classList.add("bg-primary-light");
+
 	return (
 		<>
 			<div className="font-inter">
@@ -30,7 +30,7 @@ function App() {
 					<Routes>
 						<Route path="/" element={<Login/>} />
 						<Route path="/login/*" element={<Login/>} />
-						<Route path="/index/*" element={
+						<Route path="/home/*" element={
 						<ChatProvider>
 							<Index/>
 						</ChatProvider>

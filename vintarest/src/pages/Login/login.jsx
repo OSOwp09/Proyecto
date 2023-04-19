@@ -1,11 +1,15 @@
-import { useState } from "react";
 import { LoginBg } from "../../components/login/loginBg";
 import { LoginCard } from "../../components/login/loginCard";
 import { RegisterCard } from "../../components/login/registerCard";
-import { Error } from "../ErrorPage/error";
 import { Routes, Route } from "react-router-dom";
 
+import { auth } from "../../firebase/config";
+import { useNavigate } from "react-router-dom";
+
 export const Login = () => {
+	const navigate = useNavigate()
+	console.log(auth.currentUser);
+	
 	return (
 		<>
 			<div className="h-screen w-screen

@@ -60,7 +60,7 @@ export const LoginCard = () => {
 					break;
 				default:
 					console.log(auth.currentUser);
-					navigate("/index");
+					navigate("/home");
 					break;
 			}
 			

@@ -16,6 +16,7 @@ import openArrow from "../../assets/arrow-up-right-circle.svg";
 import { useContext, useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import useClickOutside from "../../customHooks/useClickOutside";
 
 export const ImageSelected = ({ close }) => {
 	const navigate = useNavigate();
@@ -43,35 +44,18 @@ export const ImageSelected = ({ close }) => {
 	const [shareVisibility, setShareVisibility] = useState(false);
 	const [threeDotsVisibility, setThreeDotsVisibility] = useState(false);
 
-	/**
-	 * Hook that alerts clicks outside of the passed ref
-	 */
-	function useOutsideAlerter(ref) {
-		useEffect(() => {
-			/**
-			 * Alert if clicked on outside of element
-			 */
-			function handleClickOutside(event) {
-				if (ref.current && !ref.current.contains(event.target)) {
-					//alert("You clicked outside of me!");
-					setShareVisibility(false);
-					setThreeDotsVisibility(false);
-				}
-			}
-			// Bind the event listener
-			document.addEventListener("mousedown", handleClickOutside);
-			return () => {
-				// Unbind the event listener on clean up
-				document.removeEventListener("mousedown", handleClickOutside);
-			};
-		}, [ref]);
-	}
 	const wrapperRef = useRef(null);
 	const nullRef = useRef(null);
-	useOutsideAlerter(wrapperRef);
-	/**
-	 * 
-	 */
+	const outside = useClickOutside(wrapperRef);
+
+	useEffect(() => {
+		setTimeout(()=>{})
+		if (outside.outside == true) {
+			setShareVisibility(false);
+			setThreeDotsVisibility(false);
+			outside.setOutside(false);
+		}
+	}, [outside]);
 
 	return (
 		<>
@@ -102,9 +86,9 @@ export const ImageSelected = ({ close }) => {
 						<motion.div
 							whileTap={{ scale: 0.9 }}
 							transition={{ type: "spring", stiffness: 400, damping: 17 }}
+							onClick={() => setThreeDotsVisibility(true)}
 						>
 							<div
-								onClick={() => setThreeDotsVisibility(true)}
 								className={`h-8 w-8 rounded-full
 								hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
 								${threeDotsVisibility ? "shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]" : ""}
@@ -117,12 +101,13 @@ export const ImageSelected = ({ close }) => {
 						<motion.div
 							whileTap={{ scale: 0.9 }}
 							transition={{ type: "spring", stiffness: 400, damping: 17 }}
+							onClick={() => setShareVisibility(true)}
+							on
 						>
 							<div
-								onClick={() => setShareVisibility(true)}
 								className={`h-8 w-8 rounded-full
 								hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
-								${shareVisibility ? "shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)" : ""}
+								${shareVisibility ? "shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]" : ""}
 								flex place-content-center place-items-center`}
 							>
 								<img src={share} alt="" className="w-6" />
@@ -169,7 +154,7 @@ export const ImageSelected = ({ close }) => {
 									hover:opacity-100`}
 									onClick={() => navigate(`/index/publication/${image.id}`)}
 									initial={false}
-									style={{scale:1.6}}
+									style={{ scale: 1.6 }}
 									animate={isHoverOpen ? "hover" : "notHover"}
 									onHoverStart={() => setIsHoverOpen(true)}
 									onHoverEnd={() => setIsHoverOpen(false)}
@@ -269,12 +254,12 @@ export const ImageSelected = ({ close }) => {
 					>
 						<ImageLayout />
 					</div>
-					<div id="options" className="absolute top-11 left-2">
+					<div id="options" className="absolute top-10 left-2">
 						<div
 							ref={shareVisibility ? wrapperRef : nullRef}
 							className={`${shareVisibility ? "block" : "hidden"}`}
 						>
-							<ShareButton src={shareUrl}/>
+							<ShareButton src={shareUrl} />
 						</div>
 
 						<div

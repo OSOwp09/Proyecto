@@ -27,7 +27,7 @@ export const UploadPhoto = () => {
 				>
 					<img
 						id="close"
-                        onClick={()=> navigate("/index/user")}
+                        onClick={()=> navigate("/home/user")}
 						className="
                         absolute right-2 top-2
                         h-6"

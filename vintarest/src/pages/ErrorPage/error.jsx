@@ -53,7 +53,7 @@ export const Error = () => {
 					</div>
                     <div>
                         <button 
-                        onClick={()=>navigate("/")}
+                        onClick={()=>navigate("/home")}
                         className="w-[240px] 
                         border-2 border-primary-red
                         text-primary-red

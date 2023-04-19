@@ -28,7 +28,7 @@ export const User = () => {
 					>
 						<div className="min-[1100px]:absolute bottom-0 left-6 flex gap-2">
 							<img
-								onClick={()=>navigate("/index/upload")}
+								onClick={()=>navigate("/home/upload")}
 								src={add}
 								alt=""
 								className="bg-secondary-light rounded-full"

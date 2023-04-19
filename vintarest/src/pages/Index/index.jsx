@@ -4,14 +4,18 @@ import { OpenPublication } from "../../components/index/openPublication";
 import { User } from "../User/user";
 import { UploadPhoto } from "../../components/userPage/uploadPhoto";
 import { ImageProvider } from "../../context/imageSelectedProvider";
+import { Error } from "../ErrorPage/error";
 
 import { ChatContext } from "../../context/chatContext";
 import { useContext } from "react";
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import { auth } from "../../firebase/config";
 
 export const Index = () => {
-	const{chatState} = useContext(ChatContext)
+	const navigate = useNavigate();
+	const { chatState } = useContext(ChatContext);
+
 	return (
 		<>
 			<div
@@ -28,16 +32,22 @@ export const Index = () => {
 					<ImageProvider>
 						<Routes>
 							<Route path="/" element={<Home />} />
-							<Route path="/home" element={<Home />} />
-							<Route path="/publication/:id" element={<OpenPublication/>}/>
-							<Route path="/user" element={<User />} />
-							<Route path="/upload" element={<UploadPhoto />} />
+							<Route path="/publication/:id" element={<OpenPublication />} />
+							{auth.currentUser ? (
+								<Route path="/user" element={<User />} />
+							) : (
+								""
+							)}
+							{auth.currentUser ? (
+								<Route path="/upload" element={<UploadPhoto />} />
+							) : (
+								""
+							)}
+							<Route path="*" element={<Error />} />
 						</Routes>
 					</ImageProvider>
 				</div>
-				<div className="absolute top-[84px] right-2">
-					{chatState.code}
-				</div>
+				<div className="absolute top-[84px] right-2">{chatState.code}</div>
 			</div>
 		</>
 	);
