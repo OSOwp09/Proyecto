@@ -30,24 +30,8 @@ export const Navbar = () => {
 
 	//controll navbar visibily depending if the user is loged and the path
 	useEffect(() => {
-		const path = location.pathname;
-		if (!auth.currentUser) {
-			switch (path.split("/")[2]) {
-				case "upload":
-					setNavbar("hidden");
-					break;
-				case "user":
-					setNavbar("hidden");
-					break;
-				default:
-					setNavbar("block");
-					break;
-			}
-		} else {
-			setNavbar("block");
-		}
+		location.pathname == "/Error404" ? setNavbar("hidden"):setNavbar("block")
 	}, [location.pathname]);
-
 
 	/*controll navbar menu and login btn 
 	visibily depending if the user is loged*/
@@ -155,8 +139,8 @@ export const Navbar = () => {
 						className={`h-[60%] w-[40px]
 					flex place-items-center place-content-center
 					${
-						location.pathname == "/index/user" ||
-						location.pathname == "/index/upload"
+						location.pathname == "/home/user" ||
+						location.pathname == "/home/upload"
 							? styles.pressed
 							: styles.navbtn
 					}`}

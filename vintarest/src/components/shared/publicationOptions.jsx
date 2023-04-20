@@ -22,6 +22,7 @@ import { motion } from "framer-motion";
 
 export const ShareButton = (src) => {
 	const shareUrl = src.src;
+	console.log(shareUrl);
 	return (
 		<>
 			<div className="pt-2">

@@ -19,25 +19,45 @@ import { Error } from "./pages/ErrorPage/error";
 //---- Other ---
 import { ChatProvider } from "./context/chatProvider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/config";
+import { loadUser } from "./store/slices/auth/Thunks";
 
 function App() {
 	document.body.classList.add("bg-primary-light");
+	const dispatch = useDispatch();
+	const [loadApp, setLoadApp] = useState(<></>);
+
+	useEffect(() => {
+		onAuthStateChanged(auth, () => {
+			auth.currentUser ? dispatch(loadUser(auth.currentUser.email)):"";
+			setLoadApp(
+				<Router>
+					<Routes>
+						<Route path="/" element={<Login />} />
+						<Route path="/login/*" element={<Login />} />
+						<Route
+							path="/home/*"
+							element={
+								<ChatProvider>
+									<Index />
+								</ChatProvider>
+							}
+						/>
+						<Route path="*" element={<Error />} />
+						<Route path="/Error404" element={<Error />} />
+					</Routes>
+				</Router>
+			);
+		});
+	}, []);
 
 	return (
 		<>
 			<div className="font-inter">
-				<Router>
-					<Routes>
-						<Route path="/" element={<Login/>} />
-						<Route path="/login/*" element={<Login/>} />
-						<Route path="/home/*" element={
-						<ChatProvider>
-							<Index/>
-						</ChatProvider>
-						}/>
-						<Route path="*" element={<Error />} />
-					</Routes>
-				</Router>
+				{loadApp}
 			</div>
 		</>
 	);

@@ -5,8 +5,19 @@ import {
 	updateProfile,
 } from "firebase/auth";
 import { auth } from "../../../firebase/config";
-import { authSlice } from "./AuthSlice";
+import { authSlice, login } from "./AuthSlice";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
+export const loadUser = (email) => {
+	return async (dispatch) => {
+		console.log("aqui si llega");
+		dispatch(
+			login({
+				email: email
+			})
+		);
+	};
+};
 
 export const registerAuth = (email, password, name, user) => {
 	return async (dispatch) => {
@@ -23,7 +34,7 @@ export const registerAuth = (email, password, name, user) => {
 				});
 
 				const { email } = response.user;
-				dispatch(register({ email }));
+				dispatch(register({ email: email }));
 			} else {
 				throw new Error("register failed");
 			}

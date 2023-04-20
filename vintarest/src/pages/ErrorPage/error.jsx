@@ -3,9 +3,14 @@ import { Navigate, useNavigate } from "react-router-dom";
 import errorImg from "../../assets/imgs/error404.jpg";
 import styles from "../../components/shared/styles.module.css";
 import usericon from "../../assets/person-circle.svg"
+import { useEffect } from "react";
 
 export const Error = () => {
     const navigate = useNavigate();
+	useEffect(() => {
+		navigate("/Error404")
+	}, [])
+	
 	return (
 		<>
 			<div className="w-screen h-screen flex place-content-center place-items-center">

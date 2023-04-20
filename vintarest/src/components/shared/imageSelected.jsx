@@ -22,7 +22,7 @@ export const ImageSelected = ({ close }) => {
 	const navigate = useNavigate();
 	const { image } = useContext(ImageContext);
 
-	const shareUrl = `${window.location.host}/index/publication/${image.id}`;
+	const shareUrl = `${window.location.host}/home/publication/${image.id}`;
 
 	const [isHoverOpen, setIsHoverOpen] = useState(false);
 	const [isHoverImg, setIsHoverImg] = useState(false);
@@ -152,7 +152,7 @@ export const ImageSelected = ({ close }) => {
 									${isHoverImg ? "visible" : "invisible"}
 									opacity-50
 									hover:opacity-100`}
-									onClick={() => navigate(`/index/publication/${image.id}`)}
+									onClick={() => navigate(`/home/publication/${image.id}`)}
 									initial={false}
 									style={{ scale: 1.6 }}
 									animate={isHoverOpen ? "hover" : "notHover"}

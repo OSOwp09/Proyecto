@@ -7,14 +7,24 @@ import { ImageProvider } from "../../context/imageSelectedProvider";
 import { Error } from "../ErrorPage/error";
 
 import { ChatContext } from "../../context/chatContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
+import { useSelector } from "react-redux";
 
 export const Index = () => {
 	const navigate = useNavigate();
 	const { chatState } = useContext(ChatContext);
+	const [authLoaded, setAuthLoaded] = useState(false)
+	const authinfo = useSelector(((state) => state.auth))
+
+	useEffect(() => {
+		onAuthStateChanged(auth, () => {
+			setAuthLoaded(true)
+		});
+	}, []);
 
 	return (
 		<>
@@ -33,12 +43,12 @@ export const Index = () => {
 						<Routes>
 							<Route path="/" element={<Home />} />
 							<Route path="/publication/:id" element={<OpenPublication />} />
-							{auth.currentUser ? (
+							{authinfo.email ? (
 								<Route path="/user" element={<User />} />
 							) : (
 								""
 							)}
-							{auth.currentUser ? (
+							{authinfo.email  ? (
 								<Route path="/upload" element={<UploadPhoto />} />
 							) : (
 								""

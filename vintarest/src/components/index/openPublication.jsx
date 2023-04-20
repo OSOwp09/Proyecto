@@ -29,7 +29,7 @@ export const OpenPublication = () => {
 	));
 
 	useEffect(() => {
-		publications[id] ? console.log("si") : navigate("/index/home");
+		publications[id] ? console.log("si") : navigate("/home");
 	}, []);
 
 	const publication = () => {
@@ -119,9 +119,10 @@ export const OpenPublication = () => {
 								<motion.div
 									whileTap={{ scale: 0.9 }}
 									transition={{ type: "spring", stiffness: 400, damping: 17 }}
+									onClick={() =>  setShareVisibility(true)}
 								>
 									<div
-										onClick={() => setShareVisibility(true)}
+										
 										className={`h-8 w-8 rounded-full
                                         hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
                                         ${shareVisibility? "shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]": ""}
@@ -221,7 +222,7 @@ export const OpenPublication = () => {
 							src={backArrow}
 							alt=""
 							className="h-5"
-							onClick={() => navigate("/index/home")}
+							onClick={() => navigate("/home")}
 						/>
 					</button>
 				</div>
@@ -231,7 +232,7 @@ export const OpenPublication = () => {
 
 	return (
 		<>
-			<div>{publications[id] ? publication() : navigate("/index/home")}</div>
+			<div>{publications[id] ? publication() : navigate("/home")}</div>
 		</>
 	);
 };

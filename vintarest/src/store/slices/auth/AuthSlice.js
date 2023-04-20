@@ -17,7 +17,9 @@ export const authSlice = createSlice({
 		login: (state, action) => {
 			state.email = action.payload.email;
 		},
-		logout: (state, action) => {},
+		logout: (state, action) => {
+			state.email = null
+		},
 		checkingCredentials: (state, action) => {
 			console.log("checking");
 		},
