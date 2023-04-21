@@ -6,7 +6,7 @@ import {
 	loginAuth,
 	logoutAuth,
 	logWithGoogleAuth,
-} from "../../store/slices/auth/Thunks";
+} from "../../store/slices/auth/AuthThunks";
 import { login, logout, authSlice } from "../../store/slices/auth/AuthSlice";
 import { auth } from "../../firebase/config";
 

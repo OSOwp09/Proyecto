@@ -1,4 +1,4 @@
-import { FilterImagesByHashTagSlice, search } from "./FilterImagesByHashTagSlice";
+import { FilterSearchSlice, search } from "./FilterSearchSlice";
 
 export const searchPublications = (words) => {
 	return async (dispatch) => {

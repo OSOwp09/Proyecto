@@ -4,6 +4,7 @@
 		"title": "Asian full manga tattoo",
 		"userPhoto": "",
 		"userName": "enchantingnerve",
+		"userid": "1",
 		"description": "",
 		"hashtags": "tattoo",
 		"publicationid": "1"
@@ -13,17 +14,19 @@
 		"title": "Saturn illustration",
 		"userPhoto": "",
 		"userName": "rockpoverty",
+		"userid": "2",
 		"description": "",
-		"hashtags": "illustration saturn black minimalist",
+		"hashtags": "illustrations saturn black minimalist",
 		"publicationid": "2"
 	},
 	{
 		"photoURL": "https://i.pinimg.com/474x/22/58/5f/22585f1c269b30cf64406f78993c9eb4.jpg",
 		"title": "Space cat",
 		"userPhoto": "",
-		"userName": "",
+		"userName": "flyingtacos",
+		"userid": "3",
 		"description": "",
-		"hashtags": "illustration cat spacecat ",
+		"hashtags": "illustrations cat spacecat ",
 		"publicationid": "3"
 	},
 	{
@@ -31,6 +34,7 @@
 		"title": "Yakuza-like tattoo ",
 		"userPhoto": "",
 		"userName": "embracehalting",
+		"userid": "4",
 		"description": "",
 		"hashtags": "tattoo backtatoo bodysuittattoo",
 		"publicationid": "4"
@@ -40,8 +44,9 @@
 		"title": "Frog disguised ",
 		"userPhoto": "",
 		"userName": "oystersoybean",
+		"userid": "5",
 		"description": "",
-		"hashtags": "illustration frog",
+		"hashtags": "illustrations frog",
 		"publicationid": "5"
 	},
 	{
@@ -49,8 +54,9 @@
 		"title": "Magenta waves",
 		"userPhoto": "",
 		"userName": "raspberry",
+		"userid": "6",
 		"description": "",
-		"hashtags": "illustration waves",
+		"hashtags": "illustrations waves",
 		"publicationid": "6"
 	},
 	{
@@ -58,6 +64,7 @@
 		"title": "SpaceMan",
 		"userPhoto": "",
 		"userName": "spidertenor",
+		"userid": "7",
 		"description": "",
 		"hashtags": "space illustrattion spacesuit",
 		"publicationid": "7"
@@ -67,6 +74,7 @@
 		"title": "Forniture for cats",
 		"userPhoto": "",
 		"userName": "Bootyle",
+		"userid": "8",
 		"description": "",
 		"hashtags": "cat catforniture",
 		"publicationid": "8"
@@ -76,6 +84,7 @@
 		"title": "Just beers hanging",
 		"userPhoto": "",
 		"userName": "Kaima",
+		"userid": "9",
 		"description": "",
 		"hashtags": "alcohol forniture",
 		"publicationid": "9"
@@ -85,17 +94,20 @@
 		"title": "Nail minimalistic design",
 		"userPhoto": "",
 		"userName": "Milaym",
+		"userid": "10",
 		"description": "",
 		"hashtags": "nails",
 		"publicationid": "10"
 	},
+
 	{
 		"photoURL": "https://i.pinimg.com/474x/90/65/72/906572b13a8992b9dcee98a7cac2dbae.jpg",
 		"title": "Night illustration",
 		"userPhoto": "",
 		"userName": "Wackyey",
+		"userid": "11",
 		"description": "",
-		"hashtags": "illustration night",
+		"hashtags": "illustrations night",
 		"publicationid": "11"
 	},
 	{
@@ -103,6 +115,7 @@
 		"title": "Full arms tattoo",
 		"userPhoto": "",
 		"userName": "ThrillKeeper",
+		"userid": "12",
 		"description": "",
 		"hashtags": "tattoo mangatattoo",
 		"publicationid": "12"
@@ -112,8 +125,9 @@
 		"title": "Eye illustration",
 		"userPhoto": "",
 		"userName": "lianuniverse",
+		"userid": "13",
 		"description": "",
-		"hashtags": "illustration eye lineart",
+		"hashtags": "illustrations eye lineart",
 		"publicationid": "13"
 	},
 	{
@@ -121,6 +135,7 @@
 		"title": "Sexy tattoo",
 		"userPhoto": "",
 		"userName": "asmodeo",
+		"userid": "14",
 		"description": "",
 		"hashtags": "tattoo lineart",
 		"publicationid": "14"
@@ -130,8 +145,9 @@
 		"title": "Creepy tattoo desing",
 		"userPhoto": "",
 		"userName": "NetCert",
+		"userid": "15",
 		"description": "",
-		"hashtags": "illustration tattoo creepy",
+		"hashtags": "illustrations tattoo creepy",
 		"publicationid": "15"
 	},
 	{
@@ -139,8 +155,9 @@
 		"title": "space dogs",
 		"userPhoto": "",
 		"userName": "Gineta",
+		"userid": "16",
 		"description": "",
-		"hashtags": "illustration dog dogs spacedos spacedog",
+		"hashtags": "illustrations dog dogs spacedos spacedog",
 		"publicationid": "16"
 	},
 	{
@@ -148,6 +165,7 @@
 		"title": "Moon cicle",
 		"userPhoto": "",
 		"userName": "Hoperf",
+		"userid": "17",
 		"description": "",
 		"hashtags": "moon",
 		"publicationid": "17"
@@ -157,8 +175,131 @@
 		"title": "Vampire illustration",
 		"userPhoto": "",
 		"userName": "ConnLin",
+		"userid": "18",
 		"description": "",
-		"hashtags": "vampire illustration",
+		"hashtags": "vampire illustrations",
 		"publicationid": "18"
+	},
+	{
+		"photoURL": "https://i.pinimg.com/564x/6e/02/53/6e0253f2fa372796d2c32e623f13b9b5.jpg",
+		"title": "Cute hoodie",
+		"userPhoto": "",
+		"userName": "Kleidung",
+		"userid": "19",
+		"description": "",
+		"hashtags": "clothes hoodie",
+		"publicationid": "19"
+	},
+	{
+		"photoURL": "https://i.pinimg.com/564x/cd/61/cc/cd61cca41e9002a080ed931b8c4745ce.jpg",
+		"title": "Nail cocmic-like design",
+		"userPhoto": "",
+		"userName": "Milaym",
+		"userid": "10",
+		"description": "",
+		"hashtags": "nails",
+		"publicationid": "20"
+	},
+	{
+		"photoURL": "https://i.pinimg.com/564x/2f/92/92/2f9292a13420cd129e8a9ba193d2ee5b.jpg",
+		"title": "Dragon tattoo",
+		"userPhoto": "",
+		"userName": "enchantingnerve",
+		"userid": "1",
+		"description": "",
+		"hashtags": "tattoo dragon",
+		"publicationid": "21"
+	},
+	{
+		"photoURL": "https://i.pinimg.com/564x/a0/15/a2/a015a2818a9868501b06a17a6de92f63.jpg",
+		"title": "Back tattoo",
+		"userPhoto": "",
+		"userName": "enchantingnerve",
+		"userid": "1",
+		"description": "",
+		"hashtags": "tattoo",
+		"publicationid": "22"
+	},
+	{
+		"photoURL": "https://i.pinimg.com/564x/4a/5b/54/4a5b54f0c90c22075e61af66fb9b219c.jpg",
+		"title": "Trippie smoke",
+		"userPhoto": "",
+		"userName": "raspberry",
+		"userid": "6",
+		"description": "",
+		"hashtags": "illustrations smoke",
+		"publicationid": "23"
+	},
+	{
+		"photoURL": "https://i.pinimg.com/564x/5a/9c/51/5a9c517ce98ef817bd4c6cab2b3261fe.jpg",
+		"title": "Creepy mask",
+		"userPhoto": "",
+		"userName": "raspberry",
+		"userid": "6",
+		"description": "",
+		"hashtags": "illustrations creepy",
+		"publicationid": "24"
+	},
+	{
+		"photoURL": "https://i.pinimg.com/564x/78/ee/a9/78eea9ba650b73f0fe0d9652f6d025bb.jpg",
+		"title": "Nice bookShell",
+		"userPhoto": "",
+		"userName": "Kaima",
+		"userid": "9",
+		"description": "",
+		"hashtags": "books book forniture",
+		"publicationid": "25"
+	},
+	{
+		"photoURL": "https://i.pinimg.com/564x/0a/0e/1e/0a0e1efc553801b5863c6c4b90287383.jpg",
+		"title": "Nice forniture design",
+		"userPhoto": "",
+		"userName": "Kaima",
+		"userid": "9",
+		"description": "",
+		"hashtags": "forniture",
+		"publicationid": "26"
+	},
+	{
+		"photoURL": "https://i.pinimg.com/564x/56/0f/3e/560f3e27839659c52c7c0a4aa5f85c32.jpg",
+		"title": "Black and white nails",
+		"userPhoto": "",
+		"userName": "Milaym",
+		"userid": "10",
+		"description": "",
+		"hashtags": "nails",
+		"publicationid": "27"
+	}
+    ,
+	{
+		"photoURL": "https://i.pinimg.com/564x/e9/2e/11/e92e111b5d68d01371aa5a41a9fb1fa5.jpg",
+		"title": "Boy Nail Art",
+		"userPhoto": "",
+		"userName": "Milaym",
+		"userid": "10",
+		"description": "",
+		"hashtags": "nails",
+		"publicationid": "28"
+	},
+	{
+		"photoURL": "https://i.pinimg.com/564x/47/61/79/476179b462d41e0018c98b817c9b7a60.jpg",
+		"title": "Jacket and Coat For Men",
+		"userPhoto": "",
+		"userName": "Kleidung",
+		"userid": "19",
+		"description": "",
+		"hashtags": "clothes Jacket Coat",
+		"publicationid": "29"
+	}
+    ,
+	{
+		"photoURL": "https://i.pinimg.com/564x/43/d3/ec/43d3ec94fd76bc4064e16b42a6d44f31.jpg",
+		"title": "Euphoria Outfit",
+		"userPhoto": "",
+		"userName": "Kleidung",
+		"userid": "19",
+		"description": "",
+		"hashtags": "clothes Outfit",
+		"publicationid": "30"
 	}
 ]

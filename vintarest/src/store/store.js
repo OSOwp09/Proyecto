@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authSlice } from "./slices/auth/AuthSlice";
-import { FilterImagesByHashTagSlice } from "./slices/filterImagesByHashTag/FilterImagesByHashTagSlice";
+import { FilterSearchSlice } from "./slices/filterSearch/FilterSearchSlice";
 
 export const store = configureStore({
 	reducer: {
 		auth: authSlice.reducer,
-		search: FilterImagesByHashTagSlice.reducer
+		search: FilterSearchSlice.reducer
 	},
 });

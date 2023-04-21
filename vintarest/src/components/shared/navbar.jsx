@@ -2,7 +2,7 @@ import styles from "../shared/styles.module.css";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/config";
-import { searchPublications } from "../../store/slices/filterImagesByHashTag/Thunks";
+import { searchPublications } from "../../store/slices/filterSearch/FilterThunks";
 
 import { ChatContext } from "../../context/chatContext";
 
@@ -47,7 +47,7 @@ export const Navbar = () => {
 	//Search
 	const [wordsInput, setWordsInput] = useState("")
 	const dispatch = useDispatch();
-	
+
 	const handdleSearchInput = (words) => {
 		navigate("/home")
 		dispatch(searchPublications(words));
@@ -71,7 +71,7 @@ export const Navbar = () => {
 					className="
 					w-[40px] h-[40px]
 					mx-5"
-					onClick={() => navigate("/home")}
+					onClick={() => {navigate("/home"), dispatch(searchPublications(""))}}
 				/>
 
 				<div
@@ -86,6 +86,7 @@ export const Navbar = () => {
 					onClick={()=>handdleSearchInput(wordsInput)}/>
 					<input
 						onChange={(e)=> setWordsInput(e.target.value)}
+						onKeyDown={(e)=> e.key == 'Enter' ? handdleSearchInput(wordsInput):""}
 						value={wordsInput}
 						type="text"
 						placeholder="Search"

@@ -247,9 +247,9 @@ export const OpenPublication = () => {
 							</div>
 							<div
 								className="
-							h-[calc(100vh-90px)] w-fit mr-2 mt-2
-							rounded-2xl
-							sticky top-2"
+								h-[calc(100vh-90px)] w-fit mr-2 mt-2
+								rounded-2xl
+								sticky top-2"
 							>
 								{image.code}
 							</div>
@@ -257,10 +257,10 @@ export const OpenPublication = () => {
 
 						<button
 							className="absolute top-6 left-20 
-                        bg-primary-light rounded-full p-3 opacity-70
-                        hover:opacity-100
-                        hover:bg-secondary-light
-                        hover:shadow-md"
+                    		bg-primary-light rounded-full p-3 opacity-70
+                        	hover:opacity-100
+                       		 hover:bg-secondary-light
+                        	hover:shadow-md"
 						>
 							<img
 								id="backArrow"

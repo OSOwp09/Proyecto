@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const FilterImagesByHashTagSlice = createSlice({
+export const FilterSearchSlice = createSlice({
 	name: "search",
 	initialState: {
 		words: "",
+		searchFor:"publications"
 	},
 	reducers: {
 		search: (state, action) => {
@@ -13,4 +14,4 @@ export const FilterImagesByHashTagSlice = createSlice({
 });
 
 export const { search } =
-	FilterImagesByHashTagSlice.actions;
+	FilterSearchSlice.actions;

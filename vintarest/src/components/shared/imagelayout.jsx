@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
 export const ImageLayout = ({ selectImg }) => {
+	
 	const searchParams = useSelector((state) => state.search).words.toLowerCase();
 	const searchParamsArry = searchParams.split(" ");
 	const [searchFilter, setsearchFilter] = useState([]);

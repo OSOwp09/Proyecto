@@ -42,18 +42,25 @@ export const Index = () => {
 					<ImageProvider>
 						<Routes>
 							<Route path="/" element={<Home />} />
+
 							<Route path="/publication/:id" element={<OpenPublication />} />
+
+
 							{authinfo.email ? (
 								<Route path="/user" element={<User />} />
 							) : (
 								""
 							)}
+
+
 							{authinfo.email  ? (
 								<Route path="/upload" element={<UploadPhoto />} />
 							) : (
 								""
 							)}
+
 							<Route path="*" element={<Error />} />
+							
 						</Routes>
 					</ImageProvider>
 				</div>

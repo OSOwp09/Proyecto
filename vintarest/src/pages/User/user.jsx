@@ -26,11 +26,12 @@ export const User = () => {
 					<div
 						className="
                         mb-3
-                        relative flex place-content-center gap-2
-                        max-[1100px]:flex-col-reverse
-                        max-[1100px]:place-items-center"
+                        flex place-content-center gap-2
+                        flex-col-reverse
+                        place-items-center"
 					>
-						<div className="min-[1100px]:absolute bottom-0 left-6 flex gap-2">
+						<div id="options" 
+						className="flex gap-2 relative">
 							<img
 								onClick={() => navigate("/home/upload")}
 								src={add}
@@ -48,19 +49,20 @@ export const User = () => {
 								alt=""
 								className="hover:bg-secondary-light rounded-full"
 							/>
+							<motion.div
+								className={`
+								${shareVisibility ? "block" : "hidden"}
+								absolute 
+								left-[-117%] top-[8px] z-50`}
+
+								style={{ scale: 0.8 }}
+							>
+								<ShareButton />
+							</motion.div>
 						</div>
-						<motion.div
-							className={`
-						${shareVisibility ? "block" : "hidden"}
-						absolute 
-						top-[238px]
-						min-[1100px]:left-[-15px] min-[1100px]:top-[-20px] z-50
-						`}
-							style={{ scale: 0.8 }}
-						>
-							<ShareButton />
-						</motion.div>
+			
 						<UserCard />
+
 					</div>
 					<ImageLayout />
 				</div>

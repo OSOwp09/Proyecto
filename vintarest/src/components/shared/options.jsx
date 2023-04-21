@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { auth } from "../../firebase/config";
-import { logoutAuth } from "../../store/slices/auth/Thunks";
+import { logoutAuth } from "../../store/slices/auth/AuthThunks";
 import { useNavigate } from "react-router-dom";
 import userLogo from "../../assets/person-circle.svg";
 import { useEffect, useState } from "react";

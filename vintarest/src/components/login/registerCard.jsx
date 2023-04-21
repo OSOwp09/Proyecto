@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { auth } from "../../firebase/config";
 import { register } from "../../store/slices/auth/AuthSlice";
-import { registerAuth } from "../../store/slices/auth/Thunks";
+import { registerAuth } from "../../store/slices/auth/AuthThunks";
 
 import logo from "../../assets/Logo.svg";
 import warning from "../../assets/exclamation-triangle.svg";
