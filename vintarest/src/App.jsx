@@ -19,7 +19,7 @@ import { Error } from "./pages/ErrorPage/error";
 //---- Other ---
 import { ChatProvider } from "./context/chatProvider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
@@ -29,7 +29,7 @@ function App() {
 	document.body.classList.add("bg-primary-light");
 	const dispatch = useDispatch();
 	const [loadApp, setLoadApp] = useState(<></>);
-
+	
 	useEffect(() => {
 		onAuthStateChanged(auth, () => {
 			auth.currentUser ? dispatch(loadUser(auth.currentUser.email)):"";

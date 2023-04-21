@@ -11,10 +11,10 @@ import { useNavigate } from "react-router-dom";
 import { ShareButton } from "../../components/shared/publicationOptions";
 
 export const User = () => {
-	const navigate = useNavigate()
-	const [shareVisibility, setShareVisibility] = useState(false)
+	const navigate = useNavigate();
+	const [shareVisibility, setShareVisibility] = useState(false);
 
-    const {image} = useContext(ImageContext)
+	const { image } = useContext(ImageContext);
 	return (
 		<>
 			<div className="flex place-content-center w-screen h-screen">
@@ -29,16 +29,16 @@ export const User = () => {
                         relative flex place-content-center gap-2
                         max-[1100px]:flex-col-reverse
                         max-[1100px]:place-items-center"
-					>	
+					>
 						<div className="min-[1100px]:absolute bottom-0 left-6 flex gap-2">
 							<img
-								onClick={()=>navigate("/home/upload")}
+								onClick={() => navigate("/home/upload")}
 								src={add}
 								alt=""
 								className="hover:bg-secondary-light rounded-full"
 							/>
 							<img
-								onClick={()=>setShareVisibility(!shareVisibility)}
+								onClick={() => setShareVisibility(!shareVisibility)}
 								src={share}
 								alt=""
 								className="hover:bg-secondary-light rounded-full"
@@ -49,21 +49,22 @@ export const User = () => {
 								className="hover:bg-secondary-light rounded-full"
 							/>
 						</div>
-						<motion.div 
-						className={`
-						${shareVisibility ? "block":"hidden"}
+						<motion.div
+							className={`
+						${shareVisibility ? "block" : "hidden"}
 						absolute 
 						top-[238px]
 						min-[1100px]:left-[-15px] min-[1100px]:top-[-20px] z-50
 						`}
-						style={{scale:0.8}}>
-							<ShareButton/>
+							style={{ scale: 0.8 }}
+						>
+							<ShareButton />
 						</motion.div>
 						<UserCard />
 					</div>
-					<ImageLayout/>
+					<ImageLayout />
 				</div>
-				{image.code}
+				<div className="mt-2">{image.code}</div>
 			</div>
 		</>
 	);

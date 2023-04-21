@@ -145,13 +145,12 @@ export const RegisterCard = () => {
 		promise.then((value) => {
 			if (value == "auth/email-already-in-use") {
 				errors.id = "email";
-
 				errors.type = "errorIsInUse";
 				errors.description = " email already is in use";
 				setInputErrors(errors);
 				return;
 			}else{
-				navigate("/login");
+				navigate("/");
 			}
 		});
 

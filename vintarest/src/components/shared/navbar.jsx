@@ -2,6 +2,7 @@ import styles from "../shared/styles.module.css";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/config";
+import { searchPublications } from "../../store/slices/filterImagesByHashTag/Thunks";
 
 import { ChatContext } from "../../context/chatContext";
 
@@ -15,6 +16,7 @@ import closeIcon from "../../assets/x-circle.svg";
 import { useContext, useEffect, useRef, useState } from "react";
 import { OptionsCard } from "./options";
 import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
 
 export const Navbar = () => {
 	const [navbar, setNavbar] = useState("hidden"); // navbar visibility controller
@@ -40,6 +42,16 @@ export const Navbar = () => {
 			auth.currentUser ? setLogin(true) : setLogin(false);
 		});
 	}, []);
+
+
+	//Search
+	const [wordsInput, setWordsInput] = useState("")
+	const dispatch = useDispatch();
+	
+	const handdleSearchInput = (words) => {
+		navigate("/home")
+		dispatch(searchPublications(words));
+	}
 
 	return (
 		<>
@@ -70,8 +82,11 @@ export const Navbar = () => {
                     bg-secondary-highlight
                     rounded-2xl"
 				>
-					<img src={search} alt="" className="h-[16px] ml-4" />
+					<img src={search} alt="" className="h-[16px] ml-4" 
+					onClick={()=>handdleSearchInput(wordsInput)}/>
 					<input
+						onChange={(e)=> setWordsInput(e.target.value)}
+						value={wordsInput}
 						type="text"
 						placeholder="Search"
 						className="
@@ -112,8 +127,8 @@ export const Navbar = () => {
 						id="chat-icon-container"
 						onClick={() => handdleOpenCloseChat()}
 						className={`h-[60%] w-[40px]
-					flex place-items-center place-content-center
-					${chatState.code != "" ? styles.pressed : styles.navbtn}`}
+						flex place-items-center place-content-center
+						${chatState.code != "" ? styles.pressed : styles.navbtn}`}
 						initial={"tapnt"}
 						whileTap={"tap"}
 					>
@@ -197,7 +212,7 @@ export const Navbar = () => {
 				</div>
 			</div>
 
-			<div
+			<motion.div
 				className={`
 				${options ? "block" : "hidden"}
 				absolute right-1 mt-1
@@ -205,7 +220,7 @@ export const Navbar = () => {
 				rounded-full`}
 			>
 				<OptionsCard />
-			</div>
+			</motion.div>
 		</>
 	);
 };

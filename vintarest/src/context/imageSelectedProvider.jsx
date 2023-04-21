@@ -4,7 +4,7 @@ import { ImageSelected } from "../components/shared/imageSelected";
 
 export const ImageProvider = ({ children }) => {
 	const [image, setImage] = useState({
-		id:"",
+		id: null,
 		src: "",
 		title:"",
 		code: <></>,
@@ -14,7 +14,7 @@ export const ImageProvider = ({ children }) => {
 			...image,
 			code: (
 				<>
-					<div id="imageSelected-container" className="px-2">
+					<div id="imageSelected-container" className="px-">
 						<ImageSelected close={closeSelectedImage}/>
 					</div>
 				</>

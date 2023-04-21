@@ -14,29 +14,30 @@ import arrow from "../../assets/arrow.svg";
 import openArrow from "../../assets/arrow-up-right-circle.svg";
 
 import { useContext, useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll } from "framer-motion";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import useClickOutside from "../../customHooks/useClickOutside";
 
 export const ImageSelected = ({ close }) => {
 	const navigate = useNavigate();
 	const { image } = useContext(ImageContext);
+	console.log(image);
 
 	const shareUrl = `${window.location.host}/home/publication/${image.id}`;
 
 	const [isHoverOpen, setIsHoverOpen] = useState(false);
 	const [isHoverImg, setIsHoverImg] = useState(false);
+	const [isComentsOpen, setIsComentsOpen] = useState(false);
 
 	const coment = [...Array(10)].map((x, i) => (
-		<div className="my-2">
+		<div key={i} className="my-2">
 			<Commentary user={"user"} coment={"muy lindo"} heart={heart} />
 		</div>
 	));
 
-	const divRef = useRef(null);
-
+	const divScrollRef = useRef(null);
 	const scrollToTop = () => {
-		divRef.current.scroll({
+		divScrollRef.current.scroll({
 			top: 0,
 		});
 	};
@@ -44,27 +45,35 @@ export const ImageSelected = ({ close }) => {
 	const [shareVisibility, setShareVisibility] = useState(false);
 	const [threeDotsVisibility, setThreeDotsVisibility] = useState(false);
 
-	const wrapperRef = useRef(null);
+	const wrapperRefShare = useRef(null);
+	const wrapperRefDots = useRef(null);
 	const nullRef = useRef(null);
-	const outside = useClickOutside(wrapperRef);
+
+	const outsideShare = useClickOutside(wrapperRefShare);
+	const outsideDots = useClickOutside(wrapperRefDots);
 
 	useEffect(() => {
-		setTimeout(()=>{})
-		if (outside.outside == true) {
+		if (outsideShare.outside == true) {
 			setShareVisibility(false);
-			setThreeDotsVisibility(false);
-			outside.setOutside(false);
 		}
-	}, [outside]);
+		outsideShare.setOutside(false);
+	}, [outsideShare]);
+
+	useEffect(() => {
+		if (outsideDots.outside == true) {
+			setThreeDotsVisibility(false);
+		}
+		outsideDots.setOutside(false);
+	}, [outsideDots]);
 
 	return (
 		<>
-			<div className="pt-2 pb-2 h-full">
+			<div className="pb-2 h-full relative">
 				<div
-					ref={divRef}
+					ref={divScrollRef}
 					id="container"
 					className="bg-secondary-light
-					h-full
+					h-[calc(100vh-98px)]
 					w-[520px] overflow-auto
 					rounded-2xl
 					drop-shadow-xl
@@ -73,7 +82,9 @@ export const ImageSelected = ({ close }) => {
 				>
 					<div
 						id="options"
-						className="px-2 py-2 mb-2 flex place-items-center gap-3 select-none"
+						className="
+						relative
+						px-2 py-1 mb-2 flex place-items-center gap-3 select-none"
 					>
 						<img
 							onClick={() => close()}
@@ -101,8 +112,7 @@ export const ImageSelected = ({ close }) => {
 						<motion.div
 							whileTap={{ scale: 0.9 }}
 							transition={{ type: "spring", stiffness: 400, damping: 17 }}
-							onClick={() => setShareVisibility(true)}
-							on
+							onMouseUp={() => setShareVisibility(true)}
 						>
 							<div
 								className={`h-8 w-8 rounded-full
@@ -113,6 +123,7 @@ export const ImageSelected = ({ close }) => {
 								<img src={share} alt="" className="w-6" />
 							</div>
 						</motion.div>
+
 						<motion.div
 							whileTap={{ scale: 0.9 }}
 							transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -128,15 +139,22 @@ export const ImageSelected = ({ close }) => {
 							</CopyToClipboard>
 						</motion.div>
 					</div>
+
 					<div
 						id="image-and-comentaries"
 						className="flex gap-4 h-auto max-h-[448px] px-2"
 					>
 						<div id="image" className="select-none">
-							<div
+
+							<motion.div
 								className="h-auto relative"
-								onMouseEnter={() => setIsHoverImg(true)}
-								onMouseLeave={() => setIsHoverImg(false)}
+								// onMouseEnter={() => setIsHoverImg(true)}
+								// onMouseLeave={() => setIsHoverImg(false)}
+								// initial = {"imgNotHover"}
+								// onMouseEnter={"imgHover"}
+								// onMouseLeave={"imgNotHover"}
+								initial={"imgNotHover"}
+								whileHover={"imgHover"}
 							>
 								<img
 									src={image.src}
@@ -149,15 +167,16 @@ export const ImageSelected = ({ close }) => {
 								<motion.button
 									id="arrowContainer"
 									className={`h-auto w-auto absolute bottom-0 m-2 drop-shadow-md
-									${isHoverImg ? "visible" : "invisible"}
+									${isHoverImg ? "visible" : "visible"}
 									opacity-50
 									hover:opacity-100`}
 									onClick={() => navigate(`/home/publication/${image.id}`)}
-									initial={false}
-									style={{ scale: 1.6 }}
-									animate={isHoverOpen ? "hover" : "notHover"}
 									onHoverStart={() => setIsHoverOpen(true)}
 									onHoverEnd={() => setIsHoverOpen(false)}
+									variants={{
+										imgNotHover: { scale: 1 },
+										imgHover: { scale: 1.6 },
+									}}
 								>
 									<svg
 										id="circle1"
@@ -169,9 +188,8 @@ export const ImageSelected = ({ close }) => {
 										className="absolute bottom-0 left-[12px]
 										h-6 w-2 bg-secondary-light"
 										style={{ originX: 0 }}
-										variants={{
-											hover: { transform: "scaleX(5.625) " },
-											notHover: { transform: "scaleX(0) " },
+										animate={{
+											scaleX: isHoverOpen ? 5.625 : 0,
 										}}
 										transition={{ duration: 0.23 }}
 									/>
@@ -192,16 +210,15 @@ export const ImageSelected = ({ close }) => {
 										className="absolute bottom-0
 										h-6 w-6 bg-secondary-light rounded-full
 										p-1"
-										variants={{
-											hover: { transform: "translateX(45px)" },
-											notHover: { transform: "translateX(0px)" },
+										animate={{
+											translateX: isHoverOpen ? "45px" : "0px",
 										}}
 										transition={{ duration: 0.25 }}
 									>
 										<img src={openArrow} alt="" />
 									</motion.div>
 								</motion.button>
-							</div>
+							</motion.div>
 						</div>
 						<div id="user-Title-and-commentaries" className="">
 							<h1
@@ -221,14 +238,37 @@ export const ImageSelected = ({ close }) => {
 							</div>
 							<div
 								id="commentaries-title"
-								className="flex gap-4 mt-3 mb-3 select-none"
+								className="flex place-items-center
+								gap-1 mt-3 mb-3 select-none"
 							>
 								<h1 className="text-base font-semibold">3 Commentaries</h1>
-								<img src={arrow} alt="" className="pt-1" />
+
+								<motion.button
+									onClick={() => setIsComentsOpen(!isComentsOpen)}
+									className={`h-6 w-6 hover:bg-secondary-highlight
+									pt-[1px] rounded-full
+									flex place-items-center place-content-center`}
+									initial={{ rotate: -90 }}
+									animate={{
+										rotate: isComentsOpen ? 0 : -90,
+									}}
+									transition={{ type: "spring", stiffness: 400, damping: 20 }}
+								>
+									<img src={arrow} alt="" className="" />
+								</motion.button>
 							</div>
-							<div id="commentaries" className=" max-h-[250px] overflow-auto">
+
+							<motion.div
+								id="commentaries"
+								className="max-h-[220px] overflow-auto"
+								initial={{ height: 0 }}
+								animate={{
+									height: isComentsOpen ? "" : 0,
+								}}
+							>
 								<div>{coment}</div>
-							</div>
+							</motion.div>
+
 							<div
 								id="add-commentary-input"
 								className="flex gap-2 mt-3 select-none"
@@ -247,23 +287,27 @@ export const ImageSelected = ({ close }) => {
 							</div>
 						</div>
 					</div>
+
 					<div
 						id="more-images"
 						className="mr-4 mt-4"
-						onClick={() => scrollToTop()}
+						onClick={() => {
+							scrollToTop(), console.log("paArriba");
+						}}
 					>
 						<ImageLayout />
 					</div>
+
 					<div id="options" className="absolute top-10 left-2">
 						<div
-							ref={shareVisibility ? wrapperRef : nullRef}
+							ref={shareVisibility ? wrapperRefShare : nullRef}
 							className={`${shareVisibility ? "block" : "hidden"}`}
 						>
 							<ShareButton src={shareUrl} />
 						</div>
 
 						<div
-							ref={threeDotsVisibility ? wrapperRef : nullRef}
+							ref={threeDotsVisibility ? wrapperRefDots : nullRef}
 							className={`${threeDotsVisibility ? "block" : "hidden"}`}
 						>
 							<div>
