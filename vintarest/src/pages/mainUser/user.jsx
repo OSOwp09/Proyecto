@@ -20,8 +20,7 @@ export const User = () => {
 			<div className="flex place-content-center w-screen h-screen">
 				<div
 					id="imageLayout-container"
-					className="grow pr-6 h-full pt-2 overflow-x-hidden overflow-y-auto 
-                    "
+					className="grow pr-6 h-full pt-2 overflow-x-hidden overflow-y-auto "
 				>
 					<div
 						className="
@@ -64,7 +63,7 @@ export const User = () => {
 						<UserCard />
 
 					</div>
-					<ImageLayout />
+					<ImageLayout words={""}/>
 				</div>
 				<div className="mt-2">{image.code}</div>
 			</div>

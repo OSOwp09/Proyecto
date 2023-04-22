@@ -25,7 +25,6 @@ export const OpenPublication = () => {
 	const { image } = useContext(ImageContext);
 
 	const { id } = useParams();
-	const { publications } = Publications();
 
 	const coment = [...Array(10)].map((x, i) => (
 		<div 
@@ -34,7 +33,7 @@ export const OpenPublication = () => {
 			<Commentary user={"user"} coment={"muy lindo"} heart={heart} />
 		</div>
 	));
-
+	
 	const publication = () => {
 		try {
 			const jsonInfo = publicationsJson.filter((p) => p.publicationid == id);
@@ -42,6 +41,7 @@ export const OpenPublication = () => {
 			const title = jsonInfo[0].title;
 			const description = jsonInfo[0].description;
 			const userName = jsonInfo[0].userName;
+			const hashtags = jsonInfo[0].hashtags;
 
 			const [shareVisibility, setShareVisibility] = useState(false);
 			const [threeDotsVisibility, setThreeDotsVisibility] = useState(false);
@@ -243,7 +243,7 @@ export const OpenPublication = () => {
 								id="imageLayout-container"
 								className="grow pr-6 h-full pt-2 overflow-x-hidden overflow-y-auto "
 							>
-								<ImageLayout />
+								<ImageLayout  words={hashtags}/>
 							</div>
 							<div
 								className="

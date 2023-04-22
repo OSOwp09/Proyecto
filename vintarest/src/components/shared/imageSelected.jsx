@@ -4,6 +4,8 @@ import { ImageContext } from "../../context/imageSelectedContext";
 import { useNavigate } from "react-router-dom";
 import { ShareButton, ThreeDots } from "./publicationOptions";
 
+import publicationsJson from "../../fakeData/publications.json"
+
 import closeX from "../../assets/x-circle.svg";
 import threeDots from "../../assets/three-dots.svg";
 import share from "../../assets/box-arrow-up.svg";
@@ -21,9 +23,9 @@ import useClickOutside from "../../customHooks/useClickOutside";
 export const ImageSelected = ({ close }) => {
 	const navigate = useNavigate();
 	const { image } = useContext(ImageContext);
-	console.log(image);
 
 	const shareUrl = `${window.location.host}/home/publication/${image.id}`;
+	const hashtagsImg = (publicationsJson.filter((p)=>p.publicationid == image.id)[0].hashtags)
 
 	const [isHoverOpen, setIsHoverOpen] = useState(false);
 	const [isHoverImg, setIsHoverImg] = useState(false);
@@ -65,6 +67,11 @@ export const ImageSelected = ({ close }) => {
 		}
 		outsideDots.setOutside(false);
 	}, [outsideDots]);
+
+	const handdleOnOpenBtnClick = () => {
+		navigate(`/home/publication/${image.id}`)
+		close()
+	}
 
 	return (
 		<>
@@ -148,11 +155,6 @@ export const ImageSelected = ({ close }) => {
 
 							<motion.div
 								className="h-auto relative"
-								// onMouseEnter={() => setIsHoverImg(true)}
-								// onMouseLeave={() => setIsHoverImg(false)}
-								// initial = {"imgNotHover"}
-								// onMouseEnter={"imgHover"}
-								// onMouseLeave={"imgNotHover"}
 								initial={"imgNotHover"}
 								whileHover={"imgHover"}
 							>
@@ -170,7 +172,7 @@ export const ImageSelected = ({ close }) => {
 									${isHoverImg ? "visible" : "visible"}
 									opacity-50
 									hover:opacity-100`}
-									onClick={() => navigate(`/home/publication/${image.id}`)}
+									onClick={() => handdleOnOpenBtnClick()}
 									onHoverStart={() => setIsHoverOpen(true)}
 									onHoverEnd={() => setIsHoverOpen(false)}
 									variants={{
@@ -295,7 +297,7 @@ export const ImageSelected = ({ close }) => {
 							scrollToTop(), console.log("paArriba");
 						}}
 					>
-						<ImageLayout />
+						<ImageLayout words={hashtagsImg}/>
 					</div>
 
 					<div id="options" className="absolute top-10 left-2">

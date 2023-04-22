@@ -5,6 +5,7 @@ import { ImageContext } from "../../context/imageSelectedContext";
 
 export const ImageCard = ({ image, description, userName, id }) => {
 	const { handleImageSelected } = useContext(ImageContext);
+	
 	return (
 		<>
 			<div
@@ -13,7 +14,7 @@ export const ImageCard = ({ image, description, userName, id }) => {
 				}}
 				id="container"
 				className="
-				
+
                 bg-secondary-light
                 h-full w-[240px] rounded-2xl
                 mx-2 mb-2

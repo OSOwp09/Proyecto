@@ -3,17 +3,31 @@ import publicationsJson from "../../fakeData/publications.json";
 
 import usericon from "../../assets/person-circle.svg";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { searchUserPublications, searchPublications } from "../../store/slices/filterSearch/FilterThunks";
 
 import uno from "../../assets/imgs/11.jpeg";
 import dos from "../../assets/imgs/12.jpeg";
 import tres from "../../assets/imgs/13.jpeg";
+import { useNavigate } from "react-router-dom";
 
 export const UserLayout = () => {
 	const searchParams = useSelector((state) => state.search).words.toLowerCase();
 	const searchParamsArry = searchParams.split(" ");
 	const [searchFilter, setsearchFilter] = useState([]);
 	const [html, setHtml] = useState(<></>);
+	const dispatch = useDispatch();
+    const navigate = useNavigate()
+
+	const handdleUserClick = (id) => {
+		// try {
+		// 	publicationsJson.filter((p) => p.userid == users[i].uid);
+		// } catch (error) {}
+
+        dispatch(searchUserPublications(id))
+        dispatch(searchPublications(""))
+        navigate(`/home/${id}`)
+	};
 
 	useEffect(() => {
 		if (searchParams != "") {
@@ -39,7 +53,6 @@ export const UserLayout = () => {
 	useEffect(() => {
 		const users = [...Array(searchFilter.length)].map(
 			(users = searchFilter, i) => {
-				
 				var image1 = <></>;
 				try {
 					image1 = (
@@ -54,8 +67,7 @@ export const UserLayout = () => {
 					);
 				} catch (error) {}
 
-
-                var image2 = <></>;
+				var image2 = <></>;
 				try {
 					image2 = (
 						<img
@@ -69,7 +81,7 @@ export const UserLayout = () => {
 					);
 				} catch (error) {}
 
-                var image3 = <></>;
+				var image3 = <></>;
 				try {
 					image3 = (
 						<img
@@ -86,7 +98,8 @@ export const UserLayout = () => {
 				return (
 					<>
 						<div
-                            onClick={()=>console.log(users[i].uid)}
+							//onClick={()=>console.log(users[i].uid)}
+							onClick={() => handdleUserClick(users[i].uid)}
 							id="userContainer"
 							className="bg-secondary-light w-fit h-fit
                             rounded-2xl p-3
@@ -107,7 +120,7 @@ export const UserLayout = () => {
 							<div id="user-info" className="flex gap-3 place-items-center">
 								<img src={usericon} alt="" className="h-[42px]" />
 								<h1 className="font-semibold text-2xl">
-									{users[i].displayName}
+									{users[i].displayName.split('/')[1]}
 								</h1>
 							</div>
 						</div>

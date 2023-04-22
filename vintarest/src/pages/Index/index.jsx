@@ -1,10 +1,11 @@
 import { Navbar } from "../../components/shared/navbar";
 import { Home } from "../home/home";
 import { OpenPublication } from "../../components/index/openPublication";
-import { User } from "../User/user";
+import { User } from "../mainUser/user";
 import { UploadPhoto } from "../../components/userPage/uploadPhoto";
 import { ImageProvider } from "../../context/imageSelectedProvider";
 import { Error } from "../ErrorPage/error";
+import { OtherUsersPage } from "../otherUsers/otherUsersPage";
 
 import { ChatContext } from "../../context/chatContext";
 import { useContext, useEffect, useState } from "react";
@@ -45,6 +46,7 @@ export const Index = () => {
 
 							<Route path="/publication/:id" element={<OpenPublication />} />
 
+							<Route path="/:id" element={<OtherUsersPage />} />
 
 							{authinfo.email ? (
 								<Route path="/user" element={<User />} />
