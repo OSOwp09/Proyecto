@@ -24,6 +24,7 @@ export const UserCard = () => {
 	const [info, setInfo] = useState(loader());
     const pathId = location.pathname.split('/')[2]
     const userId = useSelector((state) => state.search.userId)
+
     const dispatch = useDispatch()
     
     //console.log(userId)

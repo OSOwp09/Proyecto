@@ -4,7 +4,7 @@ import userJson from "../../fakeData/users.json";
 import { useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 
-export const ImageLayout = ({ selectImg, words = "", uid = "" }) => {
+export const ImageLayout = ({ selectImg, words = "", uid = "", pid = "-" }) => {
 	const wordsValidator = useSelector(
 		(state) => state.search
 	).words.toLowerCase();
@@ -55,8 +55,9 @@ export const ImageLayout = ({ selectImg, words = "", uid = "" }) => {
 						),
 						searchFilter
 					);
-					setsearchFilter(searchFilter);
 				});
+				searchFilter = searchFilter.filter((p) => p.publicationid != pid);
+				setsearchFilter(searchFilter);
 			}
 
 			if (searchByUseridOrHashtag == "userid") {
@@ -84,8 +85,8 @@ export const ImageLayout = ({ selectImg, words = "", uid = "" }) => {
 
 		setHtml(
 			<div
-				className=" 
-				columns-[14rem] 
+				className="
+				columns-[14rem]
 				h-auto w-auto"
 			>
 				{images}

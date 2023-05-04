@@ -34,6 +34,16 @@ export const LoginCard = () => {
 			return;
 		}
 
+		const validRegex =
+			/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+		if (!email.match(validRegex)) {
+			console.log("first")
+			errors.type = "errorInvalidEmail";
+			setInputErrors(errors);
+			return;
+		}
+
 		errors.id = "password";
 		if (password == "") {
 			errors.type = "errorEmpty";
@@ -63,7 +73,6 @@ export const LoginCard = () => {
 					navigate("/home");
 					break;
 			}
-			
 		});
 	};
 
@@ -132,6 +141,7 @@ export const LoginCard = () => {
 						Sorry,
 						{inputErrors.type == "errorEmpty" ? " empty field" : ""}
 						{inputErrors.type == "errorInvalid" ? " email not found" : ""}
+						{inputErrors.type == "errorInvalidEmail" ? " invalid email" : ""}
 					</p>
 				</div>
 				<input

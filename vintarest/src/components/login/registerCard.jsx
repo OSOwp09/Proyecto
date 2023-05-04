@@ -10,9 +10,6 @@ import warning from "../../assets/exclamation-triangle.svg";
 
 export const RegisterCard = () => {
 	const dispatch = useDispatch();
-
-	const users = ["user1", "user2"];
-
 	const navigate = useNavigate();
 
 	const [fields, setFields] = useState({
@@ -59,14 +56,6 @@ export const RegisterCard = () => {
 			return;
 		}
 		
-		// const userRegex =/^[a-zA-Z0-9]/
-
-		// if (fields.user.match(userRegex)) {
-		// 	errors.type = "errorInvalid";
-		// 	errors.description = " only can use this special characters: ._-";
-		// 	setInputErrors(errors);
-		// 	return;
-		// }
 
 		//----- Email ----------
 		const validRegex =
@@ -136,8 +125,8 @@ export const RegisterCard = () => {
 		}
 
 		console.log(fields);
-
 		onSubmit(fields.email, fields.password, fields.name, fields.user);
+
 	};
 
 	const onSubmit = (email, password, name, user) => {
@@ -156,7 +145,7 @@ export const RegisterCard = () => {
 
 	};
 
-	const labelAndError = ({ fieldLabel, fieldInput, fieldError }) => (
+	const labelAndError = ({ fieldLabel, fieldInput }) => (
 		<div
 			id="labelAndError"
 			className="
@@ -309,7 +298,7 @@ export const RegisterCard = () => {
 				/>
 				{labelAndError({
 					fieldLabel: "Confirm Password",
-					fieldInput: fields.password,
+					fieldInput: fields.confirmation,
 				})}
 				<input
 					id="confirm-password"

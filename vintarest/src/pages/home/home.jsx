@@ -2,9 +2,10 @@ import { ImageLayout } from "../../components/shared/imagelayout";
 import { UserLayout } from "../../components/index/userLayout";
 
 import { ImageContext } from "../../context/imageSelectedContext";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
+import { LayoutLoader } from "../../components/loaders/layoutLoader";
 
 export const Home = () => {
 	const { image } = useContext(ImageContext);
@@ -12,10 +13,34 @@ export const Home = () => {
 	const words = useSelector((state) => state.search).words.toLowerCase();
 	const [searchFor, setSearchFor] = useState("Explore");
 
+	const loader = () => {
+		return (
+			<>
+				<div className="absolute top-0 left-0 z-50">
+					<LayoutLoader />
+				</div>
+			</>
+		);
+	};
+	const [layoutHtml, setLayoutHtml] = useState(loader());
+	const [loaded, setLoaded] = useState(false);
+
 	useEffect(() => {
-		words == "" ? setSearchFor("Explore") : "";
+		if (!loaded) {
+			setTimeout(() => {
+				//setLayoutHtml(<></>);
+				setLoaded(true);
+				
+			}, 1000);
+			setTimeout(() => {
+				setLayoutHtml(<></>);				
+			}, 1500);
+		}
 	}, []);
 
+	useEffect(() => {
+		words == "" ? setSearchFor("Explore") : "";
+	}, [, words]);
 
 	return (
 		<>
@@ -73,7 +98,11 @@ export const Home = () => {
 					${searchFor == "Explore" ? "block" : "hidden"}
 					w-screen flex gap-2 h-fit`}
 				>
-					<div id="imageLayout-container" className="grow pr-6 h-full pt-2 ">
+					{layoutHtml}
+					<div
+						id="imageLayout-container"
+						className={`grow pr-6 h-full pt-2 ${loaded ? "block" : "hidden"}`}
+					>
 						<ImageLayout words={words} />
 					</div>
 

@@ -50,6 +50,11 @@ export const Navbar = () => {
 
 	const handdleSearchInput = (words) => {
 		navigate("/home")
+		if (words.split(" ").slice(-1)[0] == "") {
+			
+			dispatch(searchPublications(words.replace(/.$/,'')));
+			return
+		}
 		dispatch(searchPublications(words));
 	}
 

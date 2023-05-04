@@ -4,7 +4,7 @@ import { ImageContext } from "../../context/imageSelectedContext";
 import { useNavigate } from "react-router-dom";
 import { ShareButton, ThreeDots } from "./publicationOptions";
 
-import publicationsJson from "../../fakeData/publications.json"
+import publicationsJson from "../../fakeData/publications.json";
 
 import closeX from "../../assets/x-circle.svg";
 import threeDots from "../../assets/three-dots.svg";
@@ -25,7 +25,14 @@ export const ImageSelected = ({ close }) => {
 	const { image } = useContext(ImageContext);
 
 	const shareUrl = `${window.location.host}/home/publication/${image.id}`;
-	const hashtagsImg = (publicationsJson.filter((p)=>p.publicationid == image.id)[0].hashtags)
+	
+	const hashtagsImg = publicationsJson.filter(
+		(p) => p.publicationid == image.id
+	)[0].hashtags;
+
+	const publicationId = publicationsJson.filter(
+		(p) => p.publicationid == image.id
+	)[0].publicationid;
 
 	const [isHoverOpen, setIsHoverOpen] = useState(false);
 	const [isHoverImg, setIsHoverImg] = useState(false);
@@ -69,9 +76,21 @@ export const ImageSelected = ({ close }) => {
 	}, [outsideDots]);
 
 	const handdleOnOpenBtnClick = () => {
-		navigate(`/home/publication/${image.id}`)
-		close()
-	}
+		navigate(`/home/publication/${image.id}`);
+		close();
+	};
+
+	const [html, setHtml] = useState(<></>);
+	useEffect(
+		() =>
+			{
+				setHtml(
+				<>
+					<ImageLayout words={hashtagsImg} pid = {publicationId}/>
+				</>
+			)},
+		[,hashtagsImg, image]
+	);
 
 	return (
 		<>
@@ -152,7 +171,6 @@ export const ImageSelected = ({ close }) => {
 						className="flex gap-4 h-auto max-h-[448px] px-2"
 					>
 						<div id="image" className="select-none">
-
 							<motion.div
 								className="h-auto relative"
 								initial={"imgNotHover"}
@@ -297,7 +315,7 @@ export const ImageSelected = ({ close }) => {
 							scrollToTop(), console.log("paArriba");
 						}}
 					>
-						<ImageLayout words={hashtagsImg}/>
+						{html}
 					</div>
 
 					<div id="options" className="absolute top-10 left-2">

@@ -46,9 +46,6 @@ export const UserCard = () => {
             p-3 flex flex-col place-items-center"
 			>
 				{info}
-				{/* <img src={userIcon} alt="" className="h-[120px] mb-2 select-none" />
-				<h1 className="font-semibold text-[32px] text-center">{name}</h1>
-				<h2 className="text-[14px]">{`@${user}`}</h2> */}
 			</div>
 		</>
 	);

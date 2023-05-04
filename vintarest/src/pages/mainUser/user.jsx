@@ -63,7 +63,7 @@ export const User = () => {
 						<UserCard />
 
 					</div>
-					<ImageLayout words={""}/>
+					<ImageLayout words={"-"}/>
 				</div>
 				<div className="mt-2">{image.code}</div>
 			</div>

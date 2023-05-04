@@ -4,7 +4,7 @@ export const FilterSearchSlice = createSlice({
 	name: "search",
 	initialState: {
 		words: "",
-		userId:""
+		userId: "",
 	},
 	reducers: {
 		search: (state, action) => {
@@ -16,5 +16,4 @@ export const FilterSearchSlice = createSlice({
 	},
 });
 
-export const { search, userId } =
-	FilterSearchSlice.actions;
+export const { search, userId } = FilterSearchSlice.actions;

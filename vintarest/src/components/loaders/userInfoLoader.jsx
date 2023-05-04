@@ -1,18 +1,20 @@
+import { motion } from "framer-motion";
+
 export const UserInfoLoader = () => {
 	return (
 		<>
-			<svg
+			<motion.svg
 				className="
 					bg-secondary-highlight rounded-full
 					h-[120px] w-[120px] select-none
 					mb-1"
 			/>
-			<svg
+			<motion.svg
 				className="bg-secondary-highlight  rounded-full
 					h-[30px] w-[150px]
 					my-3"
 			/>
-			<svg
+			<motion.svg
 				className="bg-secondary-highlight  rounded-full
 					h-[16px] w-[100px]"
 			/>

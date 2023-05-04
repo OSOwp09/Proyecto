@@ -28,7 +28,10 @@ import { loadUser } from "./store/slices/auth/AuthThunks";
 function App() {
 	document.body.classList.add("bg-primary-light");
 	const dispatch = useDispatch();
+	
 	const [loadApp, setLoadApp] = useState(<></>);
+	
+	
 
 	useEffect(() => {
 		onAuthStateChanged(auth, () => {

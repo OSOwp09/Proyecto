@@ -57,7 +57,7 @@ export const LoginBg = () => {
 
 	return (
 		<>
-			<div className="relative h-[800px] overflow-hidden text-transparent">
+			<div className="relative h-[700px] overflow-hidden text-transparent">
 				<div className="absolute top-0 left-0">
 					<div
 						id="container"
@@ -150,8 +150,7 @@ export const LoginBg = () => {
 				onHoverEnd={() => setStartAnim(false)}>
 				<div
 					id="darkOverlay"
-					className="absolute top-0 left-0 bg-primary-dark/60 h-screen w-screen
-						max-h-[800px] max-w-[1400px]"
+					className="absolute top-0 left-0 bg-primary-dark/60 h-[700px] w-screen max-w-[1400px]"
 				></div>
 			</motion.div>
 		</>

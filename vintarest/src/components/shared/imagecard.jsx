@@ -5,12 +5,17 @@ import { ImageContext } from "../../context/imageSelectedContext";
 
 export const ImageCard = ({ image, description, userName, id }) => {
 	const { handleImageSelected } = useContext(ImageContext);
+
+	const handdleInput = () => {
+		//closeSelectedImage()
+		handleImageSelected(image, description, id);
+	}
 	
 	return (
 		<>
 			<div
 				onClick={() => {
-					handleImageSelected(image, description, id);
+					handdleInput()
 				}}
 				id="container"
 				className="
