@@ -81,6 +81,7 @@ export const logWithGoogleAuth = () => {
 			dispatch(login({ uid, email, displayName, photoURL }));
 		} catch (error) {
 			console.log(error.message);
+			return error.code
 		}
 	};
 };

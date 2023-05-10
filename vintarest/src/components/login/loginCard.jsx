@@ -13,6 +13,7 @@ import { auth } from "../../firebase/config";
 import logo from "../../assets/Logo.svg";
 import googleLogo from "../../assets/google.svg";
 import facbookLogo from "../../assets/facebook.svg";
+import { motion } from "framer-motion";
 
 export const LoginCard = () => {
 	const navigate = useNavigate();
@@ -38,7 +39,7 @@ export const LoginCard = () => {
 			/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 		if (!email.match(validRegex)) {
-			console.log("first")
+			console.log("first");
 			errors.type = "errorInvalidEmail";
 			setInputErrors(errors);
 			return;
@@ -70,6 +71,20 @@ export const LoginCard = () => {
 					break;
 				default:
 					console.log(auth.currentUser);
+					navigate("/home");
+					break;
+			}
+		});
+	};
+
+	const handdleGoogleLogin = () => {
+		const promise = dispatch(logWithGoogleAuth());
+		promise.then((value) => {
+			console.log(value);
+			switch (value) {
+				case "auth/popup-closed-by-user":
+					break;
+				default:
 					navigate("/home");
 					break;
 			}
@@ -225,12 +240,17 @@ export const LoginCard = () => {
                         mb-[40px]`}
 				/>
 				<button
+					id="login-button"
 					onClick={() => validateLogin()}
 					className="
-                        bg-primary-red
+						border-[1px]
+						text-primary-red
+						border-primary-red
+                        hover:bg-primary-red
+						hover:text-secondary-light
                         rounded-full
                         w-[432px] h-[48px]
-                        font-semibold text-secondary-light
+                        font-semibold
                         "
 				>
 					Log in
@@ -244,22 +264,7 @@ export const LoginCard = () => {
                         my-[16px]"
 				/>
 				<button
-					className="
-                        px-4
-                        w-[432px] h-[48px]
-                        bg-secondary-light
-                        border rounded-full border-primary-dark
-                        flex place-items-center
-                        font-semibold text-center"
-				>
-					<img
-						className="w-[24px] mr-[90px]"
-						src={facbookLogo}
-						alt="facebook"
-					/>
-					Log in with Facebook
-				</button>
-				<button
+					id="google-button"
 					className="
                         px-4
                         w-[432px] h-[48px]
@@ -267,7 +272,8 @@ export const LoginCard = () => {
                         border rounded-full border-primary-dark
                         flex place-items-center
                         font-semibold text-center
-                        my-4"
+                        mb-4"
+					onClick={() => handdleGoogleLogin()}
 				>
 					<img className="w-[24px] mr-[100px]" src={googleLogo} alt="google" />
 					Log in with Google
@@ -292,6 +298,8 @@ export const LoginCard = () => {
                         bg-secondary-light
                         border rounded-full border-primary-highlight
                         font-semibold text-center text-primary-highlight
+						hover:bg-primary-highlight
+						hover:text-secondary-light
                         my-4
                         "
 				>

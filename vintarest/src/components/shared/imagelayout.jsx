@@ -4,6 +4,7 @@ import userJson from "../../fakeData/users.json";
 import { useSelector } from "react-redux";
 import { memo, useEffect, useMemo, useRef, useState, createRef } from "react";
 import { useRefDimensions } from "../../customHooks/useRefDimensions";
+import { LayoutLoader } from "../../components/loaders/layoutLoader";
 
 export const ImageLayout = memo(
 	({ selectImg, words = "", uid = "", pid = "-" }) => {
@@ -78,10 +79,11 @@ export const ImageLayout = memo(
 		const divRef = createRef();
 		const dimensions = useRefDimensions(divRef); //Width of the divRef elemnt
 		const [width, setWidth] = useState(0); //Width saved of the divRef elemnt to do the calculations of columns
+		const treshholdWidth = 248;
+		const numOfColumns =
+			width / treshholdWidth - ((width / treshholdWidth) % 1);
 		const [html, setHtml] = useState(<></>);
 
-		// treshholdWidth is the width size of each column
-		const treshholdWidth = 248;
 
 		useEffect(() => {
 			/* widths in terms of the treshholdWidth, 
@@ -126,37 +128,47 @@ export const ImageLayout = memo(
 			setImgs(images);
 		}, [searchFilter]);
 
-		/* This `useEffect` hook is responsible for creating the layout of the images based on the width of
-		the container element and the number of columns that should be displayed. */
+		/**
+		 * The function `handdleReorder` returns a layout of images re-arranged in a matrix with
+		 * `numOfColumns` columns. 
+		 * The images are taken from the `imgs` array and arranged in the matrix from left to rigth
+		 * using nested loops. 
+		 * The resulting matrix is then used to create a layout of `div` elements, each
+		 * containing a column of images. The layout is returned as an array of `div` elements.
+		 */
+		const handdleReorder = () => {
+			const numOfRows = imgs.length / numOfColumns;
+			var matrix = [];
+
+			for (var i = 0; i < numOfColumns; i++) {
+				matrix[i] = new Array();
+			}
+
+			for (let row = 0; row < numOfRows; row++) {
+				for (let column = 0; column < numOfColumns; column++) {
+					const index = column + row + (numOfColumns - 1) * row;
+					matrix[column][row] = imgs[index];
+				}
+			}
+
+			const layout = [...Array(numOfColumns)].map((x, i) => (
+				<div key={i} className="h-fit">
+					{matrix[i]}
+				</div>
+			));
+
+			return layout;
+		};
+
+		/* This `useEffect` hook is checking if the division of the length of the `imgs` array by the
+		`numOfColumns` variable is not equal to `Infinity` or `NaN`. If it is not, it calls the
+		`handdleReorder` function to re-arrange the images in a matrix with `numOfColumns` columns and
+		sets the resulting layout as the `html` state using the `setHtml` function. This effect will
+		re-run whenever the `width` or `imgs` state changes. */
 		useEffect(() => {
-			
-			const numOfColumns =
-				width / treshholdWidth - ((width / treshholdWidth) % 1);
-
 			const checkForInfinityOrNaN = imgs.length / numOfColumns;
-
 			if (checkForInfinityOrNaN != Infinity && checkForInfinityOrNaN != NaN) {
-				const numOfRows = imgs.length / numOfColumns;
-				var matrix = [];
-
-				for (var i = 0; i < numOfColumns; i++) {
-					matrix[i] = new Array();
-				}
-
-				for (let row = 0; row < numOfRows; row++) {
-					for (let column = 0; column < numOfColumns; column++) {
-						const index = column + row + (numOfColumns - 1) * row;
-						matrix[column][row] = imgs[index];
-					}
-				}
-
-				const layout = [...Array(numOfColumns)].map((x, i) => (
-					<div key={i} className="h-fit">
-						{matrix[i]}
-					</div>
-				));
-
-				setHtml(<>{layout}</>);
+				setHtml(handdleReorder());
 			}
 		}, [width, imgs]);
 
@@ -171,13 +183,6 @@ export const ImageLayout = memo(
 				>
 					{html}
 				</div>
-				{/* <div
-					className="
-					columns-[14rem]
-					h-auto w-auto"
-				>
-					{imgs}
-				</div> */}
 			</>
 		);
 	}

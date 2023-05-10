@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export const LayoutLoader = () => {
+export const LayoutLoader = ({columns}) => {
 	const inicialOp = 0;
     
 	const images = [...Array((( window.innerWidth/240)-  (window.innerWidth/240 % 1)))].map(() => (
@@ -74,7 +74,7 @@ export const LayoutLoader = () => {
 		<>
 			<div className="h-screen w-screen overflow-hidden">
 				<motion.div
-					className="flex h-auto w-auto flex-wrap place-content-between pr-8 pl-1 "
+					className="flex h-auto w-auto flex-wrap place-content-center gap-2 pr-8 pl-1 "
 					initial={{ opacity: 1 }}
 					animate={{ opacity: 0 }}
 					transition={{ delay: 1 }}

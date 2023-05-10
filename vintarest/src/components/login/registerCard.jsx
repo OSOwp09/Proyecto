@@ -55,7 +55,6 @@ export const RegisterCard = () => {
 			setInputErrors(errors);
 			return;
 		}
-		
 
 		//----- Email ----------
 		const validRegex =
@@ -126,7 +125,6 @@ export const RegisterCard = () => {
 
 		console.log(fields);
 		onSubmit(fields.email, fields.password, fields.name, fields.user);
-
 	};
 
 	const onSubmit = (email, password, name, user) => {
@@ -138,11 +136,10 @@ export const RegisterCard = () => {
 				errors.description = " email already is in use";
 				setInputErrors(errors);
 				return;
-			}else{
+			} else {
 				navigate("/");
 			}
 		});
-
 	};
 
 	const labelAndError = ({ fieldLabel, fieldInput }) => (
@@ -327,10 +324,14 @@ export const RegisterCard = () => {
 					onClick={() => handleInput()}
 					id="Register-btn"
 					className="
-                        bg-primary-red
+						border-[1px]
+						text-primary-red
+						border-primary-red
+                        hover:bg-primary-red
+						hover:text-secondary-light
                         rounded-full
                         w-[432px] h-[48px]
-                        font-semibold text-secondary-light
+                        font-semibold 
                         mb-6"
 				>
 					Register
@@ -355,6 +356,8 @@ export const RegisterCard = () => {
                         border rounded-full border-primary-highlight
                         font-semibold text-center text-primary-highlight
                         my-4
+						hover:bg-primary-highlight
+						hover:text-secondary-light
                         "
 				>
 					Login

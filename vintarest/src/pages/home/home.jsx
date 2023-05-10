@@ -26,17 +26,17 @@ export const Home = () => {
 	const [loaded, setLoaded] = useState(false);
 
 	useEffect(() => {
+		
 		if (!loaded) {
 			setTimeout(() => {
 				//setLayoutHtml(<></>);
 				setLoaded(true);
-				
 			}, 1000);
 			setTimeout(() => {
-				setLayoutHtml(<></>);				
+				setLayoutHtml(<></>);
 			}, 1500);
 		}
-	}, []);
+	}, [, words]);
 
 	useEffect(() => {
 		words == "" ? setSearchFor("Explore") : "";
@@ -98,15 +98,18 @@ export const Home = () => {
 					${searchFor == "Explore" ? "block" : "hidden"}
 					w-screen flex gap-2 h-fit`}
 				>
-					{layoutHtml}
 					<div
 						id="imageLayout-container"
-						className={`grow /pr-6 h-full pt-2 ${loaded ? "block" : "hidden"}`}
+						className={`grow /pr-6 h-full pt-2 `}
 					>
-						<ImageLayout words={words} />
+						{layoutHtml}
+						<div className={`${loaded ? "block" : "hidden"}`}>
+							<ImageLayout words={words} />
+						</div>
 					</div>
 
 					<div
+						id="image-selected"
 						className="h-[calc(100vh-90px)] w-fit mr-2
 								rounded-2xl
 								sticky top-2"
