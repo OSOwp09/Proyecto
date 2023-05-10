@@ -22,7 +22,7 @@ export const ImageCard = ({ image, description, userName, id }) => {
 
                 bg-secondary-light
                 h-full w-[240px] rounded-2xl
-                mx-2 mb-2
+                mx- mb-2
                 font-inter text-[14px] text-primary-dark break-inside-avoid
 				drop-shadow
 				hover:drop-shadow-xl"

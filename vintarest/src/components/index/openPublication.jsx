@@ -62,6 +62,7 @@ export const OpenPublication = () => {
 						<ImageLayout words={jsonInfo[0].hashtags} pid={jsonInfo[0].publicationid}/>
 					</>
 					
+
 				),
 			});		
 
@@ -70,6 +71,8 @@ export const OpenPublication = () => {
 			navigate("/home");
 		}
 	}, [, id]);
+
+	
 
 	/**
 	 * Hook that alerts clicks outside of the passed ref
@@ -269,7 +272,7 @@ export const OpenPublication = () => {
 				<div className="w-screen flex ">
 					<div
 						id="imageLayout-container"
-						className="grow pr-6 h-full pt-2 overflow-x-hidden overflow-y-auto "
+						className="grow /pr-6 h-full pt-2 overflow-x-hidden overflow-y-auto "
 					>
 						{layoutHtml.code}
 					</div>

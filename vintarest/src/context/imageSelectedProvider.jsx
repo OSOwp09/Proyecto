@@ -9,26 +9,19 @@ export const ImageProvider = ({ children }) => {
 		title: "",
 		code: <></>,
 	});
-	const handleImageSelected = async (img, title, id) => {
-		const p1 = new Promise((resolve, reject) => {
-			setImage({ ...image, code: <></> });
-			resolve("Success!");
-		});
-
-		p1.then(() => {
-			setImage({
-				...image,
-				code: (
-					<>
-						<div id="imageSelected-container" className="px-">
-							<ImageSelected close={closeSelectedImage} />
-						</div>
-					</>
-				),
-				id: id,
-				src: img,
-				title: title,
-			});
+	const handleImageSelected = (img, title, id) => {
+		setImage({
+			...image,
+			code: (
+				<>
+					<div id="imageSelected-container" className="px-">
+						<ImageSelected close={closeSelectedImage} />
+					</div>
+				</>
+			),
+			id: id,
+			src: img,
+			title: title,
 		});
 	};
 

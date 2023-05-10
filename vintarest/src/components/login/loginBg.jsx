@@ -43,6 +43,7 @@ export const LoginBg = () => {
 		const images = [...Array(img.length)].map((x, i) => (
 			<>
 				<img
+					key={i}
 					src={img[i]}
 					alt=""
 					className="w-[240px] h-auto min-h-[120px]

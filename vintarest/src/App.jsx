@@ -31,8 +31,6 @@ function App() {
 	
 	const [loadApp, setLoadApp] = useState(<></>);
 	
-	
-
 	useEffect(() => {
 		onAuthStateChanged(auth, () => {
 			auth.currentUser ? dispatch(loadUser(auth.currentUser.email)):"";
