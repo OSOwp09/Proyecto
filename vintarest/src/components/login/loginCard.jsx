@@ -84,6 +84,8 @@ export const LoginCard = () => {
 			switch (value) {
 				case "auth/popup-closed-by-user":
 					break;
+				case "auth/unauthorized-domain":
+					break;
 				default:
 					navigate("/home");
 					break;
