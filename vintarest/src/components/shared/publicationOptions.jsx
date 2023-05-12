@@ -123,7 +123,48 @@ export const ShareButton = (src) => {
 import { saveAs } from "file-saver";
 
 export const ThreeDots = (src) => {
-	const downloadImage = () => {};
+	const downloadImage = async () => {
+		const originalImage =
+			"https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png";
+
+		const getBase64FromUrl = async (url) => {
+			const data = await fetch(url);
+			const blob = await data.blob();
+			return new Promise((resolve) => {
+				const reader = new FileReader();
+				reader.readAsDataURL(blob);
+				reader.onloadend = () => {
+					const base64data = reader.result;
+					resolve(base64data);
+				};
+			});
+		};
+
+		// const originalImage = getBase64FromUrl(
+		// 	"https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png"
+		// );
+
+		const image = await fetch(originalImage, {
+			method: "GET",
+			headers: {},
+			mode: "cors",
+		});
+
+		console.log(image)
+		//Split image name
+		//const nameSplit = originalImage.split("/");
+
+		// const duplicateName = "image"
+		// console.log(duplicateName);
+		// const imageBlog = await image.blob();
+		// const imageURL = URL.createObjectURL(imageBlog);
+		// const link = document.createElement("a");
+		// link.href = imageURL;
+		// link.download = "" + duplicateName + "";
+		// document.body.appendChild(link);
+		// link.click();
+		// document.body.removeChild(link);
+	};
 
 	const openTab = () => {
 		window.open(src.src, "_blank");

@@ -182,7 +182,7 @@ export const ImageLayout = memo(
 					className="w-full flex place-content-center gap-2"
 				>
 					{html}
-				</div>
+				</div>	
 			</>
 		);
 	}

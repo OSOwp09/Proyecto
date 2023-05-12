@@ -103,7 +103,7 @@ export const Home = () => {
 						className={`grow /pr-6 h-full pt-2 `}
 					>
 						{layoutHtml}
-						<div className={`${loaded ? "block" : "hidden"}`}>
+						<div className={`${loaded ? "opacity-100" : "opacity-0"}`}>
 							<ImageLayout words={words} />
 						</div>
 					</div>

@@ -9,10 +9,12 @@ import link from "../../assets/Group 99.svg";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShareButton } from "../../components/shared/publicationOptions";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 export const User = () => {
 	const navigate = useNavigate();
 	const [shareVisibility, setShareVisibility] = useState(false);
+	const shareUrl = `aunNoSirve`;
 
 	const { image } = useContext(ImageContext);
 	return (
@@ -29,8 +31,7 @@ export const User = () => {
                         flex-col-reverse
                         place-items-center"
 					>
-						<div id="options" 
-						className="flex gap-2 relative">
+						<div id="options" className="flex gap-2 relative">
 							<img
 								onClick={() => navigate("/home/upload")}
 								src={add}
@@ -43,27 +44,27 @@ export const User = () => {
 								alt=""
 								className="hover:bg-secondary-light rounded-full"
 							/>
-							<img
-								src={link}
-								alt=""
-								className="hover:bg-secondary-light rounded-full"
-							/>
+							<CopyToClipboard text={shareUrl}>
+								<img
+									src={link}
+									alt=""
+									className="hover:bg-secondary-light rounded-full"
+								/>
+							</CopyToClipboard>
 							<motion.div
 								className={`
 								${shareVisibility ? "block" : "hidden"}
 								absolute 
 								left-[-117%] top-[8px] z-50`}
-
 								style={{ scale: 0.8 }}
 							>
-								<ShareButton />
+								<ShareButton src={shareUrl} />
 							</motion.div>
 						</div>
-			
-						<UserCard />
 
+						<UserCard />
 					</div>
-					<ImageLayout words={"-"}/>
+					<ImageLayout words={"-"} />
 				</div>
 				<div className="mt-2">{image.code}</div>
 			</div>

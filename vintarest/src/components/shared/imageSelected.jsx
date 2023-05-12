@@ -38,7 +38,7 @@ export const ImageSelected = ({ close }) => {
 	const [isHoverImg, setIsHoverImg] = useState(false);
 	const [isComentsOpen, setIsComentsOpen] = useState(false);
 
-	const coment = [...Array(10)].map((x, i) => (
+	const coment = [...Array(3)].map((x, i) => (
 		<div key={i} className="my-2">
 			<Commentary user={"user"} coment={"muy lindo"} heart={heart} />
 		</div>

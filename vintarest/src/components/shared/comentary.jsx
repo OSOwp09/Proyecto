@@ -12,7 +12,6 @@ export const Commentary = ({ user, coment, heart }) => {
 					<div></div>
 					<div className="flex place-items-center gap-2">
 						<p className="text-xs select-none">1mo</p>
-						<img src={heart} alt="" className="w-3 select-none" />
 					</div>
 				</div>
 			</div>
