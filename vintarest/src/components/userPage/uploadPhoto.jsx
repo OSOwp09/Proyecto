@@ -8,6 +8,7 @@ import React, { useCallback, useState } from "react";
 import { DropArea } from "./dropArea";
 import { motion } from "framer-motion";
 import { uploadFile } from "../../firebase/config";
+import { BackendApi, ListUsersApi } from "../../api/Api";
 
 export const UploadPhoto = () => {
 	const navigate = useNavigate();
@@ -31,22 +32,13 @@ export const UploadPhoto = () => {
 
 	const handdleSave = async (file) => {
 		try {
-			const json = {
-				photoURL: image,
-				title: "",
-				userPhoto: "",
-				userName: "",
-				userid: "",
-				description: "",
-				hashtags: "",
-				publicationid: "",
-			};
+			// const result = await uploadFile(file);
+			// const url = `https://firebasestorage.googleapis.com/v0/b/${result.metadata.bucket}/o/publications%2F${result.metadata.name}?alt=media`
 			
-			const jsonString = JSON.stringify(json);
-			var blob = new Blob([jsonString], { type: "application/json" });
+			// console.log(`https://firebasestorage.googleapis.com/v0/b/${result.metadata.bucket}/o/publications%2F${result.metadata.name}?alt=media`);
+			const resp = await ListUsersApi.get() 
 
-			const result = await uploadFile(blob);
-			console.log(result);
+			console.log(resp)
 		} catch (error) {
 			console.log(error);
 		}

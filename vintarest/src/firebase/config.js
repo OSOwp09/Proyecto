@@ -23,5 +23,4 @@ export{app,auth,storage}
 export async function uploadFile(file){
 	const storageRef = ref(storage, "publications/"+v4())
 	return await uploadBytes(storageRef,file)
-
 }

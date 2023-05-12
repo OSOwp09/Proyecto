@@ -6,7 +6,6 @@ const createPublication = async (req, res = express.request) => {
 
 	try {
 		publication.userId = req.uid;
-		console.log(publication.userName)
 		await publication.save();
 		return res.json({
 			ok: true,
@@ -39,18 +38,16 @@ const listPublications = async (req, res = express.request) => {
 
 // Challenge 18
 const updatePublication = async (req, res = express.request) => {
-
-    const {_id, title } = req.body
-    console.log(_id, title)
+	const { _id, title, description, hashtags } = req.body;
+	console.log(_id, title);
 
 	try {
 		const updatedPublication = await PublicationScheme.findByIdAndUpdate(
 			_id,
-			{title: title},
+			{ title: title, description: description, hashtags: hashtags },
 			{ new: true }
 		);
 
-        console.log(updatedPublication)
 		if (!updatedPublication) {
 			return res.status(404).json({
 				ok: false,
@@ -71,34 +68,34 @@ const updatePublication = async (req, res = express.request) => {
 	}
 };
 
-const deletePublication = async(req, res = express.request)=>{
-    const {_id } = req.body
-    
-    try {
-        const deletedPublication = await PublicationScheme.findByIdAndDelete(_id);
-        if (!deletedPublication) {
-            return res.status(404).json({
-                ok: false,
-                message: "publication not found",
-            });
-        }
-        return res.status(200).json({
-            ok: true,
-            publication: deletedPublication,
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            ok: false,
-            publication: "Internal Error",
-        });
-    }
-}
+const deletePublication = async (req, res = express.request) => {
+	const { _id } = req.body;
+
+	try {
+		const deletedPublication = await PublicationScheme.findByIdAndDelete(_id);
+		if (!deletedPublication) {
+			return res.status(404).json({
+				ok: false,
+				message: "publication not found",
+			});
+		}
+		return res.status(200).json({
+			ok: true,
+			publication: deletedPublication,
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			ok: false,
+			publication: "Internal Error",
+		});
+	}
+};
 //---------------
 
 module.exports = {
 	createPublication,
 	listPublications,
-    updatePublication,
-    deletePublication
+	updatePublication,
+	deletePublication,
 };

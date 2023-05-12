@@ -90,7 +90,7 @@ const revalidarToken = async (req, res = express.request) => {
 };
 
 const listarUsuarios = async (req, res = express.request) => {
-	const usuarios = await Usuario.find().populate("tareas", "title");
+	const usuarios = await Usuario.find().populate("publications", "title");
 
 	try {
 		return res.status(200).json({
