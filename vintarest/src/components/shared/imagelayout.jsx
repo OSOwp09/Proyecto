@@ -4,6 +4,7 @@ import userJson from "../../fakeData/users.json";
 import { useSelector } from "react-redux";
 import { memo, useEffect, useMemo, useRef, useState, createRef } from "react";
 import { useRefDimensions } from "../../customHooks/useRefDimensions";
+import { FindUserByUser, FindUserByEmail } from "../../api/Api";
 import { LayoutLoader } from "../../components/loaders/layoutLoader";
 
 export const ImageLayout = memo(
@@ -14,6 +15,7 @@ export const ImageLayout = memo(
 		const [searchByWordsOrUid, setSearchByWordsOrUid] = useState();
 		const [searchByUseridOrHashtag, setSearchByUseridOrHashtag] = useState();
 		const [searchFilter, setsearchFilter] = useState([]);
+
 		try {
 			const pathId = location.pathname.split("/")[2];
 			uid = userJson.filter((p) => p.uid === pathId)[0].uid;
@@ -33,6 +35,26 @@ export const ImageLayout = memo(
 				setSearchByUseridOrHashtag("hashtags");
 			}
 		}, [, words]);
+
+		const handdleFindUser = async (user) => {
+			try {
+				const respUser = await FindUserByUser.get("", {
+					params: {
+						user: user,
+					},
+				});
+				setsearchFilter(respUser.data.usuario);
+			} catch (error) {}
+
+			try {
+				const respUser = await FindUserByEmail.get("", {
+					params: {
+						email: user,
+					},
+				});
+				setsearchFilter(respUser.data.usuario);
+			} catch (error) {}
+		};
 
 		useMemo(() => {
 			if (searchByWordsOrUid != "") {
@@ -58,10 +80,14 @@ export const ImageLayout = memo(
 					});
 					searchFilter = searchFilter.filter((p) => p.publicationid != pid);
 					setsearchFilter(searchFilter);
+					return;
 				}
 
 				if (searchByUseridOrHashtag == "userid") {
-					setsearchFilter(publicationsJson.filter((p) => p.userid == uid));
+					//setsearchFilter(publicationsJson.filter((p) => p.userid == uid));
+					console.log(publicationsJson.filter((p) => p.userid == 1));
+					handdleFindUser(uid);
+					return;
 				}
 			} else {
 				setsearchFilter(
@@ -77,19 +103,19 @@ export const ImageLayout = memo(
 
 		const [imgs, setImgs] = useState([]);
 		const divRef = createRef();
-		const dimensions = useRefDimensions(divRef); //Width of the divRef elemnt
 		const [width, setWidth] = useState(0); //Width saved of the divRef elemnt to do the calculations of columns
+		const dimensions = useRefDimensions(divRef); //Width of the divRef elemnt
 		const treshholdWidth = 248;
 		const numOfColumns =
 			width / treshholdWidth - ((width / treshholdWidth) % 1);
 		const [html, setHtml] = useState(<></>);
 
-
-		useEffect(() => {
+		useMemo(() => {
 			/* widths in terms of the treshholdWidth, 
 			meaning how many columns it can have depending of
 			the treshholdWidth
 			*/
+
 			const saveWidth = width / treshholdWidth - ((width / treshholdWidth) % 1);
 			const elementWidth =
 				dimensions.width / treshholdWidth -
@@ -103,7 +129,9 @@ export const ImageLayout = memo(
 			if (saveWidth != elementWidth) {
 				setWidth(dimensions.width);
 			}
+
 		}, [dimensions]);
+
 
 		/* This `useEffect` hook is creating an array of `ImageCard` components based on the `searchFilter`
 		state.
@@ -113,26 +141,64 @@ export const ImageLayout = memo(
 		The resulting array of `ImageCard` components is then stored in the `imgs` state using 
 		the `setImgs` function. This effect will re-run whenever the `searchFilter` state changes. */
 		useEffect(() => {
-			const images = [...Array(searchFilter.length)].map(
-				(image = searchFilter, i) => (
-					<ImageCard
-						key={i}
-						id={image[i].publicationid}
-						selectImg={selectImg}
-						image={image[i].photoURL}
-						description={image[i].title}
-						userName={image[i].userName}
-					/>
-				)
-			);
-			setImgs(images);
+			if (searchByWordsOrUid != "") {
+				if (searchByUseridOrHashtag == "hashtags") {
+					const images = [...Array(searchFilter.length)].map(
+						(image = searchFilter, i) => (
+							<ImageCard
+								key={i}
+								id={image[i].publicationid}
+								selectImg={selectImg}
+								image={image[i].photoURL}
+								description={image[i].title}
+								userName={image[i].userName}
+								hashtags={image[i].hashtags}
+							/>
+						)
+					);
+					setImgs(images);
+				}
+				if (searchByUseridOrHashtag == "userid") {
+					try {
+						const images = [...Array(searchFilter.publications.length)].map(
+							(image = searchFilter, i) => (
+								<ImageCard
+									key={i}
+									id={image.publications[i]._id}
+									selectImg={selectImg}
+									image={image.publications[i].photoURL}
+									description={image.publications[i].title}
+									userName={image.user}
+									hashtags={image.publications[i].hashtags}
+								/>
+							)
+						);
+						setImgs(images);
+					} catch (error) {}
+				}
+			} else {
+				const images = [...Array(searchFilter.length)].map(
+					(image = searchFilter, i) => (
+						<ImageCard
+							key={i}
+							id={image[i].publicationid}
+							selectImg={selectImg}
+							image={image[i].photoURL}
+							description={image[i].title}
+							userName={image[i].userName}
+							hashtags={image[i].hashtags}
+						/>
+					)
+				);
+				setImgs(images);
+			}
 		}, [searchFilter]);
 
 		/**
 		 * The function `handdleReorder` returns a layout of images re-arranged in a matrix with
-		 * `numOfColumns` columns. 
+		 * `numOfColumns` columns.
 		 * The images are taken from the `imgs` array and arranged in the matrix from left to rigth
-		 * using nested loops. 
+		 * using nested loops.
 		 * The resulting matrix is then used to create a layout of `div` elements, each
 		 * containing a column of images. The layout is returned as an array of `div` elements.
 		 */
@@ -182,7 +248,7 @@ export const ImageLayout = memo(
 					className="w-full flex place-content-center gap-2"
 				>
 					{html}
-				</div>	
+				</div>
 			</>
 		);
 	}

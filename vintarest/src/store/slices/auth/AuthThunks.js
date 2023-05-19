@@ -1,18 +1,56 @@
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
-	signOut,
 	updateProfile,
+	deleteUser,
 } from "firebase/auth";
 import { auth } from "../../../firebase/config";
 import { authSlice, login } from "./AuthSlice";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+	LoginUserApi,
+	GenerateTokenApi,
+	FindUserByEmail,
+} from "../../../api/Api";
 
 export const loadUser = (email) => {
 	return async (dispatch) => {
+		
 		dispatch(
-			login({
-				email: email
+			authSlice.actions.login({
+				email: email,
+			})
+		);
+
+		const respUser = await FindUserByEmail.get("", {
+			params: {
+				email: email,
+			},
+		});
+
+		const respToken = await GenerateTokenApi.get("", {
+			params: { email: email },
+		});
+
+		const user = respUser.data.usuario.user;
+		const name = respUser.data.usuario.name;
+		const hashtags = respUser.data.usuario.hashtags;
+		const photoURL = respUser.data.usuario.photoURL;
+		const id = respUser.data.usuario.id;
+		const token = respToken.data.token;
+
+
+
+		dispatch(
+			authSlice.actions.login({
+				uid: id,
+				email: email,
+				user: user,
+				name: name,
+				hashtags: hashtags,
+				photoUrl: photoURL,
+				token: token,
+				photoUrl: photoURL,
 			})
 		);
 	};
@@ -34,7 +72,6 @@ export const registerAuth = (email, password, name, user) => {
 
 				//const { email } = response.user;
 				//dispatch(register({ email: email }));
-
 			} else {
 				throw new Error("register failed");
 			}
@@ -47,25 +84,39 @@ export const registerAuth = (email, password, name, user) => {
 export const loginAuth = (email, password) => {
 	return async (dispatch) => {
 		try {
+			const resp = await LoginUserApi.post("", {
+				email: email,
+				password: password,
+			});
+
+			const user = resp.data.usuario.user;
+			const name = resp.data.usuario.name;
+			const hashtags = resp.data.usuario.hashtags;
+			const photoURL = resp.data.usuario.photoURL;
+			const id = resp.data.usuario._id;
+			const token = resp.data.token;
+
 			const response = await signInWithEmailAndPassword(auth, email, password);
 
 			// Update the auth state with user information
 			if (response.user) {
-				const { uid, email, displayName, photoURL } = response.user;
-
 				dispatch(
 					authSlice.actions.login({
-						uid,
-						email,
-						displayName,
+						uid: id,
+						email: email,
+						user: user,
+						name: name,
+						hashtags: hashtags,
+						photoUrl: photoURL,
+						token: token,
 						photoUrl: photoURL,
 					})
 				);
 			}
 		} catch (error) {
-			// Handle login error
 			console.error("Login error:", error);
-			return error.code;
+
+			return error;
 		}
 	};
 };
@@ -81,7 +132,7 @@ export const logWithGoogleAuth = () => {
 			dispatch(login({ uid, email, displayName, photoURL }));
 		} catch (error) {
 			console.log(error.message);
-			return error.code
+			return error.code;
 		}
 	};
 };
@@ -94,6 +145,22 @@ export const logoutAuth = () => {
 
 			// dispatch the logout action
 			dispatch(authSlice.actions.logout());
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
+};
+
+export const DeleteUser = () => {
+	return async (dispatch) => {
+		try {
+			// Delete the user's account
+			await auth.currentUser.delete();
+
+			// Dispatch the logout action
+			try {
+				dispatch(authSlice.actions.logout());
+			} catch (error) {}
 		} catch (error) {
 			console.log(error.message);
 		}

@@ -42,7 +42,14 @@ const UsuarioSchema = Schema(
 UsuarioSchema.virtual("publications", {
 	ref: "publication",
 	localField: "_id",
-	foreignField: "user",
+	foreignField: "userId",
+	justOne: false,
+});
+
+UsuarioSchema.virtual("commentaries", {
+	ref: "commentary",
+	localField: "_id",
+	foreignField: "userId",
 	justOne: false,
 });
 

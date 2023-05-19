@@ -41,16 +41,14 @@ export const LoginBg = () => {
 
 	function arr(img) {
 		const images = [...Array(img.length)].map((x, i) => (
-			<>
-				<img
-					key={i}
-					src={img[i]}
-					alt=""
-					className="w-[240px] h-auto min-h-[120px]
+			<img
+				key={i}
+				src={img[i]}
+				alt=""
+				className="w-[240px] h-auto min-h-[120px]
 					rounded-2xl object-cover
 					mb-2"
-				/>
-			</>
+			/>
 		));
 		return images;
 	}
@@ -148,7 +146,8 @@ export const LoginBg = () => {
 			</div>
 			<motion.div
 				onHoverStart={() => setStartAnim(true)}
-				onHoverEnd={() => setStartAnim(false)}>
+				onHoverEnd={() => setStartAnim(false)}
+			>
 				<div
 					id="darkOverlay"
 					className="absolute top-0 left-0 bg-primary-dark/60 h-[700px] w-screen max-w-[1400px]"

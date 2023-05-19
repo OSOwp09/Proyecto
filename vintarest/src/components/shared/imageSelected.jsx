@@ -25,14 +25,16 @@ export const ImageSelected = ({ close }) => {
 	const { image } = useContext(ImageContext);
 
 	const shareUrl = `${window.location.host}/home/publication/${image.id}`;
-	
-	const hashtagsImg = publicationsJson.filter(
-		(p) => p.publicationid == image.id
-	)[0].hashtags;
 
-	const publicationId = publicationsJson.filter(
-		(p) => p.publicationid == image.id
-	)[0].publicationid;
+	//console.log("image", image);
+
+	// const hashtagsImg = publicationsJson.filter(
+	// 	(p) => p.publicationid == image.id
+	// )[0].hashtags;
+
+	// const publicationId = publicationsJson.filter(
+	// 	(p) => p.publicationid == image.id
+	// )[0].publicationid;
 
 	const [isHoverOpen, setIsHoverOpen] = useState(false);
 	const [isHoverImg, setIsHoverImg] = useState(false);
@@ -81,16 +83,16 @@ export const ImageSelected = ({ close }) => {
 	};
 
 	const [html, setHtml] = useState(<></>);
-	useEffect(
-		() =>
-			{
-				setHtml(
-				<>
-					<ImageLayout words={hashtagsImg} pid = {publicationId}/>
-				</>
-			)},
-		[,hashtagsImg, image]
-	);
+	useEffect(() => {
+		setHtml(
+			<>
+				<ImageLayout
+					words={image.hashtags}
+					//pid = {publicationId} // para poder eliminar de las lista a la misma publicacion, y no aparezca
+				/>
+			</>
+		);
+	}, [, image]);
 
 	return (
 		<>
@@ -256,7 +258,7 @@ export const ImageSelected = ({ close }) => {
 								<img src={usericon} alt="" className="w-8 select-none" />
 								<h1>User</h1>
 							</div>
-							<div
+							{/* <div
 								id="commentaries-title"
 								className="flex place-items-center
 								gap-1 mt-3 mb-3 select-none"
@@ -276,9 +278,9 @@ export const ImageSelected = ({ close }) => {
 								>
 									<img src={arrow} alt="" className="" />
 								</motion.button>
-							</div>
+							</div> */}
 
-							<motion.div
+							{/* <motion.div
 								id="commentaries"
 								className="max-h-[220px] overflow-auto"
 								initial={{ height: 0 }}
@@ -287,9 +289,9 @@ export const ImageSelected = ({ close }) => {
 								}}
 							>
 								<div>{coment}</div>
-							</motion.div>
+							</motion.div> */}
 
-							<div
+							{/* <div
 								id="add-commentary-input"
 								className="flex gap-2 mt-3 select-none"
 							>
@@ -304,7 +306,7 @@ export const ImageSelected = ({ close }) => {
 									border border-primary-dark rounded-2xl
 									outline-none"
 								/>
-							</div>
+							</div> */}
 						</div>
 					</div>
 

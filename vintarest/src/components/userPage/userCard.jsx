@@ -3,6 +3,7 @@ import userIcon from "../../assets/person-circle.svg";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import { UserInfoLoader } from "../loaders/userInfoLoader";
+import { useSelector } from "react-redux";
 
 export const UserCard = () => {
 	const [user, setUSer] = useState("");
@@ -17,15 +18,17 @@ export const UserCard = () => {
 	};
 	const [info, setInfo] = useState(loader());
 
-	useEffect(() => {
-		onAuthStateChanged(auth, () => {
-			setName(auth.currentUser.displayName.split("/")[0]);
-			setUSer(auth.currentUser.displayName.split("/")[1]);
-		});
-	}, []);
+	const userinfo = useSelector((state) => state.auth);
 
 	useEffect(() => {
-		if (user != "") {
+		onAuthStateChanged(auth, () => {
+			setName(userinfo.name);
+			setUSer(userinfo.user);
+		});
+	}, [,userinfo]);
+
+	useEffect(() => {
+		if (user != "" && user != undefined) {
 			setInfo(
 				<>
 					<img src={userIcon} alt="" className="h-[120px] mb-2 select-none" />

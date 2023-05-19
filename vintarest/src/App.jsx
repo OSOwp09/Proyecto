@@ -12,8 +12,6 @@ import { UserCard } from "./components/userPage/userCard";
 
 import { Login } from "./pages/Login/login";
 import { Index } from "./pages/Index";
-import { Home } from "./pages/home/home";
-import { User } from "./pages/mainUser/user";
 import { Error } from "./pages/ErrorPage/error";
 
 //---- Other ---
@@ -28,12 +26,16 @@ import { loadUser } from "./store/slices/auth/AuthThunks";
 function App() {
 	document.body.classList.add("bg-primary-light");
 	const dispatch = useDispatch();
-	
+
 	const [loadApp, setLoadApp] = useState(<></>);
-	
+
 	useEffect(() => {
 		onAuthStateChanged(auth, () => {
-			auth.currentUser ? dispatch(loadUser(auth.currentUser.email)):"";
+
+			if (auth?.currentUser?.email) {
+				dispatch(loadUser(auth.currentUser.email));
+			}
+
 			setLoadApp(
 				<Router>
 					<Routes>
@@ -57,9 +59,7 @@ function App() {
 
 	return (
 		<>
-			<div className="font-inter">
-				{loadApp}
-			</div>
+			<div className="font-inter">{loadApp}</div>
 		</>
 	);
 }

@@ -3,12 +3,14 @@ import { motion } from "framer-motion";
 import usericon from "../../assets/person-circle.svg";
 import { ImageContext } from "../../context/imageSelectedContext";
 
-export const ImageCard = ({ image, description, userName, id }) => {
+export const ImageCard = ({ image, description, userName, id, hashtags }) => {
 	const { handleImageSelected } = useContext(ImageContext);
+
+	//console.log("hashtags:",hashtags)
 
 	const handdleInput = () => {
 		//closeSelectedImage()
-		handleImageSelected(image, description, id);
+		handleImageSelected(image, description, id, hashtags);
 	}
 	
 	return (
@@ -19,7 +21,6 @@ export const ImageCard = ({ image, description, userName, id }) => {
 				}}
 				id="container"
 				className="
-
                 bg-secondary-light
                 h-full w-[240px] rounded-2xl
                 mx- mb-2
@@ -42,7 +43,7 @@ export const ImageCard = ({ image, description, userName, id }) => {
 					<img
 						src={image}
 						alt=""
-						className="w-[240px] h-auto max-h-[448px] min-h-[120px]
+						className="w-[240px] h-auto max-h-[480px] min-h-[120px]
 							rounded-t-2xl object-fit
 							mb-2 select-none"
 					/>

@@ -55,26 +55,51 @@ export const LoginCard = () => {
 		handleSubmit();
 	};
 
-	const handleSubmit = () => {
-		const promise = dispatch(loginAuth(email, password));
-		promise.then((value) => {
-			switch (value) {
-				case "auth/wrong-password":
-					errors.id = "password";
-					errors.type = "errorInvalid";
-					setInputErrors(errors);
-					break;
-				case "auth/user-not-found":
-					errors.id = "email";
-					errors.type = "errorInvalid";
-					setInputErrors(errors);
-					break;
-				default:
-					console.log(auth.currentUser);
+	const handleSubmit = async () => {
+		try {
+			const promise = dispatch(loginAuth(email, password));
+			promise.then((value) => {
+				console.log(value?.response?.data?.msg);
+				//----- mongo ----------
+				if (value?.response?.data?.msg) {
+					switch (value?.response?.data?.msg) {
+						case "email not found":
+							errors.id = "email";
+							errors.type = "errorInvalid";
+							setInputErrors(errors);
+							break;
+						case "wrong password":
+							errors.id = "password";
+							errors.type = "errorInvalid";
+							setInputErrors(errors);
+							break;
+						default:
+							break;
+					}
+				}
+
+				//-----fire base---------
+				if (value?.code) {
+					switch (value?.code) {
+						case "auth/wrong-password":
+							errors.id = "password";
+							errors.type = "errorInvalid";
+							setInputErrors(errors);
+							break;
+						case "auth/user-not-found":
+							errors.id = "email";
+							errors.type = "errorInvalid";
+							setInputErrors(errors);
+							break;
+						default:
+							console.log("firebase", auth.currentUser);
+							break;
+					}
+				} else {
 					navigate("/home");
-					break;
-			}
-		});
+				}
+			});
+		} catch (error) {}
 	};
 
 	const handdleGoogleLogin = () => {

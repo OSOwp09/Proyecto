@@ -20,7 +20,7 @@ const validarJWT = (req, res = response, next) => {
         req.name = name
 
     } catch (error) {
-        return res.status(401).jsom({
+        return res.status(401).json({
             ok: false,
             msg: 'Token invalido'
         })

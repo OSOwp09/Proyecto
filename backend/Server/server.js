@@ -22,6 +22,8 @@ class Server {
 		this.paths = {
 			auth: "/api/auth",
 			publication: "/api/publication",
+			search: "/api/search",
+			commentary: "/api/commentary"
 		};
 
 		this.connectToDB();
@@ -52,6 +54,8 @@ class Server {
 		//Rutas
 		this.app.use(this.paths.auth, require("../routes/auth"));
 		this.app.use(this.paths.publication, require("../routes/publication"));
+		this.app.use(this.paths.search, require("../routes/search"));
+		this.app.use(this.paths.commentary, require("../routes/commentary"));
 	}
 
 	sockets() {

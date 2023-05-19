@@ -6,8 +6,11 @@ export const authSlice = createSlice({
 		status: "checking",
 		uid: null,
 		email: null,
-		displayName: null,
+		user: null,
+		name: null,
+		hashtags: null,
 		photoUrl: null,
+		token: null,
 		errorMessage: null,
 	},
 	reducers: {
@@ -15,10 +18,22 @@ export const authSlice = createSlice({
 			state.email = action.payload.email;
 		},
 		login: (state, action) => {
+			state.uid = action.payload.uid;
 			state.email = action.payload.email;
+			state.user = action.payload.user;
+			state.name = action.payload.name;
+			state.hashtags = action.payload.hashtags;
+			state.photoUrl = action.payload.photoUrl;
+			state.token = action.payload.token;
 		},
-		logout: (state, action) => {
-			state.email = null
+		logout: (state ) => {
+			state.uid = null;
+			state.email = null;
+			state.user = null;
+			state.name = null;
+			state.hashtags = null;
+			state.photoUrl = null;
+			state.token = null;
 		},
 		checkingCredentials: (state, action) => {
 			console.log("checking");

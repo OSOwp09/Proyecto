@@ -1,6 +1,7 @@
 const express = require("express");
 const bycrypt = require("bcryptjs");
 const Usuario = require("../models/Usuario");
+
 const { generateJWT } = require("../helpers/jwt");
 
 const crearUsuario = async (req, res = express.request) => {
@@ -40,7 +41,6 @@ const crearUsuario = async (req, res = express.request) => {
 	}
 };
 
-//-----challenge 17---------
 const loginUsuario = async (req, res = express.request) => {
 	const { email, password } = req.body;
 
@@ -49,7 +49,7 @@ const loginUsuario = async (req, res = express.request) => {
 		if (!usuario) {
 			return res.status(400).json({
 				ok: false,
-				msg: "El usuario NO existe",
+				msg: "email not found",
 			});
 		}
 
@@ -57,7 +57,7 @@ const loginUsuario = async (req, res = express.request) => {
 		if (!passwordValid) {
 			return res.status(400).json({
 				ok: false,
-				msg: "El usuaio NO es valido",
+				msg: "wrong password",
 			});
 		}
 
@@ -68,6 +68,7 @@ const loginUsuario = async (req, res = express.request) => {
 			usuario,
 			token,
 		});
+
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({
@@ -76,12 +77,11 @@ const loginUsuario = async (req, res = express.request) => {
 		});
 	}
 };
-//----------------------------
 
 const revalidarToken = async (req, res = express.request) => {
-	const { uid, name } = req;
+	const { email } = req.query;
 
-	const token = await generateJWT(uid, name);
+	const token = await generateJWT(email);
 
 	return res.json({
 		ok: true,
@@ -89,26 +89,10 @@ const revalidarToken = async (req, res = express.request) => {
 	});
 };
 
-const listarUsuarios = async (req, res = express.request) => {
-	const usuarios = await Usuario.find().populate("publications", "title");
 
-	try {
-		return res.status(200).json({
-			ok: true,
-			usuarios,
-		});
-	} catch (error) {
-		console.log(error);
-		return res.status(500).json({
-			ok: false,
-			msg: "Error interno",
-		});
-	}
-};
 
 module.exports = {
 	crearUsuario,
 	loginUsuario,
 	revalidarToken,
-	listarUsuarios,
 };

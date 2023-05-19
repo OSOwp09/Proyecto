@@ -8,8 +8,9 @@ export const ImageProvider = ({ children }) => {
 		src: "",
 		title: "",
 		code: <></>,
+		hashtags: ""
 	});
-	const handleImageSelected = (img, title, id) => {
+	const handleImageSelected = (img, title, id, hashtags) => {
 		setImage({
 			...image,
 			code: (
@@ -22,6 +23,7 @@ export const ImageProvider = ({ children }) => {
 			id: id,
 			src: img,
 			title: title,
+			hashtags:hashtags
 		});
 	};
 

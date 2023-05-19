@@ -15,9 +15,10 @@ export const OtherUsersPage = () =>{
     const uid = useSelector((state)=>state.search).userId
 
 	const { image } = useContext(ImageContext);
+	
     return(
         <>
-            <div className="flex place-content-center w-screen h-screen">
+            <div className="flex place-content-center w-screen h-auto">
 				<div
 					id="imageLayout-container"
 					className="grow pr-6 h-full pt-2 overflow-x-hidden overflow-y-auto "

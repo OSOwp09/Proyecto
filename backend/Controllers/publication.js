@@ -1,11 +1,11 @@
 const express = require("express");
-const PublicationScheme = require("../models/PublicationScheme");
+const PublicationScheme = require("../models/PublicationSchema");
 
 const createPublication = async (req, res = express.request) => {
 	const publication = new PublicationScheme(req.body);
-
+	
 	try {
-		publication.userId = req.uid;
+		//publication.userId = req.uid;
 		await publication.save();
 		return res.json({
 			ok: true,
@@ -20,23 +20,6 @@ const createPublication = async (req, res = express.request) => {
 	}
 };
 
-const listPublications = async (req, res = express.request) => {
-	const publication = await PublicationScheme.find().populate("userId", "name");
-
-	try {
-		return res.status(200).json({
-			ok: true,
-			publication,
-		});
-	} catch (error) {
-		return res.status(500).json({
-			ok: false,
-			publication: "internal Error",
-		});
-	}
-};
-
-// Challenge 18
 const updatePublication = async (req, res = express.request) => {
 	const { _id, title, description, hashtags } = req.body;
 	console.log(_id, title);
@@ -95,7 +78,6 @@ const deletePublication = async (req, res = express.request) => {
 
 module.exports = {
 	createPublication,
-	listPublications,
 	updatePublication,
 	deletePublication,
 };

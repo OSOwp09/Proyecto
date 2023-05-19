@@ -5,6 +5,8 @@ import { auth } from "../../firebase/config";
 import { register } from "../../store/slices/auth/AuthSlice";
 import { registerAuth } from "../../store/slices/auth/AuthThunks";
 
+import { CreateUserApi } from "../../api/Api";
+
 import logo from "../../assets/Logo.svg";
 import warning from "../../assets/exclamation-triangle.svg";
 
@@ -123,23 +125,31 @@ export const RegisterCard = () => {
 			return;
 		}
 
-		console.log(fields);
 		onSubmit(fields.email, fields.password, fields.name, fields.user);
 	};
 
-	const onSubmit = (email, password, name, user) => {
-		const promise = dispatch(registerAuth(email, password, name, user));
-		promise.then((value) => {
-			if (value == "auth/email-already-in-use") {
-				errors.id = "email";
-				errors.type = "errorIsInUse";
-				errors.description = " email already is in use";
-				setInputErrors(errors);
-				return;
-			} else {
-				navigate("/");
-			}
-		});
+	const onSubmit = async (email, password, name, user) => {
+		try {
+			const resp = await CreateUserApi.post("", {
+				name: name,
+				user: user,
+				email: email,
+				password: password,
+				photoURL: "",
+				hashtags: "",
+			});
+
+			console.log(resp)
+			const promise = dispatch(registerAuth(email, password, name, user));
+
+			promise.then((result) => {
+				console.log(result)
+				navigate("/")
+			})
+
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const labelAndError = ({ fieldLabel, fieldInput }) => (

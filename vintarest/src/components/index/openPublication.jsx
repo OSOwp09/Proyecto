@@ -3,12 +3,21 @@ import { Commentary } from "../shared/comentary";
 import { useParams } from "react-router-dom";
 import { Publications } from "../shared/publications";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef, useReducer } from "react";
+import {
+	useEffect,
+	useState,
+	useRef,
+	useReducer,
+	useMemo,
+	createRef,
+	memo,
+} from "react";
 import { ShareButton, ThreeDots } from "../shared/publicationOptions";
 import { motion } from "framer-motion";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { ImageContext } from "../../context/imageSelectedContext";
 import { useContext } from "react";
+import { FindPublicationApi, CreateCommentApi } from "../../api/Api";
 import publicationsJson from "../../fakeData/publications.json";
 
 import backArrow from "../../assets/arrow-left-short 1.svg";
@@ -18,19 +27,22 @@ import share from "../../assets/box-arrow-up.svg";
 import link from "../../assets/link-45deg.svg";
 import usericon from "../../assets/person-circle.svg";
 import heart from "../../assets/heart-fill-red.svg";
+import send from "../../assets/send.svg";
+import { useSelector } from "react-redux";
+import { useRefDimensions } from "../../customHooks/useRefDimensions";
+import axios from "axios";
 
-export const OpenPublication = () => {
-	const [isComentsOpen, setIsComentsOpen] = useState(false);
+export const OpenPublication = memo(() => {
 	const navigate = useNavigate();
 	const { image } = useContext(ImageContext);
 
-	const { id } = useParams();
+	const { id } = useParams(); // id extracted from the browser url
 
-	const coment = [...Array(3)].map((x, i) => (
-		<div key={i} className="my-2">
-			<Commentary user={"user"} coment={"muy lindo"} heart={heart} />
-		</div>
-	));
+	// const coment = [...Array(3)].map((x, i) => (
+	// 	<div key={i} className="my-2">
+	// 		<Commentary user={"user"} coment={"muy lindo"} heart={heart} />
+	// 	</div>
+	// ));
 
 	const jsonInfo = publicationsJson.filter((p) => p.publicationid == id);
 
@@ -38,6 +50,8 @@ export const OpenPublication = () => {
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [userName, setUuserName] = useState("");
+	const [comments, setComments] = useState(<></>);
+	const [numberOfComments, setNumberOfComments] = useState("");
 	const [layoutHtml, setLayoutHtml] = useState({ code: <></> });
 
 	const ref = useRef(null);
@@ -47,32 +61,74 @@ export const OpenPublication = () => {
 		});
 	};
 
+	const handdleLoadPublication = async () => {
+		const resp = await FindPublicationApi.get("", {
+			params: {
+				id: id,
+			},
+		});
+
+		const publicationInfo = resp.data.publication;
+		const userInfo = resp.data.publication.userId;
+
+		setImg(publicationInfo.photoURL);
+		setTitle(publicationInfo.title);
+		setDescription(publicationInfo.description);
+		setUuserName(userInfo.user);
+
+		const commentsInfo = resp.data.commentaries;
+		const commentariesCant = commentsInfo.length;
+		setNumberOfComments(commentariesCant);
+		const comentsList = [...Array(commentariesCant)].map((x, i) => (
+			<div key={i} className="my-2">
+				<Commentary
+					user={commentsInfo[i].userId.user}
+					coment={commentsInfo[i].text}
+					date={commentsInfo[i].date}
+				/>
+			</div>
+		));
+		setComments(comentsList.reverse());
+
+		setLayoutHtml({
+			...layoutHtml,
+
+			code: (
+				<>
+					<ImageLayout
+						words={publicationInfo.hashtags}
+						pid={publicationInfo.id}
+					/>
+				</>
+			),
+		});
+	};
+
 	useEffect(() => {
 		try {
-			setImg(jsonInfo[0].photoURL);
-			setTitle(jsonInfo[0].title);
-			setDescription(jsonInfo[0].description);
-			setUuserName(jsonInfo[0].userName);
+			// setImg(jsonInfo[0].photoURL);
+			// setTitle(jsonInfo[0].title);
+			// setDescription(jsonInfo[0].description);
+			// setUuserName(jsonInfo[0].userName);
+			// scrollToTop();
+			// setLayoutHtml({
+			// 	...layoutHtml,
+			// 	code: (
+			// 		<>
+			// 			{console.log(jsonInfo[0].hashtags)}
+			// 			<ImageLayout words={jsonInfo[0].hashtags} pid={jsonInfo[0].publicationid}/>
+			// 		</>
+
+			// 	),
+			// });
+
+			handdleLoadPublication();
 			scrollToTop();
-			setLayoutHtml({
-				...layoutHtml,
-				code: (
-					<>
-						{console.log(jsonInfo[0].hashtags)}
-						<ImageLayout words={jsonInfo[0].hashtags} pid={jsonInfo[0].publicationid}/>
-					</>
-					
-
-				),
-			});		
-
 		} catch (error) {
 			console.log(error);
-			navigate("/home");
+			//navigate("/home");
 		}
 	}, [, id]);
-
-	
 
 	/**
 	 * Hook that alerts clicks outside of the passed ref
@@ -107,6 +163,104 @@ export const OpenPublication = () => {
 	 *
 	 */
 
+	/**
+	 * ---------------------------------------------------------------------------
+	 *-------------- Commentaries related code -----------------------------------
+	 *----------------------------------------------------------------------------
+	 */
+
+	const [isComentsOpen, setIsComentsOpen] = useState(false);
+	const [isCommentsFinishedOpen, setIsCommentsFinishedOpen] = useState(false);
+	const handdleOpenCommentaries = async () => {
+		if (isComentsOpen == false) {
+			setTimeout(() => {
+				setIsCommentsFinishedOpen(true);
+			}, 200);
+		} else {
+			setIsCommentsFinishedOpen(false);
+		}
+		setIsComentsOpen(!isComentsOpen);
+	};
+
+	/**
+	 * handdle the input change and sets a limmit of character in 'maxCommentLength'
+	 */
+	const [comment, setComment] = useState("");
+	const maxCommentLength = 162;
+	const handdleInputChange = (e) => {
+		const text = e.target.value;
+		if (text.length <= maxCommentLength) {
+			setComment(text);
+			hanndleResizeInput(e);
+		}
+	};
+
+	/**
+	 * The function adjusts the height of the input element based on its content.
+	 */
+	const hanndleResizeInput = (element) => {
+		element.target.style.height = "38px";
+		element.target.style.height = element.target.scrollHeight + "px";
+	};
+
+	const userInfo = useSelector((state) => state.auth);
+	const [token, setToken] = useState("");
+	const [userId, serUserId] = useState("");
+	useEffect(() => {
+		setToken(userInfo.token);
+		serUserId(userInfo.uid);
+	}, [, userInfo]);
+
+	const handdleSendComment = async () => {
+		if (comment != "") {
+			try {
+				const currentDate = String(new Date());
+
+				const resp = await CreateCommentApi.post(
+					"",
+					{
+						text: comment,
+						date: currentDate,
+						publicationId: id,
+						userId: userId,
+					},
+					{
+						headers: {
+							"x-token": token,
+						},
+					}
+				);
+				setComment("");
+				const newComment = () => {
+					return (
+						<>
+							<div className="my-2" key={comments.length + 1}>
+								<Commentary
+									user={userName}
+									coment={comment}
+									date={currentDate}
+								/>
+							</div>
+						</>
+					);
+				};
+				const arr = new Array(comments)[0].reverse();
+				arr.push(newComment());
+
+				setComments(arr.reverse());
+				console.log(comments);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	};
+
+	/*---------------------------------------------------------------------------
+	 *---------------------------------------------------------------------------
+	 *---------------------------------------------------------------------------
+	 */
+
+
 	return (
 		<>
 			<div
@@ -118,23 +272,35 @@ export const OpenPublication = () => {
 			>
 				<div
 					id="publication-container"
-					className="w-[688px] h-auto
+					className={`7w-[688px]  h-auto
+						w-auto pr-6
+						max-h-[1200px] 
                         bg-secondary-light rounded-2xl
                         mt-6 shadow-[0px_0px_27px_-5px_rgba(0,0,0,0.25)]
-                        flex gap-3"
+                        flex gap-5`}
 				>
 					<div>
 						<img
+
 							id="image"
 							src={img}
 							alt=""
-							className="w-[344px] h-auto max-h-[640px] min-h-[120px]
-                                rounded-2xl object-fit
-                                select-none object-cover"
+							className={`
+							p-5
+							h-auto
+							w-[600px] 
+							min-h-[300px]
+							max-h-[1200px] 
+                            rounded-2xl object-fit
+                            select-none object-cover`}
 						/>
 					</div>
 
-					<div id="info-container flex flex-col">
+					<div
+						id="info-container"
+						className="relative flex flex-col h-auto
+					min-h-[470px]"
+					>
 						<div id="options" className="flex gap-3 mt-4 relative">
 							<motion.div
 								whileTap={{ scale: 0.9 }}
@@ -222,9 +388,11 @@ export const OpenPublication = () => {
 							id="commentaries-title"
 							className="flex gap-4 mt-3 mb-3 select-none"
 						>
-							<h1 className="text-base font-semibold">3 Commentaries</h1>
+							<h1 className="text-base font-semibold">
+								{comments.length} Commentaries
+							</h1>
 							<motion.button
-								onClick={() => setIsComentsOpen(!isComentsOpen)}
+								onClick={() => handdleOpenCommentaries()}
 								className={`h-6 w-6 hover:bg-secondary-highlight
 									pt-[1px] rounded-full
 									flex place-items-center place-content-center`}
@@ -239,30 +407,62 @@ export const OpenPublication = () => {
 						</div>
 						<motion.div
 							id="commentaries"
-							className="max-h-[250px] overflow-auto"
+							className={`
+							h-auto
+							max-h-[300px] 
+							${isCommentsFinishedOpen ? "overflow-auto" : "overflow-hidden"}`}
 							initial={{ height: 0 }}
 							animate={{
 								height: isComentsOpen ? "" : 0,
 							}}
+							transition={{ duration: 0.2 }}
 						>
-							<div>{coment}</div>
+							<div>{comments}</div>
 						</motion.div>
 
 						<div
 							id="add-commentary-input"
-							className="flex gap-2 mt-3 mb-6 select-none"
+							className="
+							w-[308px] 
+							border-t border-secondary-dark
+							pt-[18px]
+							pb-[18px]
+							sticky bottom-0
+							flex place-items-end
+							bg-secondary-light
+							h-auto
+							gap-2  select-none "
 						>
-							<img src={usericon} alt="" className="w-12" />
-							<input
-								type="text"
-								placeholder="Add comment"
-								className="
-									bg-secondary-light
-									h-12 w-[176px]
+							<img src={usericon} alt="" className="w-9" />
+							<div
+								className="flex place-items-end
+							border border-primary-dark rounded-2xl
+							w-[308px] h-auto
+							pr-3"
+							>
+								<textarea
+									type="text"
+									placeholder="Add comment"
+									className={`
+									text-sm
+									bg-transparent
+									h-[38px]  w-full
 									px-2 
-									border border-primary-dark rounded-2xl
-									outline-none"
-							/>
+									py-[8px]
+									outline-none 
+									resize-none
+									overflow-hidden`}
+									//onChange={(e) => hanndleResizeInput(e)}
+									onChange={(e) => handdleInputChange(e)}
+									value={comment}
+								/>
+								<img
+									src={send}
+									alt=""
+									className="w-7 rotate-45 mb-[6px]"
+									onClick={() => handdleSendComment()}
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -304,4 +504,4 @@ export const OpenPublication = () => {
 			</div>
 		</>
 	);
-};
+});

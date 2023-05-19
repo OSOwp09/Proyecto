@@ -6,20 +6,25 @@ import { motion } from "framer-motion";
 import add from "../../assets/plus-circle 1.svg";
 import share from "../../assets/Group 98.svg";
 import link from "../../assets/Group 99.svg";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShareButton } from "../../components/shared/publicationOptions";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { useSelector } from "react-redux";
 
 export const User = () => {
 	const navigate = useNavigate();
 	const [shareVisibility, setShareVisibility] = useState(false);
 	const shareUrl = `aunNoSirve`;
+	const email = useSelector((state) => state.auth.email)
+
+	console.log(email)
 
 	const { image } = useContext(ImageContext);
+
 	return (
 		<>
-			<div className="flex place-content-center w-screen h-screen">
+			<div className="flex place-content-center w-screen h-auto">
 				<div
 					id="imageLayout-container"
 					className="grow pr-6 h-full pt-2 overflow-x-hidden overflow-y-auto "
@@ -64,7 +69,7 @@ export const User = () => {
 
 						<UserCard />
 					</div>
-					<ImageLayout words={"-"} />
+					<ImageLayout uid={email} words={"-"}/>
 				</div>
 				<div className="mt-2">{image.code}</div>
 			</div>
