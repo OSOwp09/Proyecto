@@ -7,10 +7,12 @@ export const ImageProvider = ({ children }) => {
 		id: null,
 		src: "",
 		title: "",
+		description:"",
+		user: "",
 		code: <></>,
 		hashtags: ""
 	});
-	const handleImageSelected = (img, title, id, hashtags) => {
+	const handleImageSelected = (img, title,description, id, hashtags, userName) => {
 		setImage({
 			...image,
 			code: (
@@ -23,7 +25,9 @@ export const ImageProvider = ({ children }) => {
 			id: id,
 			src: img,
 			title: title,
-			hashtags:hashtags
+			description: description,
+			user: userName,
+			hashtags: hashtags
 		});
 	};
 

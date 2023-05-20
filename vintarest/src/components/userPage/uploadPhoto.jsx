@@ -53,7 +53,7 @@ export const UploadPhoto = () => {
 		});
 	}, []);
 
-	const characterLimitTitle = 20;
+	const characterLimitTitle = 30;
 	const handdleTitleChange = (title) => {
 		if (title.length <= characterLimitTitle) {
 			setTitle(title);
@@ -153,6 +153,7 @@ export const UploadPhoto = () => {
 			);
 			console.log(resp);
 			setImgFile("");
+			navigate("/home/user")
 		} catch (error) {
 			console.log(error);
 		}
@@ -243,7 +244,7 @@ export const UploadPhoto = () => {
 						<div id="userPhoto" className="flex gap-3 mt-6 place-items-center">
 							<img
 								className="h-12"
-								src={userPhoto != "none" ? userPhoto : userIcon}
+								src={userIcon}
 								alt=""
 							/>
 							<h1 className="text-2xl">{user}</h1>

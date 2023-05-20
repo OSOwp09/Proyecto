@@ -35,15 +35,15 @@ export const LoginCard = () => {
 			return;
 		}
 
-		const validRegex =
-			/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+		// const validRegex =
+		// 	/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-		if (!email.match(validRegex)) {
-			console.log("first");
-			errors.type = "errorInvalidEmail";
-			setInputErrors(errors);
-			return;
-		}
+		// if (!email.match(validRegex)) {
+		// 	console.log("first");
+		// 	errors.type = "errorInvalidEmail";
+		// 	setInputErrors(errors);
+		// 	return;
+		// }
 
 		errors.id = "password";
 		if (password == "") {
@@ -63,12 +63,22 @@ export const LoginCard = () => {
 				//----- mongo ----------
 				if (value?.response?.data?.msg) {
 					switch (value?.response?.data?.msg) {
-						case "email not found":
+						case "Email not found":
 							errors.id = "email";
-							errors.type = "errorInvalid";
+							errors.type = "errorEmailNotFound";
+							setInputErrors(errors);
+							break;
+						case "User not found":
+							errors.id = "email";
+							errors.type = "errorUserNotFound";
 							setInputErrors(errors);
 							break;
 						case "wrong password":
+							errors.id = "password";
+							errors.type = "errorInvalid";
+							setInputErrors(errors);
+							break;
+						case "Invalid value":
 							errors.id = "password";
 							errors.type = "errorInvalid";
 							setInputErrors(errors);
@@ -103,19 +113,19 @@ export const LoginCard = () => {
 	};
 
 	const handdleGoogleLogin = () => {
-		const promise = dispatch(logWithGoogleAuth());
-		promise.then((value) => {
-			console.log(value);
-			switch (value) {
-				case "auth/popup-closed-by-user":
-					break;
-				case "auth/unauthorized-domain":
-					break;
-				default:
-					navigate("/home");
-					break;
-			}
-		});
+		// const promise = dispatch(logWithGoogleAuth());
+		// promise.then((value) => {
+		// 	console.log(value);
+		// 	switch (value) {
+		// 		case "auth/popup-closed-by-user":
+		// 			break;
+		// 		case "auth/unauthorized-domain":
+		// 			break;
+		// 		default:
+		// 			navigate("/home");
+		// 			break;
+		// 	}
+		// });
 	};
 
 	return (
@@ -161,7 +171,7 @@ export const LoginCard = () => {
 						htmlFor=""
 						className={`${email == "" ? "invisible" : "visible"}`}
 					>
-						Email
+						Email / User
 					</label>
 					<p
 						className={`
@@ -182,14 +192,14 @@ export const LoginCard = () => {
 						/>
 						Sorry,
 						{inputErrors.type == "errorEmpty" ? " empty field" : ""}
-						{inputErrors.type == "errorInvalid" ? " email not found" : ""}
-						{inputErrors.type == "errorInvalidEmail" ? " invalid email" : ""}
+						{inputErrors.type == "errorUserNotFound" ? " user not found" : ""}
+						{inputErrors.type == "errorEmailNotFound" ? " email not found" : ""}
 					</p>
 				</div>
 				<input
 					id="email"
 					type="text"
-					placeholder="Email"
+					placeholder="Email / User"
 					onChange={(e) => setEmail(e.target.value)}
 					className={`
                         px-[16px]

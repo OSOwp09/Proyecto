@@ -1,4 +1,5 @@
 const express = require("express");
+const _ = require("lodash");
 const Usuario = require("../models/Usuario");
 const PublicationScheme = require("../models/PublicationSchema");
 const commentariesSchema = require("../models/commentariesSchema");
@@ -63,6 +64,84 @@ const listUsers = async (req, res = express.request) => {
 	}
 };
 
+const listUsersByHashtag = async (req, res = express.request) => {
+	const { hashtags } = req.query;
+	try {
+		const resp = await Usuario.aggregate([
+			{
+				$lookup: {
+					from: "publications",
+					localField: "_id",
+					foreignField: "userId",
+					as: "publicaciones",
+				},
+			},
+			{
+				$project: {
+					_id: 1,
+					name: 1,
+					user: 1,
+					email: 1,
+					photoURL: 1,
+					hashtags: 1,
+					publicaciones: {
+						$slice: ["$publicaciones", 3],
+					},
+				},
+			},
+			{
+				$project: {
+					_id: 1,
+					name: 1,
+					user: 1,
+					email: 1,
+					photoURL: 1,
+					hashtags: 1,
+					publicaciones: {
+						$map: {
+							input: "$publicaciones",
+							as: "pub",
+							in: {
+								photoURL: "$$pub.photoURL",
+							},
+						},
+					},
+				},
+			},
+		]);
+
+		console.log(hashtags)
+		const hashtagsArray = hashtags.split(" ");
+		let usuarios = [];
+
+		await hashtagsArray.map((x, i) => {
+			if (i == 0) {
+				usuarios = resp.filter((p) =>
+					p.hashtags.includes(hashtagsArray[0])
+				);
+				return;
+			}
+
+			usuarios = _.union(
+				resp.filter((p) => p.hashtags.includes(hashtagsArray[i])),
+				usuarios
+			);
+		});
+
+		return res.status(200).json({
+			ok: true,
+			usuarios,
+		});
+
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			ok: false,
+			msg: "Error interno",
+		});
+	}
+};
+
 const findUserByEmail = async (req, res = express.request) => {
 	const { email } = req.query;
 
@@ -74,7 +153,7 @@ const findUserByEmail = async (req, res = express.request) => {
 		if (!usuario) {
 			return res.status(404).json({
 				ok: false,
-				msg: "Usuario no encontrado",
+				msg: "Email not found",
 			});
 		}
 
@@ -102,7 +181,7 @@ const findUserByUser = async (req, res = express.request) => {
 		if (!usuario) {
 			return res.status(404).json({
 				ok: false,
-				msg: "Usuario no encontrado",
+				msg: "User not found",
 			});
 		}
 
@@ -132,10 +211,9 @@ const findPublication = async (req, res = express.request) => {
 			"user photoURL"
 		);
 
-		const commentaries = await commentariesSchema.find({ publicationId: id }).populate(
-			"userId",
-			"user photoURL"
-		);
+		const commentaries = await commentariesSchema
+			.find({ publicationId: id })
+			.populate("userId", "user photoURL");
 
 		if (!publication) {
 			return res.status(404).json({
@@ -147,7 +225,7 @@ const findPublication = async (req, res = express.request) => {
 		return res.json({
 			ok: true,
 			publication,
-			commentaries
+			commentaries,
 		});
 	} catch (error) {
 		console.log(error);
@@ -165,10 +243,6 @@ const listPublications = async (req, res = express.request) => {
 			"user photoURL"
 		);
 
-		console.log(
-			await PublicationScheme.find().populate("userId", "user photoURL")
-		);
-
 		return res.status(200).json({
 			ok: true,
 			publication,
@@ -177,6 +251,44 @@ const listPublications = async (req, res = express.request) => {
 		return res.status(500).json({
 			ok: false,
 			publication: "internal Error",
+		});
+	}
+};
+
+const listPublicationsByHashtags = async (req, res = express.request) => {
+	const { hashtags } = req.query;
+	try {
+		const publicationsJson = await PublicationScheme.find().populate(
+			"userId",
+			"user photoURL"
+		);
+
+		const hashtagsArray = hashtags.split(" ");
+		let publications = [];
+
+		await hashtagsArray.map((x, i) => {
+			if (i == 0) {
+				publications = publicationsJson.filter((p) =>
+					p.hashtags.includes(hashtagsArray[0])
+				);
+				return;
+			}
+
+			publications = _.union(
+				publicationsJson.filter((p) => p.hashtags.includes(hashtagsArray[i])),
+				publications
+			);
+		});
+
+		return res.status(200).json({
+			ok: true,
+			publications,
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			ok: false,
+			publications: "internal Error",
 		});
 	}
 };
@@ -207,7 +319,9 @@ module.exports = {
 	findUserByEmail,
 	findUserByUser,
 	listUsers,
+	listUsersByHashtag,
 	findPublication,
 	listPublications,
+	listPublicationsByHashtags,
 	findCommentaries,
 };

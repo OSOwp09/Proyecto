@@ -8,6 +8,7 @@ import publicationJson from "../../fakeData/publications.json"
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {searchUserPublications} from "../../store/slices/filterSearch/FilterThunks"
+import { FindUserByUser } from "../../api/Api";
 
 export const UserCard = () => {
 	const [user, setUSer] = useState("");
@@ -27,11 +28,28 @@ export const UserCard = () => {
 
     const dispatch = useDispatch()
     
-    //console.log(userId)
+    const handdleFindUserByUser = async() =>{
+		try {
+			const resp = await FindUserByUser.get("",{
+				params:{
+					user:pathId
+				}
+			})
+			const usuario = resp.data.usuario
+			setUSer(usuario.user)
+			setName(usuario.name)
+			
+			console.log(usuario);
+		} catch (error) {
+			navigate("/Error404")
+		}
+		
+	}
 	useEffect(() => {
 		try {
-            setUSer(userJson.filter((u)=>u.uid === pathId)[0].displayName.split('/')[1])
-            setName(userJson.filter((u)=>u.uid === pathId)[0].displayName.split('/')[0])
+            // setUSer(userJson.filter((u)=>u.uid === pathId)[0].displayName.split('/')[1])
+            // setName(userJson.filter((u)=>u.uid === pathId)[0].displayName.split('/')[0])
+			handdleFindUserByUser()
 
         } catch (error) {
             navigate("/Error404")

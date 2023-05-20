@@ -5,6 +5,7 @@ import usericon from "../../assets/person-circle.svg";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { searchUserPublications, searchPublications } from "../../store/slices/filterSearch/FilterThunks";
+import { ListUsersByHashtag } from "../../api/Api";
 
 import uno from "../../assets/imgs/11.jpeg";
 import dos from "../../assets/imgs/12.jpeg";
@@ -29,22 +30,34 @@ export const UserLayout = () => {
         navigate(`/home/${id}`)
 	};
 
+	const handdleFindUsersByHashtags = async() =>{
+		const resp = await ListUsersByHashtag("",{
+			params: {
+				hashtags: searchParams
+			}
+		})
+		const users = resp.data.usuarios
+		console.log(users);
+		setsearchFilter(users)
+	}
+
 	useEffect(() => {
 		if (searchParams != "") {
-			searchParamsArry.map((hashtag = searchParamsArry, i) => {
-				if (i == 0) {
-					setsearchFilter(
-						usersJson.filter((p) => p.hashtags.includes(searchParamsArry[0]))
-					);
-					return;
-				}
-				setsearchFilter(
-					_.union(
-						usersJson.filter((p) => p.hashtags.includes(searchParamsArry[i])),
-						searchFilter
-					)
-				);
-			});
+			// searchParamsArry.map((hashtag = searchParamsArry, i) => {
+			// 	if (i == 0) {
+			// 		setsearchFilter(
+			// 			usersJson.filter((p) => p.hashtags.includes(searchParamsArry[0]))
+			// 		);
+			// 		return;
+			// 	}
+			// 	setsearchFilter(
+			// 		_.union(
+			// 			usersJson.filter((p) => p.hashtags.includes(searchParamsArry[i])),
+			// 			searchFilter
+			// 		)
+			// 	);
+			// });
+			handdleFindUsersByHashtags()
 		} else {
 			setsearchFilter(usersJson.filter((p) => p.hashtags.includes("")));
 		}
@@ -52,15 +65,16 @@ export const UserLayout = () => {
 
 	useEffect(() => {
 		const users = [...Array(searchFilter.length)].map(
-			(users = searchFilter, i) => {
+			(x, i) => {
 				var image1 = <></>;
 				try {
 					image1 = (
 						<img
-							src={
-								publicationsJson.filter((p) => p.userid == users[i].uid)[0]
-									.photoURL
-							}
+							// src={
+							// 	publicationsJson.filter((p) => p.userid == users[i].uid)[0]
+							// 		.photoURL
+							// }
+							src={searchFilter[i].publicaciones[0].photoURL}
 							alt=""
 							className="flex-1 object-cover"
 						/>
@@ -71,10 +85,11 @@ export const UserLayout = () => {
 				try {
 					image2 = (
 						<img
-							src={
-								publicationsJson.filter((p) => p.userid == users[i].uid)[1]
-									.photoURL
-							}
+							// src={
+							// 	publicationsJson.filter((p) => p.userid == users[i].uid)[1]
+							// 		.photoURL
+							// }
+							src={searchFilter[i].publicaciones[1].photoURL}
 							alt=""
 							className="flex-1 object-cover"
 						/>
@@ -85,10 +100,11 @@ export const UserLayout = () => {
 				try {
 					image3 = (
 						<img
-							src={
-								publicationsJson.filter((p) => p.userid == users[i].uid)[2]
-									.photoURL
-							}
+							// src={
+							// 	publicationsJson.filter((p) => p.userid == users[i].uid)[2]
+							// 		.photoURL
+							// }
+							src={searchFilter[i].publicaciones[2].photoURL}
 							alt=""
 							className="flex-1 object-cover"
 						/>
@@ -99,7 +115,8 @@ export const UserLayout = () => {
 					<>
 						<div
 							//onClick={()=>console.log(users[i].uid)}
-							onClick={() => handdleUserClick(users[i].uid)}
+							//onClick={() => handdleUserClick(users[i].uid)}
+							onClick={() => handdleUserClick(searchFilter[i].user)}
 							id="userContainer"
 							className="bg-secondary-light w-fit h-fit
                             rounded-2xl p-3
@@ -120,7 +137,8 @@ export const UserLayout = () => {
 							<div id="user-info" className="flex gap-3 place-items-center">
 								<img src={usericon} alt="" className="h-[42px]" />
 								<h1 className="font-semibold text-2xl">
-									{users[i].displayName.split('/')[1]}
+									{/* {users[i].displayName.split('/')[1]} */}
+									{searchFilter[i].user}
 								</h1>
 							</div>
 						</div>

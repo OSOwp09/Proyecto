@@ -31,7 +31,7 @@ router.post(
 	"/",
 	[
 		check("email", "El mail es obligatorio").isEmail(),
-		check("password").isLength({ min: 6 }),
+		check("password", "Empty password").notEmpty(),
 		validarCampos,
 	],
 	loginUsuario

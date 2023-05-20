@@ -11,11 +11,11 @@ import {
 	LoginUserApi,
 	GenerateTokenApi,
 	FindUserByEmail,
+	FindUserByUser,
 } from "../../../api/Api";
 
 export const loadUser = (email) => {
 	return async (dispatch) => {
-		
 		dispatch(
 			authSlice.actions.login({
 				email: email,
@@ -38,8 +38,6 @@ export const loadUser = (email) => {
 		const photoURL = respUser.data.usuario.photoURL;
 		const id = respUser.data.usuario.id;
 		const token = respToken.data.token;
-
-
 
 		dispatch(
 			authSlice.actions.login({
@@ -84,8 +82,29 @@ export const registerAuth = (email, password, name, user) => {
 export const loginAuth = (email, password) => {
 	return async (dispatch) => {
 		try {
+			const validRegex =
+				/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+			let getEmail;
+			if (email.match(validRegex)) {
+				const findEmail = await FindUserByEmail.get("", {
+					params: {
+						email: email,
+					},
+				});
+				getEmail = findEmail.data.usuario.email;
+			} else {
+				const findUser = await FindUserByUser.get("", {
+					params: {
+						user: email,
+					},
+				});
+
+				getEmail = findUser.data.usuario.email;
+			}
+
 			const resp = await LoginUserApi.post("", {
-				email: email,
+				email: getEmail,
 				password: password,
 			});
 

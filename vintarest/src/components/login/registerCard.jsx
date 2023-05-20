@@ -51,9 +51,9 @@ export const RegisterCard = () => {
 			setInputErrors(errors);
 			return;
 		}
-		if (fields.user.length < 3 || fields.user.length > 10) {
+		if (fields.user.length < 3 || fields.user.length > 15) {
 			errors.type = "errorInvalid";
-			errors.description = " user must have betwen 3 and 10 characters";
+			errors.description = " user must have betwen 3 and 15 characters";
 			setInputErrors(errors);
 			return;
 		}
@@ -139,16 +139,32 @@ export const RegisterCard = () => {
 				hashtags: "",
 			});
 
-			console.log(resp)
+			console.log(resp);
 			const promise = dispatch(registerAuth(email, password, name, user));
 
 			promise.then((result) => {
-				console.log(result)
-				navigate("/")
-			})
-
+				console.log(result);
+				navigate("/");
+			});
 		} catch (error) {
 			console.log(error);
+			switch (error?.response?.data?.msg) {
+				case "Email already in use":
+					errors.id = "email";
+					errors.type = "errorInvalid";
+					errors.description = " email already in use";
+					setInputErrors(errors);
+					break;
+				case "User already in use":
+					errors.id = "user";
+					errors.type = "errorInvalid";
+					errors.description = " user already in use";
+					setInputErrors(errors);
+					break;
+
+				default:
+					break;
+			}
 		}
 	};
 

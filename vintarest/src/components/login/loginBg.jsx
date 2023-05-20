@@ -145,8 +145,6 @@ export const LoginBg = () => {
 				</div>
 			</div>
 			<motion.div
-				onHoverStart={() => setStartAnim(true)}
-				onHoverEnd={() => setStartAnim(false)}
 			>
 				<div
 					id="darkOverlay"

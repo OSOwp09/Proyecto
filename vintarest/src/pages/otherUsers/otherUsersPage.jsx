@@ -14,8 +14,10 @@ export const OtherUsersPage = () =>{
 	const [shareVisibility, setShareVisibility] = useState(false);
     const uid = useSelector((state)=>state.search).userId
 
+	console.log(uid);
+
 	const { image } = useContext(ImageContext);
-	
+
     return(
         <>
             <div className="flex place-content-center w-screen h-auto">

@@ -29,6 +29,10 @@ export const FindPublicationApi = axios.create({
 	baseURL: `${pathName}/api/search/findPublication`,
 });
 
+export const ListPublicationsByHashtags = axios.create({
+	baseURL: `${pathName}/api/search/listPublicationsByHashtags`,
+});
+
 //<----------------------
 
 //------ create comment------------>
@@ -44,6 +48,10 @@ export const ListUsersApi = axios.create({
 	baseURL: `${pathName}/api/search/listUsers`,
 });
 
+export const ListUsersByHashtag = axios.create({
+	baseURL: `${pathName}/api/search/listUsersByHashtag`
+})
+
 export const FindUserByEmail = axios.create({
 	baseURL: `${pathName}/api/search/findUserByEmail`,
 });
@@ -55,5 +63,7 @@ export const FindUserByUser = axios.create({
 export const ListPublicationsApi = axios.create({
 	baseURL: `${pathName}/api/search/listPublications`,
 });
+
+
 
 //<----------------------

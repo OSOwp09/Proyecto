@@ -4,7 +4,11 @@ import userJson from "../../fakeData/users.json";
 import { useSelector } from "react-redux";
 import { memo, useEffect, useMemo, useRef, useState, createRef } from "react";
 import { useRefDimensions } from "../../customHooks/useRefDimensions";
-import { FindUserByUser, FindUserByEmail } from "../../api/Api";
+import {
+	FindUserByUser,
+	FindUserByEmail,
+	ListPublicationsByHashtags,
+} from "../../api/Api";
 import { LayoutLoader } from "../../components/loaders/layoutLoader";
 
 export const ImageLayout = memo(
@@ -12,6 +16,7 @@ export const ImageLayout = memo(
 		const wordsValidator = useSelector(
 			(state) => state.search
 		).words.toLowerCase();
+
 		const [searchByWordsOrUid, setSearchByWordsOrUid] = useState();
 		const [searchByUseridOrHashtag, setSearchByUseridOrHashtag] = useState();
 		const [searchFilter, setsearchFilter] = useState([]);
@@ -56,30 +61,55 @@ export const ImageLayout = memo(
 			} catch (error) {}
 		};
 
+		const handdleListPublicationsByHashtags = async () => {
+			const resp = await ListPublicationsByHashtags.get("", {
+				params: {
+					hashtags: words,
+				},
+			});
+
+			const publicationsList = resp.data;
+			setsearchFilter(publicationsList.publications.filter((p) => p.id != pid));
+		};
+
+		const hanndleListAllPublications = async () => {
+			const resp = await ListPublicationsByHashtags.get("", {
+				params: {
+					hashtags: " ",
+				},
+			});
+
+			const publicationsList = resp.data;
+			setsearchFilter(publicationsList.publications.filter((p) => p.id != pid));
+		};
+
 		useMemo(() => {
 			if (searchByWordsOrUid != "") {
 				if (searchByUseridOrHashtag == "hashtags") {
-					var searchFilter = [];
-					const searchParamsArry = searchByWordsOrUid.split(" ");
-					searchParamsArry.map((hashtag = searchParamsArry, i) => {
-						if (i == 0) {
-							searchFilter = publicationsJson.filter((p) =>
-								p.hashtags.includes(searchParamsArry[0])
-							);
+					// var searchFilter = [];
 
-							setsearchFilter(searchFilter);
-							return;
-						}
+					// const searchParamsArry = searchByWordsOrUid.split(" ");
+					// searchParamsArry.map((hashtag = searchParamsArry, i) => {
+					// 	if (i == 0) {
+					// 		searchFilter = publicationsJson.filter((p) =>
+					// 			p.hashtags.includes(searchParamsArry[0])
+					// 		);
 
-						searchFilter = _.union(
-							publicationsJson.filter((p) =>
-								p.hashtags.includes(searchParamsArry[i])
-							),
-							searchFilter
-						);
-					});
-					searchFilter = searchFilter.filter((p) => p.publicationid != pid);
-					setsearchFilter(searchFilter);
+					// 		setsearchFilter(searchFilter);
+					// 		return;
+					// 	}
+
+					// 	searchFilter = _.union(
+					// 		publicationsJson.filter((p) =>
+					// 			p.hashtags.includes(searchParamsArry[i])
+					// 		),
+					// 		searchFilter
+					// 	);
+					// });
+
+					// searchFilter = searchFilter.filter((p) => p.publicationid != pid);
+					// setsearchFilter(searchFilter);
+					handdleListPublicationsByHashtags();
 					return;
 				}
 
@@ -90,9 +120,10 @@ export const ImageLayout = memo(
 					return;
 				}
 			} else {
-				setsearchFilter(
-					publicationsJson.filter((p) => p.hashtags.includes(""))
-				);
+				// setsearchFilter(
+				// 	publicationsJson.filter((p) => p.hashtags.includes(""))
+				// );
+				hanndleListAllPublications();
 			}
 		}, [searchByWordsOrUid, searchByUseridOrHashtag]);
 
@@ -129,9 +160,7 @@ export const ImageLayout = memo(
 			if (saveWidth != elementWidth) {
 				setWidth(dimensions.width);
 			}
-
 		}, [dimensions]);
-
 
 		/* This `useEffect` hook is creating an array of `ImageCard` components based on the `searchFilter`
 		state.
@@ -143,15 +172,29 @@ export const ImageLayout = memo(
 		useEffect(() => {
 			if (searchByWordsOrUid != "") {
 				if (searchByUseridOrHashtag == "hashtags") {
+					// const images = [...Array(searchFilter.length)].map(
+					// 	(image = searchFilter, i) => (
+					// 		<ImageCard
+					// 			key={i}
+					// 			id={image[i].publicationid}
+					// 			selectImg={selectImg}
+					// 			image={image[i].photoURL}
+					// 			description={image[i].title}
+					// 			userName={image[i].userName}
+					// 			hashtags={image[i].hashtags}
+					// 		/>
+					// 	)
+					// );
 					const images = [...Array(searchFilter.length)].map(
 						(image = searchFilter, i) => (
 							<ImageCard
 								key={i}
-								id={image[i].publicationid}
+								id={image[i]._id}
 								selectImg={selectImg}
 								image={image[i].photoURL}
-								description={image[i].title}
-								userName={image[i].userName}
+								title={image[i].title}
+								description = {image[i].description}
+								userName={image.user}
 								hashtags={image[i].hashtags}
 							/>
 						)
@@ -167,7 +210,8 @@ export const ImageLayout = memo(
 									id={image.publications[i]._id}
 									selectImg={selectImg}
 									image={image.publications[i].photoURL}
-									description={image.publications[i].title}
+									title={image.publications[i].title}
+									description = {image.publications[i].description}
 									userName={image.user}
 									hashtags={image.publications[i].hashtags}
 								/>
@@ -177,15 +221,30 @@ export const ImageLayout = memo(
 					} catch (error) {}
 				}
 			} else {
+				// const images = [...Array(searchFilter.length)].map(
+				// 	(image = searchFilter, i) => (
+				// 		<ImageCard
+				// 			key={i}
+				// 			id={image[i].publicationid}
+				// 			selectImg={selectImg}
+				// 			image={image[i].photoURL}
+				// 			description={image[i].title}
+				// 			userName={image[i].userName}
+				// 			hashtags={image[i].hashtags}
+				// 		/>
+				// 	)
+				// );
+				console.log(searchFilter);
 				const images = [...Array(searchFilter.length)].map(
 					(image = searchFilter, i) => (
 						<ImageCard
 							key={i}
-							id={image[i].publicationid}
+							id={image[i]._id}
 							selectImg={selectImg}
 							image={image[i].photoURL}
-							description={image[i].title}
-							userName={image[i].userName}
+							title={image[i].title}
+							description = {image[i].description}
+							userName={image[i].userId.user}
 							hashtags={image[i].hashtags}
 						/>
 					)
