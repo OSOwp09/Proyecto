@@ -281,7 +281,8 @@ export const RegisterCard = () => {
 					id="email"
 					type="text"
 					placeholder="Email"
-					onChange={(e) => setFields({ ...fields, email: e.target.value })}
+					value={fields.email}
+					onChange={(e) => setFields({ ...fields, email: e.target.value.toLowerCase() })}
 					className={`
                         px-[16px]
                         bg-secondary-light

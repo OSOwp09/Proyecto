@@ -38,7 +38,7 @@ export const UserCard = () => {
 			const usuario = resp.data.usuario
 			setUSer(usuario.user)
 			setName(usuario.name)
-			
+
 			console.log(usuario);
 		} catch (error) {
 			navigate("/Error404")

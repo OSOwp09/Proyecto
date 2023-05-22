@@ -91,86 +91,120 @@ export const ImageSelected = ({ close }) => {
 
 	return (
 		<>
-			<div className="py-2 h-full relative">
+			<div className="pt-2 h-full relative">
 				<div
 					ref={divScrollRef}
 					id="container"
 					className="bg-secondary-light
-					h-[calc(100vh-98px)]
-					w-[520px] overflow-auto
+					h-[calc(100vh-66px)]
+					w-[520px] overflow-auto overflow-x-hidden
 					rounded-2xl
 					drop-shadow-xl
 					font-inter text-primary-dark 
 					relative"
 				>
-					<div
+					<motion.div
 						id="options"
 						className="
 						/relative 
-						shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]
-						rounded-l-2xl
-						sticky top-0 z-50 bg-secondary-light
-						px-2 py-1 mb-2 flex place-items-center gap-3 select-none"
+						/shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]
+						/rounded-2xl /bg-secondary-light
+						sticky top-0 z-50 
+						/px-2 /py-1  
+						flex place-content-between place-items-center gap-2 
+						select-none"
+						//initial={{ scale: 0.8 }}
 					>
-						<img
-							onClick={() => close()}
-							src={closeX}
-							alt=""
-							className="h-7
-							hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)] rounded-full"
-						/>
+						<motion.div
+							className="p-2
+						rounded-full bg-secondary-light
+						shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]"
+							initial={{ scale: 0.8 }}
+							whileHover={{ scale: 1 }}
+						>
+							<img
+								id="close"
+								onClick={() => close()}
+								src={closeX}
+								alt=""
+								className="h-6
+							/hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)] rounded-full"
+							/>
+						</motion.div>
 
 						<motion.div
-							whileTap={{ scale: 0.9 }}
-							transition={{ type: "spring", stiffness: 400, damping: 17 }}
-							onClick={() => setThreeDotsVisibility(true)}
+							className="flex gap-2
+							py-1 px-3 
+							rounded-full bg-secondary-light
+							shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]"
+							initial={{ scale: 0.8 }}
+							whileHover={{ scale: 1 }}
 						>
-							<div
-								className={`h-8 w-8 rounded-full
+							<motion.div
+								id="dots"
+								whileTap={{ scale: 0.9 }}
+								transition={{ type: "spring", stiffness: 400, damping: 17 }}
+								onClick={() => setThreeDotsVisibility(true)}
+							>
+								<div
+									className={`h-8 w-8 rounded-full
 								hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
 								${threeDotsVisibility ? "shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]" : ""}
 								flex place-content-center place-items-center`}
-							>
-								<img src={threeDots} alt="" className="w-6" />
-							</div>
-						</motion.div>
+								>
+									<img src={threeDots} alt="" className="w-5" />
+								</div>
+							</motion.div>
 
-						<motion.div
-							whileTap={{ scale: 0.9 }}
-							transition={{ type: "spring", stiffness: 400, damping: 17 }}
-							onMouseUp={() => setShareVisibility(true)}
-						>
-							<div
-								className={`h-8 w-8 rounded-full
+							<motion.div
+								id="share"
+								whileTap={{ scale: 0.9 }}
+								transition={{ type: "spring", stiffness: 400, damping: 17 }}
+								onMouseUp={() => setShareVisibility(true)}
+							>
+								<div
+									className={`h-8 w-8 rounded-full
 								hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
 								${shareVisibility ? "shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]" : ""}
 								flex place-content-center place-items-center`}
+								>
+									<img src={share} alt="" className="w-5" />
+								</div>
+							</motion.div>
+
+							<motion.div
+								id="link"
+								whileTap={{ scale: 0.9 }}
+								transition={{ type: "spring", stiffness: 400, damping: 17 }}
 							>
-								<img src={share} alt="" className="w-6" />
-							</div>
+								<CopyToClipboard text={shareUrl}>
+									<div
+										className={`h-8 w-8 rounded-full
+									hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
+									flex place-content-center place-items-center`}
+									>
+										<img src={link} alt="" className="w-6" />
+									</div>
+								</CopyToClipboard>
+							</motion.div>
 						</motion.div>
 
 						<motion.div
-							whileTap={{ scale: 0.9 }}
-							transition={{ type: "spring", stiffness: 400, damping: 17 }}
+							className="
+						p-2
+						rounded-full bg-secondary-light
+						shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]"
+							initial={{ scale: 0.8 }}
+							whileHover={{ scale: 1 }}
 						>
-							<CopyToClipboard text={shareUrl}>
-								<div
-									className={`h-8 w-8 rounded-full
-									hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
-									flex place-content-center place-items-center`}
-								>
-									<img src={link} alt="" className="w-6" />
-								</div>
-							</CopyToClipboard>
+							<img
+								id="open"
+								src={openArrow}
+								alt=""
+								className="h-6"
+								onClick={() => handdleOnOpenBtnClick()}
+							/>
 						</motion.div>
-
-						<img
-							src={openArrow}
-							alt=""
-							className="h-7"
-							onClick={() => handdleOnOpenBtnClick()}
-						/>
 
 						<div id="options" className="absolute top-10 left-2 z-50">
 							<div
@@ -189,37 +223,38 @@ export const ImageSelected = ({ close }) => {
 								</div>
 							</div>
 						</div>
-					</div>
+					</motion.div>
 
 					<div
 						id="image-and-info"
-						className="flex flex-col h-auto /max-h-[448px] /px-[80px]
-						rounded-2xl 
-							shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]"
+						className="flex flex-col h-auto /max-h-[448px] /px-[48px]
+						"
 					>
-						<div id="image" className="select-none">
-							<motion.div
-								className="h-auto relative"
-								initial={"imgNotHover"}
-								whileHover={"imgHover"}
-							>
+						<div
+							id="image"
+							className="
+						select-none
+						flex place-content-center"
+						>
+							<div className="bg-secondary-light 
+							shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]
+							p-1 rounded-2xl">
 								<img
 									src={image.src}
 									alt=""
 									className="
-									h-[auto] 
-									w-[520px] 
-									/w-[360px] 
-									/w-[240px] /max-h-[448px] /min-h-[120px]
-									rounded-t-2xl object-cover"
+									h-auto max-h-[572px]
+									w-auto max-w-[620px]
+									rounded-2xl object-cover"
 								/>
-							</motion.div>
+							</div>
 						</div>
 						<div
 							id="user-Title-and-commentaries"
 							className="
 							p-4 mt-1
-							"
+							rounded-2xl 
+						shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]"
 						>
 							<div
 								id="user"
@@ -256,8 +291,12 @@ export const ImageSelected = ({ close }) => {
 							scrollToTop(), console.log("paArriba");
 						}}
 					>
-						<h1 className="
-						font-semibold">Related publications</h1>
+						<h1
+							className="
+						font-semibold"
+						>
+							Related publications
+						</h1>
 						{html}
 					</div>
 				</div>

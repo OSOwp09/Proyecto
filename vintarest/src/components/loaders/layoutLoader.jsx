@@ -77,7 +77,7 @@ export const LayoutLoader = ({columns}) => {
 					className="flex h-auto w-auto flex-wrap place-content-center gap-2 pr-8 pl-1 "
 					initial={{ opacity: 1 }}
 					animate={{ opacity: 0 }}
-					transition={{ delay: 1 }}
+					transition={{ delay: 999 }}
 				>
 					{images}
 				</motion.div>

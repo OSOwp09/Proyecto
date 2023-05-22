@@ -17,7 +17,7 @@ export const ImageProvider = ({ children }) => {
 			...image,
 			code: (
 				<>
-					<div id="imageSelected-container" className="px-">
+					<div id="imageSelected-container" className="">
 						<ImageSelected close={closeSelectedImage} />
 					</div>
 				</>

@@ -64,18 +64,23 @@ export const Navbar = () => {
 				id="navbar-container"
 				className={`
 				${navbar}
-                h-[80px] w-auto 
-                flex place-items-center gap-2
+                h-[48px] w-auto 
+                flex place-items-center 
+				max-sm:gap-1 max-sm:px-2
+				sm:gap-2 sm:px-4
+				md:gap-4 md:px-6
+				lg:gap-6 lg:px-8
+
                 bg-secondary-light
                 font-inter select-none
-                px-4`}
+                `}
 			>
 				<img
 					id="logo"
 					src={logo}
 					className="
-					w-[40px] h-[40px]
-					mx-5"
+					h-[24px]
+					mx-3"
 					onClick={() => {navigate("/home"), dispatch(searchPublications(""))}}
 				/>
 
@@ -83,11 +88,11 @@ export const Navbar = () => {
 					id="search"
 					className="
                     flex place-items-center gap-4
-                    w-screen h-[48px]
+                    w-screen h-[32px]
                     bg-secondary-highlight
                     rounded-2xl"
 				>
-					<img src={search} alt="" className="h-[16px] ml-4" 
+					<img src={search} alt="" className="h-[14px] ml-4" 
 					onClick={()=>handdleSearchInput(wordsInput)}/>
 					<input
 						onChange={(e)=> setWordsInput(e.target.value)}
@@ -96,12 +101,13 @@ export const Navbar = () => {
 						type="text"
 						placeholder="Search"
 						className="
-                            w-full h-[48px]
+						text-sm
+                            w-full h-[32px]
                             bg-secondary-highlight 
                             rounded-2xl 
                             placeholder:text-secondary-dark
                             text-primary-dark
-							outline-none"
+							outline-none pr-4"
 					/>
 				</div>
 
@@ -119,7 +125,7 @@ export const Navbar = () => {
 					${login}
 					${login ? "hidden" : "block"}`}
 				>
-					<button className="w-[80px] py-1">Log in</button>
+					<button className="w-[56px] py-1 text-sm">Log in</button>
 				</div>
 
 				<div
@@ -132,7 +138,7 @@ export const Navbar = () => {
 					<motion.div
 						id="chat-icon-container"
 						onClick={() => handdleOpenCloseChat()}
-						className={`h-[60%] w-[40px]
+						className={`h-[60%] w-[30px]
 						flex place-items-center place-content-center
 						${chatState.code != "" ? styles.pressed : styles.navbtn}`}
 						initial={"tapnt"}
@@ -149,7 +155,7 @@ export const Navbar = () => {
 								<img
 									src={chatState.code != "" ? closeIcon : chatIcon}
 									alt=""
-									className="h-[24px]"
+									className="h-[20px]"
 								/>
 							</div>
 						</motion.div>
@@ -157,7 +163,7 @@ export const Navbar = () => {
 
 					<motion.div
 						id="user-icon-container"
-						className={`h-[60%] w-[40px]
+						className={`h-[60%] w-[30px]
 					flex place-items-center place-content-center
 					${
 						location.pathname == "/home/user" ||
@@ -179,7 +185,7 @@ export const Navbar = () => {
 							<div
 								id="user-image-container"
 								className="
-                        w-[24px] h-[24px] flex-none
+                        w-[20px] h-[20px] flex-none
                         rounded-full "
 							>
 								<img
@@ -196,7 +202,7 @@ export const Navbar = () => {
 					<motion.div
 						onClick={() => setOptions(!options)}
 						id="options-icon-container"
-						className={`h-[60%] w-[40px]
+						className={`h-[60%] w-[30px]
 						flex place-items-center place-content-center
 						${options ? styles.pressed : styles.navbtn}`}
 						animate={options ? "open" : "closed"}

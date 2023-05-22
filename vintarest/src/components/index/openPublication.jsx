@@ -267,7 +267,7 @@ export const OpenPublication = memo(() => {
 				ref={ref}
 				id="page-container"
 				className="
-                    w-screen h-[calc(100vh-80px)] overflow-auto overflow-x-hidden
+                    w-screen h-[calc(100vh-48px)] overflow-auto overflow-x-hidden
                     flex place-items-center flex-col"
 			>
 				<div

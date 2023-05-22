@@ -92,7 +92,7 @@ export const loginAuth = (email, password) => {
 						email: email,
 					},
 				});
-				getEmail = findEmail.data.usuario.email;
+				getEmail = findEmail.data.usuario.email.toLowerCase();
 			} else {
 				const findUser = await FindUserByUser.get("", {
 					params: {
@@ -100,8 +100,10 @@ export const loginAuth = (email, password) => {
 					},
 				});
 
-				getEmail = findUser.data.usuario.email;
+				getEmail = findUser.data.usuario.email.toLowerCase();
 			}
+
+			console.log(getEmail);
 
 			const resp = await LoginUserApi.post("", {
 				email: getEmail,
@@ -115,14 +117,14 @@ export const loginAuth = (email, password) => {
 			const id = resp.data.usuario._id;
 			const token = resp.data.token;
 
-			const response = await signInWithEmailAndPassword(auth, email, password);
+			const response = await signInWithEmailAndPassword(auth, getEmail, password);
 
 			// Update the auth state with user information
 			if (response.user) {
 				dispatch(
 					authSlice.actions.login({
 						uid: id,
-						email: email,
+						email: getEmail,
 						user: user,
 						name: name,
 						hashtags: hashtags,

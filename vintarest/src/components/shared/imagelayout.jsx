@@ -13,6 +13,8 @@ import { LayoutLoader } from "../../components/loaders/layoutLoader";
 
 export const ImageLayout = memo(
 	({ selectImg, words = "", uid = "", pid = "-" }) => {
+		const [loaded, setLoaded] = useState(false);
+
 		const wordsValidator = useSelector(
 			(state) => state.search
 		).words.toLowerCase();
@@ -193,7 +195,7 @@ export const ImageLayout = memo(
 								selectImg={selectImg}
 								image={image[i].photoURL}
 								title={image[i].title}
-								description = {image[i].description}
+								description={image[i].description}
 								userName={image.user}
 								hashtags={image[i].hashtags}
 							/>
@@ -211,7 +213,7 @@ export const ImageLayout = memo(
 									selectImg={selectImg}
 									image={image.publications[i].photoURL}
 									title={image.publications[i].title}
-									description = {image.publications[i].description}
+									description={image.publications[i].description}
 									userName={image.user}
 									hashtags={image.publications[i].hashtags}
 								/>
@@ -243,7 +245,7 @@ export const ImageLayout = memo(
 							selectImg={selectImg}
 							image={image[i].photoURL}
 							title={image[i].title}
-							description = {image[i].description}
+							description={image[i].description}
 							userName={image[i].userId.user}
 							hashtags={image[i].hashtags}
 						/>
@@ -281,7 +283,7 @@ export const ImageLayout = memo(
 					{matrix[i]}
 				</div>
 			));
-
+			setLoaded(true);
 			return layout;
 		};
 
@@ -299,14 +301,35 @@ export const ImageLayout = memo(
 
 		/*--------------------------------------------------------------------------------------------------------------*/
 
+		const loader = () => {
+			return (
+				<>
+					<div className="absolute top-[-8px] left-0 z-50 ">
+						<LayoutLoader />
+					</div>
+				</>
+			);
+		};
+
 		return (
 			<>
-				<div
-					ref={divRef}
-					id="images-container"
-					className="w-full flex place-content-center gap-2"
-				>
-					{html}
+				<div ref={divRef} id="images-container" className="relative w-full ">
+					<div
+						className={`
+					transition-opacity delay-2 
+					${loaded ? "hidden" : "opacity-100"}`}
+					>
+						{loader()}
+					</div>
+
+					<div
+						className={`
+						flex place-content-center gap-2
+					transition-opacity delay-2000
+					${!loaded ? "opacity-0" : "opacity-100"}`}
+					>
+						{html}
+					</div>
 				</div>
 			</>
 		);

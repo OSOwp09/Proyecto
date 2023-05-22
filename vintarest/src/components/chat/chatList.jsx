@@ -20,7 +20,7 @@ export const ChatList = () => {
                 bg-secondary-light
 				h-[calc(100vh-88px)]
                 max-h-[calc(672px-72px)] w-[360px] rounded-2xl
-				calc(100vh-80px)
+				calc(100vh-48px)
                 flex flex-col
                 drop-shadow-xl
                 font-inter text-primary-dark"

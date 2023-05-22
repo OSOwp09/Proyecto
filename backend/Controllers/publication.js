@@ -1,12 +1,26 @@
 const express = require("express");
 const PublicationScheme = require("../models/PublicationSchema");
+const Usuario = require("../models/Usuario");
+const _ = require("lodash");
 
 const createPublication = async (req, res = express.request) => {
 	const publication = new PublicationScheme(req.body);
-	
+
 	try {
-		//publication.userId = req.uid;
+
 		await publication.save();
+
+		const UserHashtags = await Usuario.findOne({ _id: publication.userId }).select("hashtags");
+
+		const filter = { _id: publication.userId };
+		const pubHashtags = publication.hashtags.split(" ")
+		const userHashtags = UserHashtags.hashtags.split(" ")
+		const update = { hashtags: `${_.union(pubHashtags, userHashtags).join(' ')}` };
+
+		await Usuario.findOneAndUpdate(filter, update);
+
+		console.log(update);
+
 		return res.json({
 			ok: true,
 			publication,

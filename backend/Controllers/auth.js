@@ -22,7 +22,7 @@ const crearUsuario = async (req, res = express.request) => {
 				msg: "User already in use",
 			});
 		}
-
+		
 		usuario = new Usuario(req.body);
 		const salt = bycrypt.genSaltSync();
 		usuario.password = bycrypt.hashSync(password, salt);

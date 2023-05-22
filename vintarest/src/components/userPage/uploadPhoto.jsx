@@ -53,17 +53,24 @@ export const UploadPhoto = () => {
 		});
 	}, []);
 
+	const hanndleResizeInput = (element, px) => {
+		element.target.style.height = px;
+		element.target.style.height = element.target.scrollHeight + "px";
+	};
+
 	const characterLimitTitle = 30;
 	const handdleTitleChange = (title) => {
-		if (title.length <= characterLimitTitle) {
-			setTitle(title);
+		if (title.target.value.length <= characterLimitTitle) {
+			setTitle(title.target.value);
+			hanndleResizeInput(title, "26px");
 		}
 	};
 
-	const characterLimitDescription = 20;
+	const characterLimitDescription = 100;
 	const handdleDescriptionChange = (description) => {
-		if (description.length <= characterLimitDescription) {
-			setDescription(description);
+		if (description.target.value.length <= characterLimitDescription) {
+			setDescription(description.target.value);
+			hanndleResizeInput(description, "18px");
 		}
 	};
 
@@ -129,6 +136,7 @@ export const UploadPhoto = () => {
 		}
 
 		try {
+			console.log(userId);
 			const result = await uploadFile(file);
 			const url = `https://firebasestorage.googleapis.com/v0/b/${result.metadata.bucket}/o/publications%2F${result.metadata.name}?alt=media`;
 
@@ -153,11 +161,12 @@ export const UploadPhoto = () => {
 			);
 			console.log(resp);
 			setImgFile("");
-			navigate("/home/user")
+			navigate("/home/user");
 		} catch (error) {
 			console.log(error);
 		}
 	};
+
 
 	return (
 		<>
@@ -171,7 +180,7 @@ export const UploadPhoto = () => {
 					id="container"
 					className="
                     relative
-                    h-[496px] w-[512px]
+                    min-h-[496px] w-auto
                     bg-secondary-light
                     rounded-2xl
                     shadow-lg
@@ -222,44 +231,48 @@ export const UploadPhoto = () => {
 					<div
 						id="inputsContainer"
 						className="
-                        w-auto max-w-[200px] 
+                        w-auto /max-w-[200px] 
                         my-6 mr-6
                         font-semibold
                         relative"
 					>
-						<input
+						<textarea
 							id="Title"
 							className="
                             bg-transparent
                             mt-6 outline-none text-2xl
-							w-[190px]
-							border
-							/hyphens-auto"
+							h-[26px]
+							w-[240px]
+							/hyphens-auto
+							resize-none
+							overflow-hidden"
 							type="text"
 							placeholder="Add Title"
 							value={title}
-							onChange={(e) => handdleTitleChange(e.target.value)}
+							onChange={(e) => handdleTitleChange(e)}
 						/>
-						<hr className="h-[2px] w-[198px] bg-primary-dark border-0" />
+						<hr className="h-[1px] w-[240px] bg-primary-dark border-0" />
 						<div id="userPhoto" className="flex gap-3 mt-6 place-items-center">
-							<img
-								className="h-12"
-								src={userIcon}
-								alt=""
-							/>
-							<h1 className="text-2xl">{user}</h1>
+							<img className="h-12" src={userIcon} alt="" />
+							<h1 className="text-xl  w-auto h- /break-words hyphens-auto">
+								{user}
+							</h1>
 						</div>
-						<input
+						<textarea
 							id="Description"
 							className="
+							w-[240px]
+							h-[18px]
                             bg-transparent
-                            mt-6 outline-none text-sm"
+                            mt-6 outline-none text-sm
+							resize-none
+							overflow-hidden"
 							type="text"
 							placeholder="Add Description"
 							value={description}
-							onChange={(e) => handdleDescriptionChange(e.target.value)}
+							onChange={(e) => handdleDescriptionChange(e)}
 						/>
-						<hr className="h-[2px] w-[198px] bg-primary-dark border-0" />
+						<hr className="h-[1px] w-[240px] bg-primary-dark border-0" />
 						<input
 							id="Hashtags"
 							className="
@@ -275,13 +288,15 @@ export const UploadPhoto = () => {
 								}
 							}}
 						/>
-						<hr className="h-[2px] w-[198px] bg-primary-dark border-0" />
+						<hr className="h-[1px] w-[198px] bg-primary-dark border-0" />
 
 						<div
 							id="hashtagsContainer"
 							className="
-						mt-3
-						flex flex-wrap gap-1"
+							w-[220px]
+							h-auto
+							mt-3
+							flex flex-wrap gap-1"
 						>
 							{hashtagElementList.map((hashtag, index) => (
 								<HashtagComponent
@@ -291,7 +306,7 @@ export const UploadPhoto = () => {
 								/>
 							))}
 						</div>
-
+						<div className="h-[50px]"></div>
 						<button
 							id="save-button"
 							className="

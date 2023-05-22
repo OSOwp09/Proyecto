@@ -26,7 +26,6 @@ export const Home = () => {
 	const [loaded, setLoaded] = useState(false);
 
 	useEffect(() => {
-		
 		if (!loaded) {
 			setTimeout(() => {
 				//setLayoutHtml(<></>);

@@ -23,7 +23,8 @@ class Server {
 			auth: "/api/auth",
 			publication: "/api/publication",
 			search: "/api/search",
-			commentary: "/api/commentary"
+			commentary: "/api/commentary",
+			delete: "/api/delete"
 		};
 
 		this.connectToDB();
@@ -56,6 +57,7 @@ class Server {
 		this.app.use(this.paths.publication, require("../routes/publication"));
 		this.app.use(this.paths.search, require("../routes/search"));
 		this.app.use(this.paths.commentary, require("../routes/commentary"));
+		this.app.use(this.paths.delete, require("../routes/delete"))
 	}
 
 	sockets() {
