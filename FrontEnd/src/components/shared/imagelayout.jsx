@@ -59,31 +59,38 @@ export const ImageLayout = memo(
 						email: user,
 					},
 				});
+				console.log(respUser);
 				setsearchFilter(respUser.data.usuario);
 			} catch (error) {}
 		};
 
 		const handdleListPublicationsByHashtags = async () => {
-			const resp = await ListPublicationsByHashtags.get("", {
-				params: {
-					hashtags: words,
-					publicationId: pid
-				},
-			});
+			try {
+				const resp = await ListPublicationsByHashtags.get("", {
+					params: {
+						hashtags: words,
+						publicationId: pid,
+					},
+				});
 
-			const publicationsList = resp.data;
-			setsearchFilter(publicationsList.publications);
+				const publicationsList = resp.data;
+				setsearchFilter(publicationsList.publications);
+			} catch (error) {}
 		};
 
 		const hanndleListAllPublications = async () => {
-			const resp = await ListPublicationsByHashtags.get("", {
-				params: {
-					hashtags: " ",
-				},
-			});
+			try {
+				const resp = await ListPublicationsByHashtags.get("", {
+					params: {
+						hashtags: " ",
+					},
+				});
 
-			const publicationsList = resp.data;
-			setsearchFilter(publicationsList.publications.filter((p) => p.id != pid));
+				const publicationsList = resp.data;
+				setsearchFilter(
+					publicationsList.publications.filter((p) => p.id != pid)
+				);
+			} catch (error) {}
 		};
 
 		useMemo(() => {
@@ -118,7 +125,6 @@ export const ImageLayout = memo(
 
 				if (searchByUseridOrHashtag == "userid") {
 					//setsearchFilter(publicationsJson.filter((p) => p.userid == uid));
-					console.log(publicationsJson.filter((p) => p.userid == 1));
 					handdleFindUser(uid);
 					return;
 				}
@@ -202,26 +208,27 @@ export const ImageLayout = memo(
 							/>
 						)
 					);
+
 					setImgs(images);
 				}
 				if (searchByUseridOrHashtag == "userid") {
-					try {
-						const images = [...Array(searchFilter.publications.length)].map(
-							(image = searchFilter, i) => (
-								<ImageCard
-									key={i}
-									id={image.publications[i]._id}
-									selectImg={selectImg}
-									image={image.publications[i].photoURL}
-									title={image.publications[i].title}
-									description={image.publications[i].description}
-									userName={image.user}
-									hashtags={image.publications[i].hashtags}
-								/>
-							)
-						);
-						setImgs(images);
-					} catch (error) {}
+					console.log(searchFilter);
+					const images = [...Array(searchFilter.publications.length)].map(
+						(image = searchFilter, i) => (
+							<ImageCard
+								key={i}
+								id={image.publications[i]._id}
+								selectImg={selectImg}
+								image={image.publications[i].photoURL}
+								title={image.publications[i].title}
+								description={image.publications[i].description}
+								userName={image.user}
+								hashtags={image.publications[i].hashtags}
+							/>
+						)
+					);
+
+					setImgs(images);
 				}
 			} else {
 				// const images = [...Array(searchFilter.length)].map(
@@ -237,6 +244,7 @@ export const ImageLayout = memo(
 				// 		/>
 				// 	)
 				// );
+
 				console.log(searchFilter);
 				const images = [...Array(searchFilter.length)].map(
 					(image = searchFilter, i) => (
@@ -252,6 +260,7 @@ export const ImageLayout = memo(
 						/>
 					)
 				);
+
 				setImgs(images);
 			}
 		}, [searchFilter]);
@@ -284,7 +293,10 @@ export const ImageLayout = memo(
 					{matrix[i]}
 				</div>
 			));
-			setLoaded(true);
+			if (imgs[0] != undefined) {
+				console.log("object");
+				setLoaded(true);
+			}
 			return layout;
 		};
 
