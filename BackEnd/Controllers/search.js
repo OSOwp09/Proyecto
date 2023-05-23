@@ -110,15 +110,13 @@ const listUsersByHashtag = async (req, res = express.request) => {
 			},
 		]);
 
-		console.log(hashtags)
+		console.log(hashtags);
 		const hashtagsArray = hashtags.split(" ");
 		let usuarios = [];
 
 		await hashtagsArray.map((x, i) => {
 			if (i == 0) {
-				usuarios = resp.filter((p) =>
-					p.hashtags.includes(hashtagsArray[0])
-				);
+				usuarios = resp.filter((p) => p.hashtags.includes(hashtagsArray[0]));
 				return;
 			}
 
@@ -132,7 +130,6 @@ const listUsersByHashtag = async (req, res = express.request) => {
 			ok: true,
 			usuarios,
 		});
-
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({
@@ -256,12 +253,13 @@ const listPublications = async (req, res = express.request) => {
 };
 
 const listPublicationsByHashtags = async (req, res = express.request) => {
-	const { hashtags } = req.query;
+	const { hashtags, publicationId } = req.query;
 	try {
 		const publicationsJson = await PublicationScheme.find().populate(
 			"userId",
 			"user photoURL"
 		);
+		console.log(publicationsJson[0].id);
 
 		const hashtagsArray = hashtags.split(" ");
 		let publications = [];
@@ -282,7 +280,7 @@ const listPublicationsByHashtags = async (req, res = express.request) => {
 
 		return res.status(200).json({
 			ok: true,
-			publications,
+			publications: publications.filter((p) => p._id != publicationId),
 		});
 	} catch (error) {
 		console.log(error);
