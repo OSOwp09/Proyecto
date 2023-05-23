@@ -140,6 +140,11 @@ export const ImageLayout = memo(
 		-------- depending of the number of columns that depends ------------------------
 		-------- on the width of the container of the layout ----------------------------
 		*/
+		const hanndleResize = (element) => {
+			console.log("He cambiado");
+			// element.target.style.height = "38px";
+			// element.target.style.height = element.target.scrollHeight + "px";
+		};
 
 		const [imgs, setImgs] = useState([]);
 		const divRef = createRef();
@@ -155,7 +160,6 @@ export const ImageLayout = memo(
 			meaning how many columns it can have depending of
 			the treshholdWidth
 			*/
-
 			const saveWidth = width / treshholdWidth - ((width / treshholdWidth) % 1);
 			const elementWidth =
 				dimensions.width / treshholdWidth -
@@ -245,7 +249,6 @@ export const ImageLayout = memo(
 				// 	)
 				// );
 
-				console.log(searchFilter);
 				const images = [...Array(searchFilter.length)].map(
 					(image = searchFilter, i) => (
 						<ImageCard
@@ -326,20 +329,31 @@ export const ImageLayout = memo(
 
 		return (
 			<>
-				<div ref={divRef} id="images-container" className="relative w-full ">
+				<div
+					ref={divRef}
+					id="images-container"
+					className="relative w-full"
+				>
+					<input
+						type="checkbox"
+						className="invisible absolute top-0 left-0 peer w-6 h-6 z-50"
+						checked={loaded}
+					/>
 					<div
 						className={`
-					transition-opacity delay-2 
-					${loaded ? "hidden" : "block"}`}
+						overflow-hidden
+						translate-x-[5px]
+						transition-all duration-[1200ms] delay-[500ms]
+						opacity-100 peer-checked:opacity-0`}
 					>
 						{loader()}
 					</div>
 
 					<div
 						className={`
-						flex place-content-center gap-2
-					transition-opacity delay-2000
-					${!loaded ? "opacity-0" : "opacity-100"}`}
+						flex place-content-center gap-2 
+						transition-all duration-[1200ms] delay-[600ms]
+						opacity-0 peer-checked:opacity-100`}
 					>
 						{html}
 					</div>

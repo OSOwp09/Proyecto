@@ -106,19 +106,15 @@ export const ImageSelected = ({ close }) => {
 					<motion.div
 						id="options"
 						className="
-						/relative 
-						/shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]
-						/rounded-2xl /bg-secondary-light
 						sticky top-0 z-50 
-						/px-2 /py-1  
 						flex place-content-between place-items-center gap-2 
 						select-none"
 						//initial={{ scale: 0.8 }}
 					>
 						<motion.div
 							className="p-2
-						rounded-full bg-secondary-light
-						shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]"
+							rounded-full bg-secondary-light
+							shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]"
 							initial={{ scale: 0.8 }}
 							whileHover={{ scale: 1 }}
 						>
@@ -127,8 +123,7 @@ export const ImageSelected = ({ close }) => {
 								onClick={() => close()}
 								src={closeX}
 								alt=""
-								className="h-6
-							/hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)] rounded-full"
+								className="h-6"
 							/>
 						</motion.div>
 
@@ -191,9 +186,9 @@ export const ImageSelected = ({ close }) => {
 
 						<motion.div
 							className="
-						p-2
-						rounded-full bg-secondary-light
-						shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]"
+							p-2
+							rounded-full bg-secondary-light
+							shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]"
 							initial={{ scale: 0.8 }}
 							whileHover={{ scale: 1 }}
 						>
@@ -206,10 +201,10 @@ export const ImageSelected = ({ close }) => {
 							/>
 						</motion.div>
 
-						<div id="options" className="absolute top-10 left-2 z-50">
+						<div id="options" className="absolute top-10 left-[178px] z-50">
 							<div
 								ref={shareVisibility ? wrapperRefShare : nullRef}
-								className={`${shareVisibility ? "block" : "hidden"}`}
+								className={`${shareVisibility ? "block" : "hidden"} translate-x-[-114px]`}
 							>
 								<ShareButton src={shareUrl} />
 							</div>
@@ -233,12 +228,14 @@ export const ImageSelected = ({ close }) => {
 						<div
 							id="image"
 							className="
-						select-none
-						flex place-content-center"
+							select-none
+							flex place-content-center"
 						>
-							<div className="bg-secondary-light 
+							<div
+								className="bg-secondary-light 
 							shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]
-							p-1 rounded-2xl">
+							p-1 rounded-2xl"
+							>
 								<img
 									src={image.src}
 									alt=""

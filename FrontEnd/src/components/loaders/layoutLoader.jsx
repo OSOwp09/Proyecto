@@ -73,14 +73,11 @@ export const LayoutLoader = ({columns}) => {
 	return (
 		<>
 			<div className="h-screen w-screen overflow-hidden drop-shadow-md">
-				<motion.div
+				<div
 					className="flex h-auto w-auto flex-wrap place-content-center gap-2 pr-8 pl-1 "
-					initial={{ opacity: 1 }}
-					animate={{ opacity: 0 }}
-					transition={{ delay: 999 }}
 				>
 					{images}
-				</motion.div>
+				</div>
 			</div>
 		</>
 	);

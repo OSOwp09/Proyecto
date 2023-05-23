@@ -1,6 +1,12 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
+import {
+	getStorage,
+	ref,
+	uploadBytes,
+	deleteObject,
+	getDownloadURL,
+} from "firebase/storage";
 import { v4 } from "uuid";
 
 const firebaseConfig = {
@@ -28,7 +34,7 @@ export async function deleteFile(firebaseId) {
 	// Create a reference to the file to delete
 	const desertRef = ref(
 		storage,
-		"gs://vintarest-385f2.appspot.com/publications/"+firebaseId
+		"gs://vintarest-385f2.appspot.com/publications/" + firebaseId
 	);
 
 	console.log(desertRef);

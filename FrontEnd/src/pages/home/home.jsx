@@ -93,17 +93,19 @@ export const Home = () => {
 				</div>
 
 				<div
-					className={`
+					id="images-and-imageSelected"
+					className={`relative
 					${searchFor == "Explore" ? "block" : "hidden"}
 					w-screen flex gap-2 h-fit`}
 				>
-					<div
-						id="imageLayout-container"
-						className={`grow /pr-6 h-full pt-2 `}
-					>
+					<div id="imageLayout-container" className={`grow h-full pt-2 `}>
 						{layoutHtml}
-						<div className={`${loaded ? "opacity-100" : "opacity-0"}`}>
+						<div className={`absolute w-full flex`}>
+							
 							<ImageLayout words={words} />
+							<div className={`
+							${image.code.props?.children ? "block":"hidden"}
+							invisible h-2 w-[1020px] bg-black`}></div>
 						</div>
 					</div>
 

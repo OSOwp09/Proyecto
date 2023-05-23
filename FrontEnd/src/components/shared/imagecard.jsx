@@ -62,7 +62,7 @@ export const ImageCard = ({
 						/>
 
 						<div
-							onClick={()=>handdleOnOpenBtnClick()}
+							onClick={() => handdleOnOpenBtnClick()}
 							className="
 							group/open
 							h-auto w-auto
@@ -75,8 +75,9 @@ export const ImageCard = ({
 						>
 							<div
 								className="relative
-								h-6 w-6
+								h-6 w-auto
 								transition-all duration-[300ms] delay-0 ease-in
+								translate-x-[8px] group-hover/open:translate-x-[12px]
 								group-hover/open:mb-2
 								group-hover/open:ml-2
 								opacity-50 group-hover/open:opacity-100
@@ -84,7 +85,7 @@ export const ImageCard = ({
 								animate-bounce group-hover/open:animate-none"
 							>
 								<div
-									className="absolute bottom-0 left-0 delay-0 ease-in
+									className="/absolute bottom-0 left-0 delay-0 ease-in
 									overflow-hidden
 									transition-all duration-[300ms]
 									rounded-2xl /group-hover/open:rounded-2xl
@@ -93,7 +94,7 @@ export const ImageCard = ({
 								>
 									<p
 										className=" px-2 pt-[2px] 
-									/group-hover/open:w-[5px] 
+										/group-hover/open:w-[5px] 
 									"
 									>
 										Open
@@ -102,9 +103,8 @@ export const ImageCard = ({
 								<div
 									className="
 									transition-all duration-[300ms] delay-0 ease-in
-									absolute bottom-0 left-0 h-6 w-6
-									group-hover/open:rotate-[45deg]
-									group-hover/open:translate-x-[50px]"
+									absolute bottom-0 right-0 h-6 w-6
+									group-hover/open:rotate-[45deg]"
 								>
 									<img
 										src={openArrow}
