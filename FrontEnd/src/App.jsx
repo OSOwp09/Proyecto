@@ -59,7 +59,7 @@ function App() {
 
 	return (
 		<>
-			<div className="font-inter">{loadApp}</div>
+			<div className="font-inter ">{loadApp}</div>
 		</>
 	);
 }

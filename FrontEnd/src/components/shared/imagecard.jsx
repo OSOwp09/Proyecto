@@ -6,7 +6,14 @@ import { useNavigate } from "react-router-dom";
 
 import openArrow from "../../assets/arrow-up-right-circle.svg";
 
-export const ImageCard = ({ image, title, description, userName, id, hashtags }) => {
+export const ImageCard = ({
+	image,
+	title,
+	description,
+	userName,
+	id,
+	hashtags,
+}) => {
 	const { handleImageSelected } = useContext(ImageContext);
 
 	const navigate = useNavigate();
@@ -14,11 +21,12 @@ export const ImageCard = ({ image, title, description, userName, id, hashtags })
 
 	const handdleInput = () => {
 		//closeSelectedImage()
-		handleImageSelected(image, title,description, id, hashtags, userName);
+		handleImageSelected(image, title, description, id, hashtags, userName);
 	};
 	const [isHoverOpen, setIsHoverOpen] = useState(false);
+
 	const handdleOnOpenBtnClick = () => {
-		navigate(`/home/publication/${image.id}`);
+		navigate(`/home/publication/${id}`);
 	};
 
 	return (
@@ -26,6 +34,7 @@ export const ImageCard = ({ image, title, description, userName, id, hashtags })
 			<div
 				id="container"
 				className="
+				group
                 bg-secondary-light
                 h-full w-[240px] rounded-2xl
                 mx- mb-2
@@ -39,11 +48,7 @@ export const ImageCard = ({ image, title, description, userName, id, hashtags })
                         mb-2 select-none
 						overflow-hidden relative"
 				>
-					{/* <motion.div
-						className="box"
-						initial={"imgNotHover"}
-						whileHover={"imgHover"}
-					> */}
+					<div className="relative">
 						<img
 							onClick={() => {
 								handdleInput();
@@ -55,65 +60,62 @@ export const ImageCard = ({ image, title, description, userName, id, hashtags })
 							rounded-t-2xl object-fit
 							mb-2 select-none"
 						/>
-						
-						{/* <img src={openArrow} alt="" 
-						className=""
-						/> */}
 
-						{/* <motion.button
-							id="arrowContainer"
-							className={`h-auto w-auto absolute bottom-2 m-2 drop-shadow-md
-									/opacity-50
-									hover:opacity-100`}
-							onClick={() => handdleOnOpenBtnClick()}
-							onHoverStart={() => setIsHoverOpen(true)}
-							onHoverEnd={() => setIsHoverOpen(false)}
-							variants={{
-								imgNotHover: { scale: 1, opacity: 0 },
-								imgHover: { scale: 1.6, opacity: 1 },
-							}}
+						<div
+							onClick={()=>handdleOnOpenBtnClick()}
+							className="
+							group/open
+							h-auto w-auto
+							transition-all duration-[300ms] delay-0 ease-in
+							absolute 
+							bottom-0 group-hover:bottom-2 
+							left-0 group-hover:left-2
+							opacity-0 group-hover:opacity-100
+							hidden group-hover:block"
 						>
-							<svg
-								id="circle1"
-								className="absolute bottom-0
+							<div
+								className="relative
+								h-6 w-6
+								transition-all duration-[300ms] delay-0 ease-in
+								group-hover/open:mb-2
+								group-hover/open:ml-2
+								opacity-50 group-hover/open:opacity-100
+								group-hover/open:scale-[1.5]
+								animate-bounce group-hover/open:animate-none"
+							>
+								<div
+									className="absolute bottom-0 left-0 delay-0 ease-in
+									overflow-hidden
+									transition-all duration-[300ms]
+									rounded-2xl /group-hover/open:rounded-2xl
+									h-6 w-6 group-hover/open:w-[74px]
+									bg-secondary-light /rounded-l-2xl "
+								>
+									<p
+										className=" px-2 pt-[2px] 
+									/group-hover/open:w-[5px] 
+									"
+									>
+										Open
+									</p>
+								</div>
+								<div
+									className="
+									transition-all duration-[300ms] delay-0 ease-in
+									absolute bottom-0 left-0 h-6 w-6
+									group-hover/open:rotate-[45deg]
+									group-hover/open:translate-x-[50px]"
+								>
+									<img
+										src={openArrow}
+										alt=""
+										className="								
 										h-6 w-6 bg-secondary-light rounded-full"
-							/>
-							<motion.div
-								id="rectangle"
-								className="absolute bottom-0 left-[12px]
-										h-6 w-2 bg-secondary-light"
-								style={{ originX: 0 }}
-								animate={{
-									scaleX: isHoverOpen ? 5.625 : 0,
-								}}
-								transition={{ duration: 0.23 }}
-							/>
-							<motion.div
-								id="h1"
-								className="absolute bottom-0 left-0 rounded-l-full
-										h-6 w-[12px]  bg-secondary-light
-										overflow-hidden"
-								animate={{
-									width: isHoverOpen ? 45 : 12,
-								}}
-								transition={{ duration: 0.23 }}
-							>
-								<h1 className="absolute bottom-0 mx-1">Open</h1>
-							</motion.div>
-							<motion.div
-								id="circle2"
-								className="absolute bottom-0
-										h-6 w-6 bg-secondary-light rounded-full
-										p-1"
-								animate={{
-									translateX: isHoverOpen ? "45px" : "0px",
-								}}
-								transition={{ duration: 0.25 }}
-							>
-								<img src={openArrow} alt="" />
-							</motion.div>
-						</motion.button>
-					</motion.div> */}
+									/>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div id="description-container" className="p-1">
 					<h1

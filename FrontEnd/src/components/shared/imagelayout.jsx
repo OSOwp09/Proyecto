@@ -67,11 +67,12 @@ export const ImageLayout = memo(
 			const resp = await ListPublicationsByHashtags.get("", {
 				params: {
 					hashtags: words,
+					publicationId: pid
 				},
 			});
 
 			const publicationsList = resp.data;
-			setsearchFilter(publicationsList.publications.filter((p) => p.id != pid));
+			setsearchFilter(publicationsList.publications);
 		};
 
 		const hanndleListAllPublications = async () => {
@@ -317,7 +318,7 @@ export const ImageLayout = memo(
 					<div
 						className={`
 					transition-opacity delay-2 
-					${loaded ? "hidden" : "opacity-100"}`}
+					${loaded ? "hidden" : "block"}`}
 					>
 						{loader()}
 					</div>

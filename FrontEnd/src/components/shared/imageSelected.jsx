@@ -286,7 +286,7 @@ export const ImageSelected = ({ close }) => {
 							p-4 mt-1
 							rounded-2xl 
 							shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]
-							flex flex-col place-items-center"
+							flex flex-col place-items-center gap-4"
 						onClick={() => {
 							scrollToTop(), console.log("paArriba");
 						}}

@@ -62,72 +62,71 @@ export const OpenPublication = memo(() => {
 	};
 
 	const handdleLoadPublication = async () => {
-		const resp = await FindPublicationApi.get("", {
-			params: {
-				id: id,
-			},
-		});
+		try {
+			const resp = await FindPublicationApi.get("", {
+				params: {
+					id: id,
+				},
+			});
+			scrollToTop();
+			const publicationInfo = resp.data.publication;
+			const userInfo = resp.data.publication.userId;
 
-		const publicationInfo = resp.data.publication;
-		const userInfo = resp.data.publication.userId;
+			setImg(publicationInfo.photoURL);
+			setTitle(publicationInfo.title);
+			setDescription(publicationInfo.description);
+			setUuserName(userInfo.user);
 
-		setImg(publicationInfo.photoURL);
-		setTitle(publicationInfo.title);
-		setDescription(publicationInfo.description);
-		setUuserName(userInfo.user);
-
-		const commentsInfo = resp.data.commentaries;
-		const commentariesCant = commentsInfo.length;
-		setNumberOfComments(commentariesCant);
-		const comentsList = [...Array(commentariesCant)].map((x, i) => (
-			<div key={i} className="my-2">
-				<Commentary
-					user={commentsInfo[i].userId.user}
-					coment={commentsInfo[i].text}
-					date={commentsInfo[i].date}
-				/>
-			</div>
-		));
-		setComments(comentsList.reverse());
-
-		setLayoutHtml({
-			...layoutHtml,
-
-			code: (
-				<>
-					<ImageLayout
-						words={publicationInfo.hashtags}
-						pid={publicationInfo.id}
+			const commentsInfo = resp.data.commentaries;
+			const commentariesCant = commentsInfo.length;
+			setNumberOfComments(commentariesCant);
+			const comentsList = [...Array(commentariesCant)].map((x, i) => (
+				<div key={i} className="my-2">
+					<Commentary
+						user={commentsInfo[i].userId.user}
+						coment={commentsInfo[i].text}
+						date={commentsInfo[i].date}
 					/>
-				</>
-			),
-		});
+				</div>
+			));
+			setComments(comentsList.reverse());
+
+			setLayoutHtml({
+				...layoutHtml,
+
+				code: (
+					<>
+						<ImageLayout
+							words={publicationInfo.hashtags}
+							pid={publicationInfo.id}
+						/>
+					</>
+				),
+			});
+		} catch (error) {
+			console.log(error);
+			navigate("/home");
+		}
 	};
 
 	useEffect(() => {
-		try {
-			// setImg(jsonInfo[0].photoURL);
-			// setTitle(jsonInfo[0].title);
-			// setDescription(jsonInfo[0].description);
-			// setUuserName(jsonInfo[0].userName);
-			// scrollToTop();
-			// setLayoutHtml({
-			// 	...layoutHtml,
-			// 	code: (
-			// 		<>
-			// 			{console.log(jsonInfo[0].hashtags)}
-			// 			<ImageLayout words={jsonInfo[0].hashtags} pid={jsonInfo[0].publicationid}/>
-			// 		</>
+		// setImg(jsonInfo[0].photoURL);
+		// setTitle(jsonInfo[0].title);
+		// setDescription(jsonInfo[0].description);
+		// setUuserName(jsonInfo[0].userName);
+		// scrollToTop();
+		// setLayoutHtml({
+		// 	...layoutHtml,
+		// 	code: (
+		// 		<>
+		// 			{console.log(jsonInfo[0].hashtags)}
+		// 			<ImageLayout words={jsonInfo[0].hashtags} pid={jsonInfo[0].publicationid}/>
+		// 		</>
 
-			// 	),
-			// });
+		// 	),
+		// });
 
-			handdleLoadPublication();
-			scrollToTop();
-		} catch (error) {
-			console.log(error);
-			//navigate("/home");
-		}
+		handdleLoadPublication();
 	}, [, id]);
 
 	/**
@@ -260,7 +259,6 @@ export const OpenPublication = memo(() => {
 	 *---------------------------------------------------------------------------
 	 */
 
-
 	return (
 		<>
 			<div
@@ -281,7 +279,6 @@ export const OpenPublication = memo(() => {
 				>
 					<div>
 						<img
-
 							id="image"
 							src={img}
 							alt=""
