@@ -1,0 +1,17 @@
+.flat {
+	box-shadow: 1px 1px 10px #dedcd9, -1px -1px 10px #ffffff;
+}
+
+.pressed {
+	box-shadow: inset 1px 1px 10px #dedcd9, inset -1px -1px 10px #ffffff;
+}
+
+.navbtn:hover {
+	box-shadow: 1px 1px 10px #dedcd9, -1px -1px 10px #ffffff;
+}
+
+.errorContainer {
+	border-radius: 53px;
+	background: #f5e9cf;
+	box-shadow: inset 5px 5px 10px #d8cdb6, inset -5px -5px 10px #ffffe8;
+}

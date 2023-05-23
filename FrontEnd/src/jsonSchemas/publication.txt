@@ -1,0 +1,18 @@
+Body:
+
+{
+  "photoURL": " ",
+  "title": "uno",
+  "description": " ",
+  "hashtags": " ",
+  "userPhoto": " ",
+  "userName": " ",
+  "userId": ""
+}
+
+HTTP Headers:
+
+x-token  "user token"
+
+
+

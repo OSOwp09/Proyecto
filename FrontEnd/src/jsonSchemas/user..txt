@@ -1,0 +1,11 @@
+Body:
+
+{
+  "name": "",
+  "user": "",
+  "email": "",
+  "password":"",
+  "photoURL": "",
+  "hashtags": ""
+}
+
