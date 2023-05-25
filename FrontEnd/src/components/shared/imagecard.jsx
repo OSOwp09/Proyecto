@@ -61,6 +61,16 @@ export const ImageCard = ({
 							mb-2 select-none"
 						/>
 
+						<div 
+						onClick={() => {
+							handdleInput();
+						}}
+						className="
+						absolute top-0 left-0
+						h-full w-full
+						bg-primary-dark opacity-50
+						hidden group-hover:block"></div>
+
 						<div
 							onClick={() => handdleOnOpenBtnClick()}
 							className="
@@ -80,7 +90,7 @@ export const ImageCard = ({
 								translate-x-[8px] group-hover/open:translate-x-[12px]
 								group-hover/open:mb-2
 								group-hover/open:ml-2
-								opacity-50 group-hover/open:opacity-100
+								opacity-80 group-hover/open:opacity-100
 								group-hover/open:scale-[1.5]
 								animate-bounce group-hover/open:animate-none"
 							>
@@ -110,7 +120,7 @@ export const ImageCard = ({
 										src={openArrow}
 										alt=""
 										className="								
-										h-6 w-6 bg-secondary-light rounded-full"
+										h-6 w-6 bg-secondary-light rounded-full p-[1px]"
 									/>
 								</div>
 							</div>

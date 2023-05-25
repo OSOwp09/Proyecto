@@ -179,8 +179,8 @@ export const UploadPhoto = () => {
 				}
 			);
 			// console.log(resp);
-			// setImgFile("");
-			// navigate("/home/user");
+			setImgFile("");
+			navigate("/home/user");
 
 		} catch (error) {
 			await deleteFile(result?.metadata?.name)

@@ -27,6 +27,7 @@ export const Index = () => {
 		});
 	}, []);
 
+
 	return (
 		<>
 			<div
@@ -66,7 +67,7 @@ export const Index = () => {
 						</Routes>
 					</ImageProvider>
 				</div>
-				<div className="absolute top-[84px] right-2">{chatState.code}</div>
+				<div className="absolute top-[54px] right-2">{chatState.code}</div>
 			</div>
 		</>
 	);

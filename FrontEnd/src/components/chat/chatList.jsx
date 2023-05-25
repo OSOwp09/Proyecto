@@ -1,16 +1,36 @@
 import { motion } from "framer-motion";
 import { FriendChat } from "./friendChat";
 import searchIcon from "../../assets/search.svg";
+import styles from "./chat.module.css";
+import { ListUsersApi } from "../../api/Api";
+import { useEffect, useState } from "react";
 
 export const ChatList = () => {
-	const chat = [...Array(4)].map((x, i) => (
-		<motion.div
-		whileHover={{ scale: 1.01 }}>
-			<div className="mb-2 rounded-2xl /hover:border /hover:py-1 /hover:px-1 border-primary-dark">
-				<FriendChat user="User" message="Hey" />
-			</div>
-		</motion.div>
-	));
+	const [chats, setChats] = useState();
+	const fetchChatList = async () => {
+		try {
+			const { data } = await ListUsersApi.get("");
+			setChats(data.usuarios);
+		} catch (error) {}
+	};
+	useEffect(() => {
+		fetchChatList();
+	}, []);
+
+	const [chatElement, setChatElement] = useState();
+	useEffect(() => {
+		if (chats) {
+			console.log(chats);
+			const chat = [...Array(chats.length)].map((x, i) => (
+				<motion.div whileHover={{ scale: 1.01 }}>
+					<div className="mb-2 rounded-2xl /hover:border /hover:py-1 /hover:px-1 border-primary-dark">
+						<FriendChat user={chats[i].user} message="Hey" id={chats[i]._id}/>
+					</div>
+				</motion.div>
+			));
+			setChatElement(chat)
+		}
+	}, [chats]);
 
 	return (
 		<>
@@ -34,14 +54,15 @@ export const ChatList = () => {
 					Chats
 				</h1>
 				<div id="chats" className="h-full mx-6 overflow-auto overflow-x-hidden">
-					{chat}
+					{chatElement}
 				</div>
 				<div
 					id="search-input"
-					className="border border-primary-dark rounded-full 
+					className={`border border-primary-dark rounded-full 
                     h-8 text-base 
                     flex
-                    mx-4 my-2"
+                    mx-4 my-2
+					`}
 				>
 					<img src={searchIcon} alt="" className="w-4 mx-2" />
 					<input

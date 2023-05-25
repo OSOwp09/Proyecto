@@ -24,6 +24,7 @@ export const Navbar = () => {
 
 	const { handleChatList, chatState, closeChat } = useContext(ChatContext);
 	const navigate = useNavigate();
+
 	const handdleOpenCloseChat = () => {
 		chatState.code != "" ? closeChat() : handleChatList();
 	};
@@ -32,7 +33,7 @@ export const Navbar = () => {
 
 	//controll navbar visibily depending if the user is loged and the path
 	useEffect(() => {
-		location.pathname == "/Error404" ? setNavbar("hidden"):setNavbar("block")
+		location.pathname == "/Error404" ? setNavbar("hidden") : setNavbar("block");
 	}, [location.pathname]);
 
 	/*controll navbar menu and login btn 
@@ -43,20 +44,18 @@ export const Navbar = () => {
 		});
 	}, []);
 
-
 	//Search
-	const [wordsInput, setWordsInput] = useState("")
+	const [wordsInput, setWordsInput] = useState("");
 	const dispatch = useDispatch();
 
 	const handdleSearchInput = (words) => {
-		navigate("/home")
+		navigate("/home");
 		if (words.split(" ").slice(-1)[0] == "") {
-			
-			dispatch(searchPublications(words.replace(/.$/,'')));
-			return
+			dispatch(searchPublications(words.replace(/.$/, "")));
+			return;
 		}
 		dispatch(searchPublications(words));
-	}
+	};
 
 	return (
 		<>
@@ -81,7 +80,9 @@ export const Navbar = () => {
 					className="
 					h-[24px]
 					mx-3"
-					onClick={() => {navigate("/home"), dispatch(searchPublications(""))}}
+					onClick={() => {
+						navigate("/home"), dispatch(searchPublications(""));
+					}}
 				/>
 
 				<div
@@ -92,11 +93,17 @@ export const Navbar = () => {
                     bg-secondary-highlight
                     rounded-2xl"
 				>
-					<img src={search} alt="" className="h-[14px] ml-4" 
-					onClick={()=>handdleSearchInput(wordsInput)}/>
+					<img
+						src={search}
+						alt=""
+						className="h-[14px] ml-4"
+						onClick={() => handdleSearchInput(wordsInput)}
+					/>
 					<input
-						onChange={(e)=> setWordsInput(e.target.value)}
-						onKeyDown={(e)=> e.key == 'Enter' ? handdleSearchInput(wordsInput):""}
+						onChange={(e) => setWordsInput(e.target.value)}
+						onKeyDown={(e) =>
+							e.key == "Enter" ? handdleSearchInput(wordsInput) : ""
+						}
 						value={wordsInput}
 						type="text"
 						placeholder="Search"
@@ -191,9 +198,9 @@ export const Navbar = () => {
 								<img
 									src={usericon}
 									className="
-                            w-[inherit] h-[inherit]
-                            rounded-[inherit]
-                            object-cover"
+                           		 	w-[inherit] h-[inherit]
+                            		rounded-[inherit]
+                            		object-cover"
 								/>
 							</div>
 						</motion.div>

@@ -59,12 +59,12 @@ export const ImageLayout = memo(
 						email: user,
 					},
 				});
-				console.log(respUser);
 				setsearchFilter(respUser.data.usuario);
 			} catch (error) {}
 		};
 
 		const handdleListPublicationsByHashtags = async () => {
+			//console.log("object");
 			try {
 				const resp = await ListPublicationsByHashtags.get("", {
 					params: {
@@ -141,7 +141,7 @@ export const ImageLayout = memo(
 		-------- on the width of the container of the layout ----------------------------
 		*/
 		const hanndleResize = (element) => {
-			console.log("He cambiado");
+		
 			// element.target.style.height = "38px";
 			// element.target.style.height = element.target.scrollHeight + "px";
 		};
@@ -216,7 +216,6 @@ export const ImageLayout = memo(
 					setImgs(images);
 				}
 				if (searchByUseridOrHashtag == "userid") {
-					console.log(searchFilter);
 					const images = [...Array(searchFilter.publications.length)].map(
 						(image = searchFilter, i) => (
 							<ImageCard
@@ -297,7 +296,6 @@ export const ImageLayout = memo(
 				</div>
 			));
 			if (imgs[0] != undefined) {
-				console.log("object");
 				setLoaded(true);
 			}
 			return layout;
@@ -327,12 +325,24 @@ export const ImageLayout = memo(
 			);
 		};
 
+		const [loaderGone, setLoaderGone] = useState(false)
+		const hideLoader = async() =>{
+			setTimeout(() => {
+				setLoaderGone(true)
+			}, 1400);
+		}
+		useEffect(()=>{	
+			if(loaded){
+				hideLoader()
+			}
+		},[loaded])
+
 		return (
 			<>
 				<div
 					ref={divRef}
 					id="images-container"
-					className="relative w-full"
+					className="relative w-full overflow-x-hidden"
 				>
 					<input
 						type="checkbox"
@@ -342,9 +352,9 @@ export const ImageLayout = memo(
 					<div
 						className={`
 						overflow-hidden
-						translate-x-[5px]
-						transition-all duration-[1200ms] delay-[500ms]
-						opacity-100 peer-checked:opacity-0`}
+						transition-all duration-[1100ms] delay-[500ms]
+						opacity-100 peer-checked:opacity-0
+						${loaderGone ? "hidden":"block"}`}
 					>
 						{loader()}
 					</div>
@@ -352,7 +362,7 @@ export const ImageLayout = memo(
 					<div
 						className={`
 						flex place-content-center gap-2 
-						transition-all duration-[1200ms] delay-[600ms]
+						transition-all duration-[1400ms] delay-[800ms]
 						opacity-0 peer-checked:opacity-100`}
 					>
 						{html}

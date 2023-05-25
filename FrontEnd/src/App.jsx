@@ -24,6 +24,7 @@ import { auth } from "./firebase/config";
 import { loadUser } from "./store/slices/auth/AuthThunks";
 
 function App() {
+	
 	document.body.classList.add("bg-primary-light");
 	const dispatch = useDispatch();
 

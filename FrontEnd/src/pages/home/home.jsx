@@ -95,17 +95,19 @@ export const Home = () => {
 				<div
 					id="images-and-imageSelected"
 					className={`relative
+					h-full overflow-auto overflow-x-hidden
 					${searchFor == "Explore" ? "block" : "hidden"}
 					w-screen flex gap-2 h-fit`}
 				>
 					<div id="imageLayout-container" className={`grow h-full pt-2 `}>
 						{layoutHtml}
 						<div className={`absolute w-full flex`}>
-							
 							<ImageLayout words={words} />
-							<div className={`
-							${image.code.props?.children ? "block":"hidden"}
-							invisible h-2 w-[1020px] bg-black`}></div>
+							<div
+								className={`
+							${image.code.props?.children ? "block" : "hidden"}
+							invisible h-2 w-[1020px] bg-black`}
+							></div>
 						</div>
 					</div>
 
@@ -113,7 +115,7 @@ export const Home = () => {
 						id="image-selected"
 						className="h-[calc(100vh-90px)] w-fit mr-2
 								rounded-2xl
-								sticky top-2"
+								sticky top-0"
 					>
 						{image.code}
 					</div>

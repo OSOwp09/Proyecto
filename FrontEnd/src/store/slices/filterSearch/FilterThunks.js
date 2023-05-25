@@ -2,6 +2,7 @@ import { FilterSearchSlice, search, userId } from "./FilterSearchSlice";
 
 export const searchPublications = (words) => {
 	return async (dispatch) => {
+		
 		try {
 			// dispatch the logout action
 			dispatch(search({

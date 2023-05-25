@@ -5,7 +5,7 @@ export const FriendBubble = (messageList) => {
 
 	// console.log(messageList.messageList);
 
-	const message = [...Array(5)].map((x, i) => (
+	const message = [...Array(1)].map((x, i) => (
 		<div className="my-1">
 			<div
 				className="

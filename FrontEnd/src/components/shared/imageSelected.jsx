@@ -280,7 +280,7 @@ export const ImageSelected = ({ close }) => {
 					<div
 						id="more-images"
 						className="/mr-4 
-							p-4 mt-1
+							p- mt-1
 							rounded-2xl 
 							shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.50)]
 							flex flex-col place-items-center gap-4"

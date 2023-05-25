@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import add from "../../assets/plus-circle 1.svg";
 import share from "../../assets/Group 98.svg";
 import link from "../../assets/Group 99.svg";
+
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShareButton } from "../../components/shared/publicationOptions";
@@ -15,10 +16,9 @@ import { useSelector } from "react-redux";
 export const User = () => {
 	const navigate = useNavigate();
 	const [shareVisibility, setShareVisibility] = useState(false);
-	const shareUrl = `aunNoSirve`;
+	const user = useSelector((state) => state.auth?.user)
+	const shareUrl =`${window.location.host}/home/${user}`;;
 	const email = useSelector((state) => state.auth.email)
-
-	console.log(email)
 
 	const { image } = useContext(ImageContext);
 
@@ -27,11 +27,11 @@ export const User = () => {
 			<div className="flex place-content-center w-screen h-auto">
 				<div
 					id="imageLayout-container"
-					className="grow pr-6 h-full pt-2 overflow-x-hidden overflow-y-auto "
+					className="grow pr-6 h-auto pt-2 overflow-x-hidden overflow-y-auto "
 				>
 					<div
 						className="
-                        mb-3
+                        mb-3 
                         flex place-content-center gap-2
                         flex-col-reverse
                         place-items-center"

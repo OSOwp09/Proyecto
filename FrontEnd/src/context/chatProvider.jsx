@@ -4,9 +4,11 @@ import { ChatList } from "../components/chat/chatList";
 import { Chat } from "../components/chat/chat";
 
 export const ChatProvider = ({ children }) => {
-	const [chatState, setChatState] = useState({ 
-        code: "" 
-    });
+	const [selectedChat, setSelectedChat] = useState();
+
+	const [chatState, setChatState] = useState({
+		code: "",
+	});
 
 	const handleChatList = () => {
 		setChatState({
@@ -15,16 +17,16 @@ export const ChatProvider = ({ children }) => {
 				<>
 					<ChatList />
 				</>
-			)
+			),
 		});
 	};
 
-	const handleOpenFriendChat = () => {
+	const handleOpenFriendChat = (user, id) => {
 		setChatState({
 			...chatState,
 			code: (
 				<>
-					<Chat />
+					<Chat user={user} id={id}/>
 				</>
 			),
 		});
@@ -36,7 +38,15 @@ export const ChatProvider = ({ children }) => {
 
 	return (
 		<ChatContext.Provider
-			value={{ chatState, setChatState, handleChatList, handleOpenFriendChat, closeChat }}
+			value={{
+				chatState,
+				setChatState,
+				handleChatList,
+				handleOpenFriendChat,
+				closeChat,
+				setSelectedChat,
+				selectedChat
+			}}
 		>
 			{children}
 		</ChatContext.Provider>

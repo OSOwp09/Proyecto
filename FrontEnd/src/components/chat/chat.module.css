@@ -1,0 +1,8 @@
+.scrollbar::-webkit-scrollbar {
+	width: 0px;
+}
+
+/* For Firefox Browser */
+.scrollbar {
+	scrollbar-width: 0px;
+}

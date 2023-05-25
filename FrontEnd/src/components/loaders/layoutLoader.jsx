@@ -72,9 +72,9 @@ export const LayoutLoader = ({columns}) => {
 
 	return (
 		<>
-			<div className="h-screen w-screen overflow-hidden drop-shadow-md">
+			<div className="h-screen w-screen overflow-hidden">
 				<div
-					className="flex h-auto w-auto flex-wrap place-content-center gap-2 pr-8 pl-1 "
+					className="flex h-auto w-auto flex-wrap place-content-center gap-2 pr-[10px] pl-1"
 				>
 					{images}
 				</div>
