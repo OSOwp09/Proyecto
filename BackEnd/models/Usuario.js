@@ -53,4 +53,11 @@ UsuarioSchema.virtual("commentaries", {
 	justOne: false,
 });
 
+UsuarioSchema.virtual("chats", {
+	ref: "chat",
+	localField: "_id",
+	foreignField: "userId",
+	justOne: false,
+});
+
 module.exports = model("Usuario", UsuarioSchema);

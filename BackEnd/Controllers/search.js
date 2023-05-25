@@ -110,18 +110,17 @@ const listUsersByHashtag = async (req, res = express.request) => {
 			},
 		]);
 
-		console.log(hashtags);
 		const hashtagsArray = hashtags.split(" ");
 		let usuarios = [];
 
 		await hashtagsArray.map((x, i) => {
 			if (i == 0) {
-				usuarios = resp.filter((p) => p.hashtags.includes(hashtagsArray[0]));
+				usuarios = resp.filter((p) => p.hashtags.toLowerCase().includes(hashtagsArray[0].toLowerCase()));
 				return;
 			}
 
 			usuarios = _.union(
-				resp.filter((p) => p.hashtags.includes(hashtagsArray[i])),
+				resp.filter((p) => p.hashtags.toLowerCase().includes(hashtagsArray[i].toLowerCase())),
 				usuarios
 			);
 		});
@@ -259,7 +258,6 @@ const listPublicationsByHashtags = async (req, res = express.request) => {
 			"userId",
 			"user photoURL"
 		);
-		console.log(publicationsJson[0].id);
 
 		const hashtagsArray = hashtags.split(" ");
 		let publications = [];
@@ -267,13 +265,13 @@ const listPublicationsByHashtags = async (req, res = express.request) => {
 		await hashtagsArray.map((x, i) => {
 			if (i == 0) {
 				publications = publicationsJson.filter((p) =>
-					p.hashtags.includes(hashtagsArray[0])
+					p.hashtags.toLowerCase().includes(hashtagsArray[0].toLowerCase())
 				);
 				return;
 			}
 
 			publications = _.union(
-				publicationsJson.filter((p) => p.hashtags.includes(hashtagsArray[i])),
+				publicationsJson.filter((p) => p.hashtags.toLowerCase().includes(hashtagsArray[i].toLowerCase())),
 				publications
 			);
 		});

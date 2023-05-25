@@ -8,23 +8,26 @@ class Server {
 	constructor() {
 		this.headers = {
 			cors: {
-				origin: "http://127.0.0.1:5500",
+				origin: ["http://127.0.0.1:5173", "https://vintarest.netlify.app/"],
 				methods: ["GET", "POST"],
 			},
 		};
-		
+
 		// Crear express App
 		this.app = express();
 		this.port = process.env.PORT;
 		this.server = require("http").createServer(this.app);
-		this.io = require('socket.io')(this.server, this.headers);
+		this.io = require("socket.io")(this.server, this.headers, {
+			pingTimeout: 60000,
+		});
 
 		this.paths = {
 			auth: "/api/auth",
 			publication: "/api/publication",
 			search: "/api/search",
 			commentary: "/api/commentary",
-			delete: "/api/delete"
+			delete: "/api/delete",
+			chat: "/api/chat"
 		};
 
 		this.connectToDB();
@@ -32,7 +35,7 @@ class Server {
 		this.setRoutes();
 
 		//Sockets
-		this.sockets()
+		this.sockets();
 	}
 
 	//Base de datos
@@ -57,11 +60,14 @@ class Server {
 		this.app.use(this.paths.publication, require("../routes/publication"));
 		this.app.use(this.paths.search, require("../routes/search"));
 		this.app.use(this.paths.commentary, require("../routes/commentary"));
-		this.app.use(this.paths.delete, require("../routes/delete"))
+		this.app.use(this.paths.delete, require("../routes/delete"));
+		this.app.use(this.paths.chat, require("../routes/chat"))
 	}
 
 	sockets() {
-		this.io.on('connection', socket => socketController(socket, this.io));
+		this.io.on("connection", (socket) => {
+			socketController(socket, this.io);
+		});
 	}
 
 	listen() {
@@ -73,4 +79,3 @@ class Server {
 }
 
 module.exports = Server;
-
