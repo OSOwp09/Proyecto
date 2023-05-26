@@ -1,15 +1,43 @@
 const express = require("express");
 const ChatSchema = require("../models/chatSchema");
+const _ = require("lodash");
 
-const createChat = async (req, res = express.request) => {
-	const chat = new ChatSchema(req.body);
+const listChats = async (req, res = express.request) => {};
+
+const accesChat = async (req, res = express.request) => {
+	const { userId1, userId2 } = req.query;
+	const userId = [userId1, userId2];
+
+	if (!userId1 || !userId2) {
+		console.log("UserId param not sent with request");
+		return res.sendStatus(400);
+	}
 
 	try {
-		await chat.save();
-		return res.json({
-			ok: true,
-			chat,
-		});
+		let chat;
+
+		chat = await ChatSchema.findOne({ userId: userId });
+
+		if (chat == "" || chat == null) {
+			chat = await ChatSchema.findOne({ userId: userId.reverse() });
+		}
+
+		if (chat == "" || chat == null) {
+			//------- create a chat ---------------
+			chat = new ChatSchema({ userId: userId });
+			console.log(chat);
+			await chat.save();
+			return res.json({
+				ok: true,
+				chat,
+			});
+		} else {
+			//------ return chat when found -------
+			return res.json({
+				ok: true,
+				chat,
+			});
+		}
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({
@@ -19,12 +47,50 @@ const createChat = async (req, res = express.request) => {
 	}
 };
 
-const accesChat = async (req, res = express.request) => {
-    
-}
+const newMessage = async (req, res = express.request) => {
+	const { message, userId1, userId2 } = req.body;
+	const userId = [userId1, userId2];
 
-module.exports = {
-	createChat,
+	if (!userId1 || !userId2) {
+		console.log("UserId param not sent with request");
+		return res.sendStatus(400);
+	}
+
+	try {
+		let chat;
+
+		chat = await ChatSchema.findOne({ userId: userId }).select("messages");
+
+		if (chat == "" || chat == null) {
+			chat = await ChatSchema.findOne({ userId: userId.reverse() }).select(
+				"messages"
+			);
+		}
+
+		chat.messages.unshift(message);
+
+		console.log(chat.messages);
+
+		await ChatSchema.findOneAndUpdate(
+			{ _id: chat._id },
+			{ messages: chat.messages }
+		);
+
+		return res.json({
+			ok: true,
+			chat,
+		});
+
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			ok: false,
+			message: "internal Error",
+		});
+	}
 };
 
-
+module.exports = {
+	accesChat,
+	newMessage,
+};

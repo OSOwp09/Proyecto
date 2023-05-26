@@ -14,6 +14,7 @@ const createPublication = async (req, res = express.request) => {
 		const UserHashtagsAndUser = await Usuario.findOne({
 			_id: publication.userId,
 		}).select("hashtags user");
+		
 		const filter = { _id: publication.userId };
 		const pubHashtags = publication.hashtags.split(" ");
 		const userHashtagsAndUser = UserHashtagsAndUser.hashtags.split(" ");

@@ -1,12 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const { validarJWT } = require("../middlewares/validar-token");
-const { createChat } = require("../Controllers/chat");
+const { accesChat, newMessage } = require("../Controllers/chat");
+
+router.get(
+	"/",
+	//validarJWT,
+	accesChat
+);
 
 router.post(
-	"/new",
+	"/newMessage",
 	//validarJWT,
-	createChat
+	newMessage
 );
 
 module.exports = router;

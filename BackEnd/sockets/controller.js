@@ -1,30 +1,6 @@
-// const socketController = (socket, io) => {
-// 	console.log("Cliente Desconectado", socket.id);
-
-//     socket.on('disconnected', ()=>{
-//         console.log('Cliente desconectado', socket.id)
-//     })
-
-//     socket.on('mensaje-de-cliente',(payload, callback)=>{
-//         callback('Tu mensaje fue recibido')
-
-//         payload.from = 'desde el server'
-//         socket.broadcast.emit('mensaje-de-server', payload)
-//     })
-
-//     socket.on('enviar-mensaje',({to,from,mensaje})=>{
-//         if (to) {
-//             socket.to(to).emit('ricibir-mensaje',{to,from,mensaje})
-//         } else {
-//             io.emit('recibir-mensaje',{from, mensaje})
-//         }
-//     })
-// };
-
 const socketController = (socket, io) => {
-    
 	socket.on("setup", (userData) => {
-		console.log("userDataFromFront", userData.uid);
+		//console.log("userDataFromFront", userData.uid);
 		socket.join(userData.uid);
 		socket.emit("connected");
 	});
@@ -38,15 +14,18 @@ const socketController = (socket, io) => {
 	socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
 	socket.on("new message", (newMessageRecieved) => {
-		let chat = newMessageRecieved.chat;
+		console.log(newMessageRecieved);
 
-		if (!chat.users) return console.log("chat.users not defined");
+		socket.emit("message recieved", newMessageRecieved);
+		// let chat = newMessageRecieved.chat;
 
-		chat.users.forEach((user) => {
-			if (user.uid == newMessageRecieved.sender._id) return;
+		// if (!chat.users) return console.log("chat.users not defined");
 
-			socket.in(user.uid).emit("message recieved", newMessageRecieved);
-		});
+		// chat.users.forEach((user) => {
+		// 	if (user.uid == newMessageRecieved.sender._id) return;
+
+		// 	socket.in(user.uid).emit("message recieved", newMessageRecieved);
+		// });
 	});
 
 	socket.off("setup", () => {
