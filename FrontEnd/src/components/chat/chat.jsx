@@ -8,6 +8,7 @@ import heart from "../../assets/heart-fill-dark.svg";
 import send from "../../assets/send.svg";
 import backArrow from "../../assets/arrow.svg";
 import { useContext, useEffect, useRef } from "react";
+import { FetchChat, NewMessage } from "../../api/Api";
 
 import styles from "./chat.module.css";
 
@@ -32,8 +33,6 @@ export const Chat = ({ user, id }) => {
 		</>
 	));
 
-	console.log(id);
-
 	const ourBubble = [...Array(5)].map((x, i) => (
 		<>
 			<div className="flex place-content-end">
@@ -54,6 +53,7 @@ export const Chat = ({ user, id }) => {
 
 	//-------------- mesages fetch and send --------------------
 
+	const userInfo = useSelector((state) => state.auth);
 	const [messages, setMessages] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [newMessage, setNewMessage] = useState();
@@ -65,42 +65,60 @@ export const Chat = ({ user, id }) => {
 	const fetchMessages = async () => {
 		if (!selectedChat) return;
 
+		const resp = await FetchChat.get("", {
+			params: {
+				userId1: userInfo.uid,
+				userId2: id
+			},
+		});
+
+		console.log(resp.data);
+
 		setLoading(false);
 		socket.emit("join chat", id);
 	};
 
 	const sendMessage = async () => {
 		if (newMessage) {
-			console.log("epa");
+			// try {
+			// 	const config = {
+			// 		headers: {
+			// 			"Content-type": "aplication/json",
+			// 			"x-token": userInfo.token,
+			// 		},
+			// 	};
 
-			try {
-				const config = {
-					headers: {
-						"Content-type": "aplication/json",
-						"x-token": userInfo.token,
-					},
-				};
-
-				const { data } = await axios.post(
-					"/api/message",
-					{
-						content: newMessage,
-						chatId: "",
-					},
-					config
-				);
-			} catch (error) {}
+			// 	const { data } = await axios.post(
+			// 		"/api/message",
+			// 		{
+			// 			content: newMessage,
+			// 			chatId: "",
+			// 		},
+			// 		config
+			// 	);
+			// } catch (error) {}
 
 			setNewMessage("");
-			setMessages([...messages, data]);
+			const resp = await NewMessage.post("",{
+				userId1: userInfo.uid,
+				userId2: id,
+				message: {
+					user: userInfo.user,
+					text: newMessage
+				}
+			})
+
+			console.log(selectedChat);
+			socket.emit("new message", newMessage);
+			
+			//setMessages([...messages, data]);
 		}
 	};
 
 	//--------------------------------------------------------
 
 	//-------------- sockets --------------------------------
-
-	const userInfo = useSelector((state) => state.auth);
+	
 	const [socketConnected, setSocketConnected] = useState(false);
 
 	useEffect(() => {
@@ -119,17 +137,18 @@ export const Chat = ({ user, id }) => {
 
 	useEffect(() => {
 		socket.on("message recieved", (newMessageRecieved) => {
-			if (
-				!selectedChatCompare || // if chat is not selected or doesn't match current chat
-				selectedChatCompare !== newMessageRecieved.chat._id
-			) {
-				if (!notification.includes(newMessageRecieved)) {
-					setNotification([newMessageRecieved, ...notification]);
-					setFetchAgain(!fetchAgain);
-				}
-			} else {
-				setMessages([...messages, newMessageRecieved]);
-			}
+			console.log("mensaje del socket",newMessageRecieved);
+			// if (
+			// 	!selectedChatCompare || // if chat is not selected or doesn't match current chat
+			// 	selectedChatCompare !== newMessageRecieved.chat._id
+			// ) {
+			// 	if (!notification.includes(newMessageRecieved)) {
+			// 		setNotification([newMessageRecieved, ...notification]);
+			// 		setFetchAgain(!fetchAgain);
+			// 	}
+			// } else {
+			// 	setMessages([...messages, newMessageRecieved]);
+			// }
 		});
 	});
 

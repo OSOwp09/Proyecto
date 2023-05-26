@@ -49,8 +49,8 @@ export const ListUsersApi = axios.create({
 });
 
 export const ListUsersByHashtag = axios.create({
-	baseURL: `${pathName}/api/search/listUsersByHashtag`
-})
+	baseURL: `${pathName}/api/search/listUsersByHashtag`,
+});
 
 export const FindUserByEmail = axios.create({
 	baseURL: `${pathName}/api/search/findUserByEmail`,
@@ -64,6 +64,16 @@ export const ListPublicationsApi = axios.create({
 	baseURL: `${pathName}/api/search/listPublications`,
 });
 
+//<----------------------
 
+//------ chats ------------------>
+
+export const FetchChat = axios.create({
+	baseURL: `${pathName}/api/chat/`,
+});
+
+export const NewMessage = axios.create({
+	baseURL: `${pathName}/api/chat/newMessage`,
+});
 
 //<----------------------
