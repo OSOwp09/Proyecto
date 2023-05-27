@@ -7,16 +7,20 @@ const socketController = (socket, io) => {
 
 	socket.on("join chat", (room) => {
 		socket.join(room);
-		console.log("user join room" + room);
+		console.log("user join room " + room);
 	});
 
 	socket.on("typing", (room) => socket.in(room).emit("typing"));
 	socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
 
 	socket.on("new message", (newMessageRecieved) => {
-		console.log(newMessageRecieved);
+		
+		//socket.emit("message recieved", newMessageRecieved.message);
 
-		socket.emit("message recieved", newMessageRecieved);
+		//646ac52b8d2247070600e457-room-64715fc659d451c7703d02ea
+		console.log(newMessageRecieved)
+		io.in(newMessageRecieved.room).emit("message recieved", newMessageRecieved.message);
+		
 		// let chat = newMessageRecieved.chat;
 
 		// if (!chat.users) return console.log("chat.users not defined");

@@ -7,50 +7,55 @@ const commentariesSchema = require("../models/commentariesSchema");
 // -------- users ------------------->
 
 const listUsers = async (req, res = express.request) => {
-	const usuarios = await Usuario.aggregate([
-		{
-			$lookup: {
-				from: "publications",
-				localField: "_id",
-				foreignField: "userId",
-				as: "publicaciones",
-			},
-		},
-		{
-			$project: {
-				_id: 1,
-				name: 1,
-				user: 1,
-				email: 1,
-				photoURL: 1,
-				hashtags: 1,
-				publicaciones: {
-					$slice: ["$publicaciones", 3],
-				},
-			},
-		},
-		{
-			$project: {
-				_id: 1,
-				name: 1,
-				user: 1,
-				email: 1,
-				photoURL: 1,
-				hashtags: 1,
-				publicaciones: {
-					$map: {
-						input: "$publicaciones",
-						as: "pub",
-						in: {
-							photoURL: "$$pub.photoURL",
-						},
-					},
-				},
-			},
-		},
-	]);
+	// const usuarios = await Usuario.aggregate([
+	// 	{
+	// 		$lookup: {
+	// 			from: "publications",
+	// 			localField: "_id",
+	// 			foreignField: "userId",
+	// 			as: "publicaciones",
+	// 		},
+	// 	},
+	// 	{
+	// 		$project: {
+	// 			_id: 1,
+	// 			name: 1,
+	// 			user: 1,
+	// 			email: 1,
+	// 			photoURL: 1,
+	// 			hashtags: 1,
+	// 			publicaciones: {
+	// 				$slice: ["$publicaciones", 3],
+	// 			},
+	// 		},
+	// 	},
+	// 	{
+	// 		$project: {
+	// 			_id: 1,
+	// 			name: 1,
+	// 			user: 1,
+	// 			email: 1,
+	// 			photoURL: 1,
+	// 			hashtags: 1,
+	// 			publicaciones: {
+	// 				$map: {
+	// 					input: "$publicaciones",
+	// 					as: "pub",
+	// 					in: {
+	// 						photoURL: "$$pub.photoURL",
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// ]);
 
 	try {
+		const usuarios = await Usuario.find().select("user _id photoURL").populate({
+			path: "chats",
+			select: "lastMessage",
+		});
+
 		return res.status(200).json({
 			ok: true,
 			usuarios,
@@ -115,12 +120,16 @@ const listUsersByHashtag = async (req, res = express.request) => {
 
 		await hashtagsArray.map((x, i) => {
 			if (i == 0) {
-				usuarios = resp.filter((p) => p.hashtags.toLowerCase().includes(hashtagsArray[0].toLowerCase()));
+				usuarios = resp.filter((p) =>
+					p.hashtags.toLowerCase().includes(hashtagsArray[0].toLowerCase())
+				);
 				return;
 			}
 
 			usuarios = _.union(
-				resp.filter((p) => p.hashtags.toLowerCase().includes(hashtagsArray[i].toLowerCase())),
+				resp.filter((p) =>
+					p.hashtags.toLowerCase().includes(hashtagsArray[i].toLowerCase())
+				),
 				usuarios
 			);
 		});
@@ -271,7 +280,9 @@ const listPublicationsByHashtags = async (req, res = express.request) => {
 			}
 
 			publications = _.union(
-				publicationsJson.filter((p) => p.hashtags.toLowerCase().includes(hashtagsArray[i].toLowerCase())),
+				publicationsJson.filter((p) =>
+					p.hashtags.toLowerCase().includes(hashtagsArray[i].toLowerCase())
+				),
 				publications
 			);
 		});

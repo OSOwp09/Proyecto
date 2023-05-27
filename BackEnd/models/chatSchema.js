@@ -8,7 +8,11 @@ const ChatSchema = Schema({
 	messages: {
 		type: Array,
 		trim: true,
-		default: undefined,
+		default: [],
+	},
+	lastMessage: {
+		type: Object,
+		trim: true,
 	},
 	userId: [
 		{

@@ -67,20 +67,23 @@ const newMessage = async (req, res = express.request) => {
 			);
 		}
 
-		chat.messages.unshift(message);
-
-		console.log(chat.messages);
-
-		await ChatSchema.findOneAndUpdate(
-			{ _id: chat._id },
-			{ messages: chat.messages }
-		);
+		if (chat.messages != undefined) {
+			chat.messages.unshift(message);
+			await ChatSchema.findOneAndUpdate(
+				{ _id: chat._id },
+				{ messages: chat.messages, lastMessage: message }
+			);
+		} else {
+			await ChatSchema.findOneAndUpdate(
+				{ _id: chat._id },
+				{ messages: message, lastMessage: message }
+			);
+		}
 
 		return res.json({
 			ok: true,
 			chat,
 		});
-
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({
