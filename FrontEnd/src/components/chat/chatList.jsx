@@ -4,6 +4,7 @@ import searchIcon from "../../assets/search.svg";
 import styles from "./chat.module.css";
 import { ListUsersApi } from "../../api/Api";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export const ChatList = () => {
 	const [chats, setChats] = useState();
@@ -11,24 +12,34 @@ export const ChatList = () => {
 		try {
 			const { data } = await ListUsersApi.get("");
 			setChats(data.usuarios);
+			console.log(data.usuarios);
 		} catch (error) {}
 	};
 	useEffect(() => {
 		fetchChatList();
 	}, []);
 
+	const userInfo = useSelector((state) => state.auth);
+
 	const [chatElement, setChatElement] = useState();
 	useEffect(() => {
 		if (chats) {
-			console.log(chats);
-			const chat = [...Array(chats.length)].map((x, i) => (
-				<motion.div whileHover={{ scale: 1.01 }}>
-					<div className="mb-2 rounded-2xl /hover:border /hover:py-1 /hover:px-1 border-primary-dark">
-						<FriendChat user={chats[i].user} message="Hey" id={chats[i]._id}/>
-					</div>
-				</motion.div>
-			));
-			setChatElement(chat)
+			const chat = [...Array(chats.length)].map((x, i) => {
+				if (chats[i]._id == userInfo.uid) return;
+				return (
+					<motion.div whileHover={{ scale: 1.01 }}>
+						<div className="mb-2 rounded-2xl /hover:border /hover:py-1 /hover:px-1 border-primary-dark">
+							<FriendChat
+								user={chats[i].user}
+								//message={chats[i].chats[0]}
+								message=""
+								id={chats[i]._id}
+							/>
+						</div>
+					</motion.div>
+				);
+			});
+			setChatElement(chat);
 		}
 	}, [chats]);
 

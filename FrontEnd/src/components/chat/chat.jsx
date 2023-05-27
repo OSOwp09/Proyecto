@@ -27,29 +27,12 @@ export const Chat = ({ user, id }) => {
 	const { handleChatList, selectedChat, setSelectedChat } =
 		useContext(ChatContext);
 
-	const friendBubble = [...Array(5)].map((x, i) => (
-		<>
-			<FriendBubble />
-		</>
-	));
-
-	const ourBubble = [...Array(5)].map((x, i) => (
-		<>
-			<div className="flex place-content-end">
-				<OurBubble />
-			</div>
-		</>
-	));
-
 	const divScrollRef = useRef(null);
 	const scrollToBottom = () => {
 		divScrollRef.current.scroll({
 			top: 99999,
 		});
 	};
-	useEffect(() => {
-		scrollToBottom();
-	}, []);
 
 	//-------------- mesages fetch and send --------------------
 
@@ -68,57 +51,53 @@ export const Chat = ({ user, id }) => {
 		const resp = await FetchChat.get("", {
 			params: {
 				userId1: userInfo.uid,
-				userId2: id
+				userId2: id,
 			},
 		});
 
-		console.log(resp.data);
-
+		const messagesList = resp.data.chat.messages;
+		console.log(resp.data.chat._id);
+		setMessages(messagesList?.reverse());
 		setLoading(false);
-		socket.emit("join chat", id);
+		socket.emit("join chat", `${userInfo.uid}-room-${id}`);
 	};
 
 	const sendMessage = async () => {
 		if (newMessage) {
-			// try {
-			// 	const config = {
-			// 		headers: {
-			// 			"Content-type": "aplication/json",
-			// 			"x-token": userInfo.token,
-			// 		},
-			// 	};
-
-			// 	const { data } = await axios.post(
-			// 		"/api/message",
-			// 		{
-			// 			content: newMessage,
-			// 			chatId: "",
-			// 		},
-			// 		config
-			// 	);
-			// } catch (error) {}
 
 			setNewMessage("");
-			const resp = await NewMessage.post("",{
+			const resp = await NewMessage.post("", {
 				userId1: userInfo.uid,
 				userId2: id,
 				message: {
 					user: userInfo.user,
-					text: newMessage
-				}
-			})
-
-			console.log(selectedChat);
-			socket.emit("new message", newMessage);
+					text: newMessage,
+				},
+			});
 			
-			//setMessages([...messages, data]);
+			socket.emit("new message", {
+				room:`${id}-room-${userInfo.uid}`,
+				message: newMessage,
+			});
+
+			setMessages([
+				...messages,
+				{
+					user: userInfo.user,
+					text: resp.data.chat.messages[0],
+				},
+			]);
 		}
 	};
+
+	useEffect(() => {
+		scrollToBottom();
+	}, [messages]);
 
 	//--------------------------------------------------------
 
 	//-------------- sockets --------------------------------
-	
+
 	const [socketConnected, setSocketConnected] = useState(false);
 
 	useEffect(() => {
@@ -137,7 +116,13 @@ export const Chat = ({ user, id }) => {
 
 	useEffect(() => {
 		socket.on("message recieved", (newMessageRecieved) => {
-			console.log("mensaje del socket",newMessageRecieved);
+			console.log("mensaje del socket", newMessageRecieved);
+
+			setMessages([...messages, {
+				user: userInfo.uid,
+				text: newMessageRecieved
+			}]);
+
 			// if (
 			// 	!selectedChatCompare || // if chat is not selected or doesn't match current chat
 			// 	selectedChatCompare !== newMessageRecieved.chat._id
@@ -152,7 +137,12 @@ export const Chat = ({ user, id }) => {
 		});
 	});
 
+	
+
 	//--------------------------------------------------------
+
+	var ourMessage = [];
+	var friendMessage = [];
 
 	return (
 		<>
@@ -205,17 +195,46 @@ export const Chat = ({ user, id }) => {
 					onClick={() => {
 						scrollToBottom(), console.log("paArriba");
 					}}
-					className={`h-full mx-2 overflow-auto
+					className={`h-full mx-2 overflow-auto 
 				${styles.scrollbar}`}
 				>
-					{/* {friendBubble}
-					{ourBubble} */}
 					{loading ? (
 						<div className="h-full w-full flex place-content-center place-items-center">
 							<ChatLoader />
 						</div>
 					) : (
-						<></>
+						<>
+							{messages ? (
+								<>
+									{messages.map((x, i) => {
+										//console.log(i, messages.length - 1);
+										if (messages[i].user == userInfo.user) {
+											scrollToBottom();
+											ourMessage.unshift(messages[i].text);
+											return (
+												<>
+													<div key={i} className="flex place-content-end">
+														<OurBubble messageList={messages[i].text}/>
+													</div>
+												</>
+											);
+										} else {
+											friendMessage.unshift(messages[i].text);
+
+											return (
+												<>
+													<div key={i}>
+														<FriendBubble messageList={messages[i].text} user={user}/>
+													</div>
+												</>
+											);
+										}
+									})}
+								</>
+							) : (
+								<></>
+							)}
+						</>
 					)}
 				</div>
 

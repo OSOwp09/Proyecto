@@ -1,14 +1,14 @@
-export const OurBubble = () => {
+export const OurBubble = ({messageList}) => {
 	
 	const message = [...Array(1)].map((x, i) => (
-		<div className="my-1">
+		<div key={i}  className="my-1">
 			<div
 				className="
                     bg-transparent border border-primary-dark text-primary-dark
                     min-h-[48px] max-w-[288px] rounded-2xl"
 			>
 				<h1 className="px-4 py-3">
-					Hey, how a a a a a a a a a a a a a a a a d r u?
+					{messageList.text ? messageList.text: messageList}
 				</h1>
 			</div>
 		</div>
@@ -18,7 +18,7 @@ export const OurBubble = () => {
 		<>
 			<div className="font-inter">
 				<h1 className="ml-64 text-secondary-dark text-xs">You</h1>
-				<div className="flex place-items-start">
+				<div className="flex place-content-end ">
 					<div>{message}</div>
 				</div>
 			</div>
