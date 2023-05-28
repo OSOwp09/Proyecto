@@ -1,8 +1,8 @@
 const express = require("express");
 const ChatSchema = require("../models/chatSchema");
+const Usuario = require("../models/Usuario");
 const _ = require("lodash");
 
-const listChats = async (req, res = express.request) => {};
 
 const accesChat = async (req, res = express.request) => {
 	const { userId1, userId2 } = req.query;

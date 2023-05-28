@@ -3,58 +3,54 @@ const _ = require("lodash");
 const Usuario = require("../models/Usuario");
 const PublicationScheme = require("../models/PublicationSchema");
 const commentariesSchema = require("../models/commentariesSchema");
+const chatSchema = require("../models/chatSchema");
 
 // -------- users ------------------->
 
 const listUsers = async (req, res = express.request) => {
-	// const usuarios = await Usuario.aggregate([
-	// 	{
-	// 		$lookup: {
-	// 			from: "publications",
-	// 			localField: "_id",
-	// 			foreignField: "userId",
-	// 			as: "publicaciones",
-	// 		},
-	// 	},
-	// 	{
-	// 		$project: {
-	// 			_id: 1,
-	// 			name: 1,
-	// 			user: 1,
-	// 			email: 1,
-	// 			photoURL: 1,
-	// 			hashtags: 1,
-	// 			publicaciones: {
-	// 				$slice: ["$publicaciones", 3],
-	// 			},
-	// 		},
-	// 	},
-	// 	{
-	// 		$project: {
-	// 			_id: 1,
-	// 			name: 1,
-	// 			user: 1,
-	// 			email: 1,
-	// 			photoURL: 1,
-	// 			hashtags: 1,
-	// 			publicaciones: {
-	// 				$map: {
-	// 					input: "$publicaciones",
-	// 					as: "pub",
-	// 					in: {
-	// 						photoURL: "$$pub.photoURL",
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// ]);
-
 	try {
-		const usuarios = await Usuario.find().select("user _id photoURL").populate({
-			path: "chats",
-			select: "lastMessage",
-		});
+		const usuarios = await Usuario.aggregate([
+			{
+				$lookup: {
+					from: "publications",
+					localField: "_id",
+					foreignField: "userId",
+					as: "publicaciones",
+				},
+			},
+			{
+				$project: {
+					_id: 1,
+					name: 1,
+					user: 1,
+					email: 1,
+					photoURL: 1,
+					hashtags: 1,
+					publicaciones: {
+						$slice: ["$publicaciones", 3],
+					},
+				},
+			},
+			{
+				$project: {
+					_id: 1,
+					name: 1,
+					user: 1,
+					email: 1,
+					photoURL: 1,
+					hashtags: 1,
+					publicaciones: {
+						$map: {
+							input: "$publicaciones",
+							as: "pub",
+							in: {
+								photoURL: "$$pub.photoURL",
+							},
+						},
+					},
+				},
+			},
+		]);
 
 		return res.status(200).json({
 			ok: true,
@@ -322,6 +318,41 @@ const findCommentaries = async (req, res = express.request) => {
 
 // <----------------
 
+// ------ chats ---------->
+
+const listChats = async (req, res = express.request) => {
+	const { userId } = req.query;
+
+	try {
+		let chats;
+		chats = await chatSchema
+			.find()
+			.populate("userId")
+			.select("lastMessage userId");
+
+		//console.log("-------",chats[0].userId[0].id,"-------");
+
+		//chats.filter((p) => p.userId[0]._id == userId || p.userId[1]._id == userId);
+
+		console.log(chats.filter((p) => p.userId[1].id == userId));
+
+		return res.status(200).json({
+			ok: true,
+			chats: chats.filter(
+				(p) => p.userId[0]._id == userId || p.userId[1]._id == userId
+			),
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			ok: false,
+			msg: "Error interno",
+		});
+	}
+};
+
+// <----------------
+
 module.exports = {
 	findUserByEmail,
 	findUserByUser,
@@ -331,4 +362,5 @@ module.exports = {
 	listPublications,
 	listPublicationsByHashtags,
 	findCommentaries,
+	listChats,
 };

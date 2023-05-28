@@ -7,7 +7,8 @@ const {
 	findUserByUser,
 	findPublication,
     listPublications,
-	listPublicationsByHashtags
+	listPublicationsByHashtags,
+	listChats
 } = require("../Controllers/search");
 
 router.get("/listUsers", listUsers)
@@ -23,5 +24,7 @@ router.get("/listPublications", listPublications)
 router.get("/listPublicationsByHashtags", listPublicationsByHashtags)
 
 router.get("/findPublication", findPublication)
+
+router.get("/listChats", listChats)
 
 module.exports = router;

@@ -8,7 +8,7 @@ class Server {
 	constructor() {
 		this.headers = {
 			cors: {
-				origin: ["http://127.0.0.1:5173", "https://vintarest.netlify.app/"],
+				origin: ["http://127.0.0.1:5173", "https://vintarest.netlify.app"],
 				methods: ["GET", "POST"],
 			},
 		};

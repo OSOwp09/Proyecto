@@ -2,6 +2,7 @@ const express = require("express");
 const Usuario = require("../models/Usuario");
 const PublicationScheme = require("../models/PublicationSchema");
 const CommentariesSchema = require("../models/commentariesSchema");
+const ChatSchema = require("../models/chatSchema")
 
 const deleteUser = async (req, res = express.request) => {
 	const { id } = req.body;

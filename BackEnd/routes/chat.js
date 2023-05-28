@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { validarJWT } = require("../middlewares/validar-token");
-const { accesChat, newMessage } = require("../Controllers/chat");
+const { accesChat, newMessage  } = require("../Controllers/chat");
 
 router.get(
 	"/",
@@ -14,5 +14,6 @@ router.post(
 	//validarJWT,
 	newMessage
 );
+
 
 module.exports = router;
