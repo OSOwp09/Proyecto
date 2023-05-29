@@ -325,28 +325,40 @@ const listChats = async (req, res = express.request) => {
 
 	try {
 		let chats;
-		chats = await chatSchema
-			.find()
-			.populate("userId")
-			.select("lastMessage userId");
-
-		//console.log("-------",chats[0].userId[0].id,"-------");
-
-		//chats.filter((p) => p.userId[0]._id == userId || p.userId[1]._id == userId);
-
-		console.log(chats.filter((p) => p.userId[1].id == userId));
+		chats = (
+			await chatSchema.find().populate("userId").select("lastMessage userId")
+		).filter((p) => p.userId[0]._id == userId || p.userId[1]._id == userId);
 
 		return res.status(200).json({
 			ok: true,
-			chats: chats.filter(
-				(p) => p.userId[0]._id == userId || p.userId[1]._id == userId
-			),
+			chats,
 		});
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({
 			ok: false,
-			msg: "Error interno",
+			msg: "Internal Error",
+		});
+	}
+};
+
+const listUsersToChat = async (req, res = express.request) => {
+	const { currentUser, searchUser, currentUsers } = req.query;
+	
+	try {
+		const users = (await Usuario.find().select("user photoURL")).filter(
+			(p) => p.user.toLowerCase().includes(searchUser.toLowerCase()) && !currentUsers.includes(p.user) && !p.user.includes(currentUser)
+		);
+
+		return res.status(200).json({
+			ok: true,
+			users,
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			ok: false,
+			msg: "Internal Error",
 		});
 	}
 };
@@ -363,4 +375,5 @@ module.exports = {
 	listPublicationsByHashtags,
 	findCommentaries,
 	listChats,
+	listUsersToChat,
 };

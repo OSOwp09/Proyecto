@@ -3,7 +3,6 @@ const ChatSchema = require("../models/chatSchema");
 const Usuario = require("../models/Usuario");
 const _ = require("lodash");
 
-
 const accesChat = async (req, res = express.request) => {
 	const { userId1, userId2 } = req.query;
 	const userId = [userId1, userId2];
@@ -24,12 +23,16 @@ const accesChat = async (req, res = express.request) => {
 
 		if (chat == "" || chat == null) {
 			//------- create a chat ---------------
-			chat = new ChatSchema({ userId: userId });
-			console.log(chat);
-			await chat.save();
+			// chat = new ChatSchema({ userId: userId });
+			// console.log(chat);
+			// await chat.save();
+			// return res.json({
+			// 	ok: true,
+			// 	chat,
+			// });
 			return res.json({
 				ok: true,
-				chat,
+				chat: ""
 			});
 		} else {
 			//------ return chat when found -------
@@ -65,6 +68,13 @@ const newMessage = async (req, res = express.request) => {
 			chat = await ChatSchema.findOne({ userId: userId.reverse() }).select(
 				"messages"
 			);
+		}
+
+		if (chat == "" || chat == null) {
+			//------- create a chat ---------------
+			chat = new ChatSchema({ userId: userId });
+			console.log(chat);
+			await chat.save();
 		}
 
 		if (chat.messages != undefined) {
