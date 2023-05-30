@@ -22,39 +22,86 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
 import { loadUser } from "./store/slices/auth/AuthThunks";
+import { FindUserByEmail } from "./api/Api";
+import { FinishCreationOfUser } from "./components/googleUser/finishCreationOfUser";
 
 function App() {
-	
 	document.body.classList.add("bg-primary-light");
 	const dispatch = useDispatch();
 
 	const [loadApp, setLoadApp] = useState(<></>);
 
-	useEffect(() => {
-		onAuthStateChanged(auth, () => {
+	const load = async () => {
+		dispatch(loadUser(auth.currentUser.email));
 
+		setLoadApp(
+			<Router>
+				<Routes>
+					<Route path="/" element={<Login />} />
+					<Route path="/login/*" element={<Login />} />
+					<Route
+						path="/home/*"
+						element={
+							<ChatProvider>
+								<Index />
+							</ChatProvider>
+						}
+					/>
+					<Route path="*" element={<Error />} />
+					<Route path="/Error404" element={<Error />} />
+				</Routes>
+			</Router>
+		);
+	};
+
+	useEffect(() => {
+		onAuthStateChanged(auth, async () => {
 			if (auth?.currentUser?.email) {
-				dispatch(loadUser(auth.currentUser.email));
+				try {
+					console.log("object");
+					await FindUserByEmail.get("", {
+						params: {
+							email: auth.currentUser.email,
+						},
+					});
+					load();
+					return;
+				} catch (error) {
+					const handdleContinue = () => {
+						load();
+						return;
+					};
+					setLoadApp(
+						<>
+							<FinishCreationOfUser
+								handdleContinue={handdleContinue}
+								email={auth.currentUser.email}
+							/>
+						</>
+					);
+					return;
+				}
 			}
 
 			setLoadApp(
-				<Router>
-					<Routes>
-						<Route path="/" element={<Login />} />
-						<Route path="/login/*" element={<Login />} />
-						<Route
-							path="/home/*"
-							element={
-								<ChatProvider>
-									<Index />
-								</ChatProvider>
-							}
-						/>
-						<Route path="*" element={<Error />} />
-						<Route path="/Error404" element={<Error />} />
-					</Routes>
-				</Router>
-			);
+			<Router>
+				<Routes>
+					<Route path="/" element={<Login />} />
+					<Route path="/login/*" element={<Login />} />
+					<Route
+						path="/home/*"
+						element={
+							<ChatProvider>
+								<Index />
+							</ChatProvider>
+						}
+					/>
+					<Route path="*" element={<Error />} />
+					<Route path="/Error404" element={<Error />} />
+				</Routes>
+			</Router>
+		);
+			
 		});
 	}, []);
 

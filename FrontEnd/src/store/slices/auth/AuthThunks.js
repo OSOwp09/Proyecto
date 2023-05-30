@@ -31,7 +31,7 @@ export const loadUser = (email) => {
 		const respToken = await GenerateTokenApi.get("", {
 			params: { email: email },
 		});
-
+		
 		const user = respUser.data.usuario.user;
 		const name = respUser.data.usuario.name;
 		const hashtags = respUser.data.usuario.hashtags;
@@ -136,7 +136,7 @@ export const loginAuth = (email, password) => {
 			}
 		} catch (error) {
 			console.error("Login error:", error);
-
+			
 			return error;
 		}
 	};

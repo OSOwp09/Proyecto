@@ -325,13 +325,9 @@ export const OpenPublication = memo(() => {
 							>
 								<div
 									className={`h-8 w-8 rounded-full
-                                        hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
-                                        ${
-																					shareVisibility
-																						? "shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]"
-																						: ""
-																				}
-                                        flex place-content-center place-items-center`}
+                                        hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)] 
+										${shareVisibility ? "shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]" : ""}
+										flex place-content-center place-items-center`}
 								>
 									<img src={share} alt="" className="w-6" />
 								</div>
@@ -352,7 +348,7 @@ export const OpenPublication = memo(() => {
 								</CopyToClipboard>
 							</motion.div>
 
-							<div id="options" className="absolute top-11 left-0">
+							<div id="options" className="absolute top-11 left-0 z-50">
 								<div
 									ref={shareVisibility ? wrapperRef : nullRef}
 									className={`${shareVisibility ? "block" : "hidden"}`}
@@ -449,7 +445,6 @@ export const OpenPublication = memo(() => {
 									outline-none 
 									resize-none
 									overflow-hidden`}
-									//onChange={(e) => hanndleResizeInput(e)}
 									onChange={(e) => handdleInputChange(e)}
 									value={comment}
 								/>

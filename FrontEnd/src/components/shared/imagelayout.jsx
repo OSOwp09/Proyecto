@@ -51,7 +51,9 @@ export const ImageLayout = memo(
 					},
 				});
 				setsearchFilter(respUser.data.usuario);
-			} catch (error) {}
+			} catch (error) {
+				console.log(error);
+			}
 
 			try {
 				const respUser = await FindUserByEmail.get("", {
@@ -60,7 +62,9 @@ export const ImageLayout = memo(
 					},
 				});
 				setsearchFilter(respUser.data.usuario);
-			} catch (error) {}
+			} catch (error) {
+				console.log(error);
+			}
 		};
 
 		const handdleListPublicationsByHashtags = async () => {

@@ -206,6 +206,12 @@ export const RegisterCard = () => {
 		</div>
 	);
 
+	const handdleUserChange = (e) => {
+		if (!e.includes(" ")) {
+			setFields({ ...fields, user: e });
+		}
+	};
+
 	return (
 		<>
 			<div
@@ -260,7 +266,8 @@ export const RegisterCard = () => {
 					id="user"
 					type="text"
 					placeholder="User"
-					onChange={(e) => setFields({ ...fields, user: e.target.value })}
+					onChange={(e) => handdleUserChange(e.target.value)}
+					value={fields.user}
 					className={`
                         px-[16px]
                         bg-secondary-light
@@ -282,7 +289,9 @@ export const RegisterCard = () => {
 					type="text"
 					placeholder="Email"
 					value={fields.email}
-					onChange={(e) => setFields({ ...fields, email: e.target.value.toLowerCase() })}
+					onChange={(e) =>
+						setFields({ ...fields, email: e.target.value.toLowerCase() })
+					}
 					className={`
                         px-[16px]
                         bg-secondary-light

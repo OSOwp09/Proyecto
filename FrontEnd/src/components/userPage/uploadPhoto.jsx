@@ -138,26 +138,7 @@ export const UploadPhoto = () => {
 		
 		let result
 		try {
-			// console.log(file);
-
-			// const resp = await CreatePublicationApi.post(
-			// 	"",
-			// 	{
-			// 		photoFile: file,
-			// 		title: title,
-			// 		description: description,
-			// 		hashtags: hashtags,
-			// 		userId: userId,
-			// 	},
-			// 	{
-			// 		headers: {
-			// 			"x-token": token,
-			// 		},
-			// 	}
-			// );
-
-			//await deleteFile("enchantingnerve-80d75afa-f741-46f1-a501-0c95ed1fa25f")
-
+			
 			result = await uploadFile(file, userInfo.user); // upload image file to firebase
 
 			const url = `https://firebasestorage.googleapis.com/v0/b/${result.metadata.bucket}/o/publications%2F${result.metadata.name}?alt=media`; // get image link

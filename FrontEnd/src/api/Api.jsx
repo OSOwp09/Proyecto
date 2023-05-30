@@ -1,7 +1,7 @@
 import axios from "axios";
 
-//const pathName = 'https://vintarest.up.railway.app'
-const pathName = "http://localhost:4000";
+//export const pathName = 'https://vintarest-back.up.railway.app'
+export const pathName = "http://localhost:4000";
 
 //---- user auth, register and login ------->
 
@@ -67,6 +67,14 @@ export const ListPublicationsApi = axios.create({
 //<----------------------
 
 //------ chats ------------------>
+
+export const ListChats = axios.create({
+	baseURL: `${pathName}/api/search/listChats`,
+});
+
+export const LsitUsersToChat = axios.create({
+	baseURL: `${pathName}/api/search/listUsersToChat`
+})
 
 export const FetchChat = axios.create({
 	baseURL: `${pathName}/api/chat/`,

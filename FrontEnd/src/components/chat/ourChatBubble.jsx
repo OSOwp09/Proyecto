@@ -5,9 +5,10 @@ export const OurBubble = ({messageList}) => {
 			<div
 				className="
                     bg-transparent border border-primary-dark text-primary-dark
-                    min-h-[48px] max-w-[288px] rounded-2xl"
+                    min-h-[40px] max-w-[288px] rounded-2xl
+					flex place-items-center"
 			>
-				<h1 className="px-4 py-3">
+				<h1 className="px-4 py-2 ">
 					{messageList.text ? messageList.text: messageList}
 				</h1>
 			</div>
@@ -17,7 +18,6 @@ export const OurBubble = ({messageList}) => {
 	return (
 		<>
 			<div className="font-inter">
-				<h1 className="ml-64 text-secondary-dark text-xs">You</h1>
 				<div className="flex place-content-end ">
 					<div>{message}</div>
 				</div>

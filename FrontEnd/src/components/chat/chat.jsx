@@ -7,8 +7,10 @@ import { ChatLoader } from "../loaders/chatLoader";
 import heart from "../../assets/heart-fill-dark.svg";
 import send from "../../assets/send.svg";
 import backArrow from "../../assets/arrow.svg";
+import userIcon from "../../assets/person-circle.svg";
+
 import { useContext, useEffect, useRef } from "react";
-import { FetchChat, NewMessage } from "../../api/Api";
+import { FetchChat, NewMessage, pathName } from "../../api/Api";
 
 import styles from "./chat.module.css";
 
@@ -19,19 +21,23 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-//const ENDPOINT = "" // Railway
-const ENDPOINT = "http://localhost:4000"; // local
+const ENDPOINT = pathName;
+
 var socket, selectedChatCompare;
 
 export const Chat = ({ user, id }) => {
 	const { handleChatList, selectedChat, setSelectedChat } =
 		useContext(ChatContext);
 
+	const [isScrolled, setIsScrolled] = useState(false);
 	const divScrollRef = useRef(null);
 	const scrollToBottom = () => {
 		divScrollRef.current.scroll({
 			top: 99999,
 		});
+		if (isScrolled == false) {
+			setIsScrolled(true);
+		}
 	};
 
 	//-------------- mesages fetch and send --------------------
@@ -41,9 +47,23 @@ export const Chat = ({ user, id }) => {
 	const [loading, setLoading] = useState(true);
 	const [newMessage, setNewMessage] = useState();
 
+
+	const textArea = useRef(null)
+	const hanndleResizeInput = (e) => {
+		e.target.style.height = "24px";
+		e.target.style.height = e.target.scrollHeight + "px";
+	};	
+
 	const handdleInputChange = (e) => {
 		setNewMessage(e.target.value);
+		hanndleResizeInput(e);
 	};
+
+	useEffect(() => {
+		setTimeout(() => {
+			scrollToBottom();
+		}, 200);
+	}, [messages]);
 
 	const fetchMessages = async () => {
 		if (!selectedChat) return;
@@ -56,7 +76,6 @@ export const Chat = ({ user, id }) => {
 		});
 
 		const messagesList = resp.data.chat.messages;
-		console.log(resp.data.chat._id);
 		setMessages(messagesList?.reverse());
 		setLoading(false);
 		socket.emit("join chat", `${userInfo.uid}-room-${id}`);
@@ -64,8 +83,8 @@ export const Chat = ({ user, id }) => {
 
 	const sendMessage = async () => {
 		if (newMessage) {
-
 			setNewMessage("");
+			textArea.current.style.height = "24px"
 			const resp = await NewMessage.post("", {
 				userId1: userInfo.uid,
 				userId2: id,
@@ -74,12 +93,22 @@ export const Chat = ({ user, id }) => {
 					text: newMessage,
 				},
 			});
-			
+
 			socket.emit("new message", {
-				room:`${id}-room-${userInfo.uid}`,
+				room: `${id}-room-${userInfo.uid}`,
 				message: newMessage,
 			});
 
+			console.log("aquiiii", messages);
+			if (messages == undefined) {
+				setMessages([
+					{
+						user: userInfo.user,
+						text: resp.data.chat.messages[0],
+					},
+				]);
+				return;
+			}
 			setMessages([
 				...messages,
 				{
@@ -89,10 +118,6 @@ export const Chat = ({ user, id }) => {
 			]);
 		}
 	};
-
-	useEffect(() => {
-		scrollToBottom();
-	}, [messages]);
 
 	//--------------------------------------------------------
 
@@ -104,45 +129,44 @@ export const Chat = ({ user, id }) => {
 		socket = io(ENDPOINT);
 		socket.emit("setup", userInfo);
 		socket.on("connection", () => setSocketConnected(true));
-		console.log("selected", selectedChat);
 	}, []);
 
 	useEffect(() => {
 		fetchMessages();
 
 		selectedChatCompare = selectedChat;
-		// eslint-disable-next-line
 	}, [selectedChat]);
 
 	useEffect(() => {
 		socket.on("message recieved", (newMessageRecieved) => {
-			console.log("mensaje del socket", newMessageRecieved);
-
-			setMessages([...messages, {
-				user: userInfo.uid,
-				text: newMessageRecieved
-			}]);
-
-			// if (
-			// 	!selectedChatCompare || // if chat is not selected or doesn't match current chat
-			// 	selectedChatCompare !== newMessageRecieved.chat._id
-			// ) {
-			// 	if (!notification.includes(newMessageRecieved)) {
-			// 		setNotification([newMessageRecieved, ...notification]);
-			// 		setFetchAgain(!fetchAgain);
-			// 	}
-			// } else {
-			// 	setMessages([...messages, newMessageRecieved]);
-			// }
+			if (messages != undefined) {
+				setMessages([
+					...messages,
+					{
+						user: userInfo.uid,
+						text: newMessageRecieved,
+					},
+				]);
+			}
 		});
 	});
-
-	
 
 	//--------------------------------------------------------
 
 	var ourMessage = [];
 	var friendMessage = [];
+
+	//---------- show/hide scroll to bottom btn ---------------
+	const [scrollDistance, setScrollDistance] = useState(0);
+	const handleScroll = (e) => {
+		setScrollDistance(
+			(e.target.clientHeight + e.target.scrollTop - 1 - e.target.scrollHeight) *
+				-1
+		);
+	};
+	//--------------------------------------------------------
+
+	
 
 	return (
 		<>
@@ -161,14 +185,18 @@ export const Chat = ({ user, id }) => {
 					className="h-auto w-auto drop-shadow-sm rounded-2xl
 					border border-secondary-light"
 				>
-					<div className="flex">
+					<div
+						className="
+					w-full h-[70px] pl-2
+					flex gap-2 place-items-center"
+					>
 						<div
 							onClick={() => {
 								handleChatList();
 								setSelectedChat("");
 							}}
 							id="arrow"
-							className="place-self-center w-auto mx-4 "
+							className="place-self-center w-auto "
 						>
 							<div
 								id="click-area"
@@ -177,12 +205,14 @@ export const Chat = ({ user, id }) => {
 								<img src={backArrow} alt="" className="rotate-90 w-4" />
 							</div>
 						</div>
+						<div className="w-8">
+							<img src={userIcon} alt="" className="w-full" />
+						</div>
 						<h1
 							id="title"
 							className=" 
-                        font-semibold text-base 
-                        my-6 pr-[72px] w-full
-                        text-center"
+                			font-semibold text-base 
+                        	/text-center"
 						>
 							{user}
 						</h1>
@@ -190,13 +220,11 @@ export const Chat = ({ user, id }) => {
 				</div>
 
 				<div
+					id="messages-container"
 					ref={divScrollRef}
-					id="messages"
-					onClick={() => {
-						scrollToBottom(), console.log("paArriba");
-					}}
+					onScroll={(e) => handleScroll(e)}
 					className={`h-full mx-2 overflow-auto 
-				${styles.scrollbar}`}
+					${styles.scrollbar}`}
 				>
 					{loading ? (
 						<div className="h-full w-full flex place-content-center place-items-center">
@@ -206,30 +234,33 @@ export const Chat = ({ user, id }) => {
 						<>
 							{messages ? (
 								<>
-									{messages.map((x, i) => {
-										//console.log(i, messages.length - 1);
-										if (messages[i].user == userInfo.user) {
-											scrollToBottom();
-											ourMessage.unshift(messages[i].text);
-											return (
-												<>
-													<div key={i} className="flex place-content-end">
-														<OurBubble messageList={messages[i].text}/>
-													</div>
-												</>
-											);
-										} else {
-											friendMessage.unshift(messages[i].text);
+									<div className={`${isScrolled ? "visible" : "invisible"}`}>
+										{messages.map((x, i) => {
+											if (messages[i].user == userInfo.user) {
+												ourMessage.unshift(messages[i].text);
+												return (
+													<>
+														<div key={i} className="flex place-content-end">
+															<OurBubble messageList={messages[i].text} />
+														</div>
+													</>
+												);
+											} else {
+												friendMessage.unshift(messages[i].text);
 
-											return (
-												<>
-													<div key={i}>
-														<FriendBubble messageList={messages[i].text} user={user}/>
-													</div>
-												</>
-											);
-										}
-									})}
+												return (
+													<>
+														<div key={i}>
+															<FriendBubble
+																messageList={messages[i].text}
+																user={user}
+															/>
+														</div>
+													</>
+												);
+											}
+										})}
+									</div>
 								</>
 							) : (
 								<></>
@@ -240,32 +271,74 @@ export const Chat = ({ user, id }) => {
 
 				<div
 					id="message-input"
-					className="border border-primary-dark rounded-full 
-                    h-8 text-base 
-                    flex place-items-center
+					className="
+					relative
+					border border-primary-dark rounded-2xl 
+                    h-auto text-base 
+                    flex place-items-end
                     mx-4 my-2"
 				>
+					<div
+						id="scroll-to-bottom-btn"
+						className={`
+						${scrollDistance >= 150 ? "block" : "hidden"}
+						select-none
+						absolute top-[-30px]
+						w-full flex place-content-center`}
+					>
+						<div
+							onClick={() => scrollToBottom()}
+							className={`
+							group
+							bg-secondary-light hover:bg-secondary-dark
+							border border-secondary-dark
+							rounded-full
+							px-5 py-2 
+							transition-all 
+							scale-[0.8] hover:scale-[1]`}
+						>
+							<svg
+								width="12"
+								height="7"
+								viewBox="0 0 12 7"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								className="transition-all
+								stroke-secondary-dark group-hover:stroke-secondary-light"
+							>
+								<path
+									d="M1 1L6 6L11 1"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								/>
+							</svg>
+						</div>
+					</div>
 					<motion.div
 						whileTap={{ scale: 0.9 }}
 						transition={{ type: "spring", stiffness: 400, damping: 17 }}
+						className="mb-1"
 					>
 						<img src={heart} alt="" className="h-4 mx-2" />
 					</motion.div>
 
-					<input
+					<textarea
+						ref={textArea}
 						type="text"
 						value={newMessage}
 						onChange={(e) => handdleInputChange(e)}
 						placeholder="Send a message"
-						className="text-base bg-transparent rounded-full w-full
-							pl-2
-							outline-none"
+						className={`first-line:marker:text-base bg-transparent w-full h-[24px] max-h-[120px]
+							pl-2 ${styles.scrollbar}
+							outline-none resize-none`}
 					/>
 
 					<motion.div
 						onClick={() => sendMessage()}
 						whileTap={{ scale: 0.9 }}
 						transition={{ type: "spring", stiffness: 400, damping: 17 }}
+						className="mb-1"
 					>
 						<img src={send} alt="" className="h-4 mr-4 rotate-45" />
 					</motion.div>

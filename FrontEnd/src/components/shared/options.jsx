@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../../firebase/config";
 import { logoutAuth } from "../../store/slices/auth/AuthThunks";
 import { useNavigate } from "react-router-dom";
@@ -10,19 +10,18 @@ export const OptionsCard = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
+	const userInfo = useSelector((state) => state.auth);
 	const [name, setName] = useState("");
 	const [user, setUser] = useState("");
 	const [email, setEmail] = useState("");
 
 	useEffect(() => {
 		onAuthStateChanged(auth, () => {
-			if (auth.currentUser) {
-				setName(auth.currentUser.displayName.split("/")[0]);
-				setUser(auth.currentUser.displayName.split("/")[1]);
-				setEmail(auth.currentUser.email);
-			}
+			setName(userInfo.name);
+			setUser(userInfo.user);
+			setEmail(userInfo.email);
 		});
-	}, [auth]);
+	}, []);
 
 	const handdleLogout = async () => {
 		try {
