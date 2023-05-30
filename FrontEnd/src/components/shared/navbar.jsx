@@ -110,7 +110,7 @@ export const Navbar = () => {
 						className="
 						text-sm
                             w-full h-[32px]
-                            bg-secondary-highlight 
+                            bg-secondary-highlight rounded-r-2xl
                             placeholder:text-secondary-dark
                             text-primary-dark
 							outline-none pr-4"
