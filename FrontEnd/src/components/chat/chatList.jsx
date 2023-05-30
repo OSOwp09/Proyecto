@@ -29,7 +29,7 @@ export const ChatList = () => {
 	};
 	useEffect(() => {
 		fetchChatList();
-	}, []);
+	});
 
 	/* This code is creating a list of chat elements to be displayed in the chat list component. It uses
 	the `useState` hook to create a state variable `chatElement` and the `useEffect` hook to update it

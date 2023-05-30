@@ -13,8 +13,9 @@ import { LayoutLoader } from "../../components/loaders/layoutLoader";
 
 export const ImageLayout = memo(
 	({ selectImg, words = "", uid = "", pid = "-" }) => {
+		
 		const [loaded, setLoaded] = useState(false);
-
+		
 		const wordsValidator = useSelector(
 			(state) => state.search
 		).words.toLowerCase();

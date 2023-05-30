@@ -14,10 +14,8 @@ export const OptionsCard = () => {
 	const [name, setName] = useState("");
 	const [user, setUser] = useState("");
 	const [email, setEmail] = useState("");
-	console.log(userInfo);
 
 	useEffect(() => {
-		console.log(userInfo);
 		setName(userInfo.name);
 		setUser(userInfo.user);
 		setEmail(userInfo.email);

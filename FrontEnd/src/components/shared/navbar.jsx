@@ -111,7 +111,6 @@ export const Navbar = () => {
 						text-sm
                             w-full h-[32px]
                             bg-secondary-highlight 
-                            rounded-2xl 
                             placeholder:text-secondary-dark
                             text-primary-dark
 							outline-none pr-4"

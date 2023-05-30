@@ -6,18 +6,17 @@ import { motion } from "framer-motion";
 import share from "../../assets/Group 98.svg";
 import link from "../../assets/Group 99.svg";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { ShareButton } from "../../components/shared/publicationOptions";
 import { useSelector } from "react-redux";
+import { FindUserByUser } from "../../api/Api";
 
 export const OtherUsersPage = () => {
 	const navigate = useNavigate();
 	const [shareVisibility, setShareVisibility] = useState(false);
-	const uid = useSelector((state) => state.search).userId;
 	const shareUrl = `${window.location}`;
-	console.log(uid);
 
 	const { image } = useContext(ImageContext);
 
@@ -62,7 +61,7 @@ export const OtherUsersPage = () => {
 
 						<UserCard />
 					</div>
-					<ImageLayout uid={uid} />
+					<ImageLayout uid={shareUrl.split("/").slice(-1)} />
 				</div>
 				<div className="mt-2">{image.code}</div>
 			</div>
