@@ -28,7 +28,6 @@ export const Home = () => {
 	useEffect(() => {
 		if (!loaded) {
 			setTimeout(() => {
-				//setLayoutHtml(<></>);
 				setLoaded(true);
 			}, 1000);
 			setTimeout(() => {
@@ -99,7 +98,7 @@ export const Home = () => {
 					${searchFor == "Explore" ? "block" : "hidden"}
 					w-screen flex gap-2 h-fit`}
 				>
-					<div id="imageLayout-container" className={`grow h-full pt-2 `}>
+					<div id="imageLayout-container" className={`grow h-full pt-2`}>
 						{layoutHtml}
 						<div className={`absolute w-full flex`}>
 							<ImageLayout words={words} />
@@ -115,7 +114,7 @@ export const Home = () => {
 						id="image-selected"
 						className="h-[calc(100vh-90px)] w-fit mr-2
 								rounded-2xl
-								sticky top-0"
+								sticky top-0 z-50"
 					>
 						{image.code}
 					</div>

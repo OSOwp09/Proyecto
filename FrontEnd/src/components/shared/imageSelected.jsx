@@ -109,7 +109,6 @@ export const ImageSelected = ({ close }) => {
 						sticky top-0 z-50 
 						flex place-content-between place-items-center gap-2 
 						select-none"
-						//initial={{ scale: 0.8 }}
 					>
 						<motion.div
 							className="p-2
@@ -241,7 +240,7 @@ export const ImageSelected = ({ close }) => {
 									alt=""
 									className="
 									h-auto max-h-[572px]
-									w-auto max-w-[620px]
+									w-auto max-w-[500px]
 									rounded-2xl object-cover"
 								/>
 							</div>

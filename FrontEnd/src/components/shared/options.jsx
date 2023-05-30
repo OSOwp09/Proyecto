@@ -14,14 +14,14 @@ export const OptionsCard = () => {
 	const [name, setName] = useState("");
 	const [user, setUser] = useState("");
 	const [email, setEmail] = useState("");
+	console.log(userInfo);
 
 	useEffect(() => {
-		onAuthStateChanged(auth, () => {
-			setName(userInfo.name);
-			setUser(userInfo.user);
-			setEmail(userInfo.email);
-		});
-	}, []);
+		console.log(userInfo);
+		setName(userInfo.name);
+		setUser(userInfo.user);
+		setEmail(userInfo.email);
+	}, [,userInfo]);
 
 	const handdleLogout = async () => {
 		try {
@@ -61,12 +61,14 @@ export const OptionsCard = () => {
 				</div>
 				<div
 					onClick={() => handdleLogout()}
-					className="flex place-items-center mt-2
+					className="
+					group
+					flex place-items-center mt-2
                     ml-2 mr-2 px-2 py-[2px]
                     rounded-2xl
-                    text-secondary-dark
-                    hover:text-primary-dark
-                    hover:bg-secondary-highlight
+                    text-primary-dark
+                    hover:text-secondary-light
+                    hover:bg-secondary-red
                     select-none"
 				>
 					<button className="text-sm">Log out</button>

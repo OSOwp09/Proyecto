@@ -13,62 +13,101 @@ import { useContext, useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { FinishCreationOfUser } from "../../components/googleUser/finishCreationOfUser";
+import { FindUserByEmail } from "../../api/Api";
+import { loadUser } from "../../store/slices/auth/AuthThunks";
 
 export const Index = () => {
-	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const { chatState } = useContext(ChatContext);
-	const [authLoaded, setAuthLoaded] = useState(false)
-	const authinfo = useSelector(((state) => state.auth))
+	const [loadIndex, setLoadIndex] = useState(true);
+	const authinfo = useSelector((state) => state.auth);
+
+	const handdleContinue = () => {
+		dispatch(loadUser(authinfo.email));
+		setLoadIndex(true)
+		return;
+	};
+
+	const loadPage = async () => {
+		if (authinfo.email) {
+			try {
+				await FindUserByEmail.get("", {
+					params: {
+						email: authinfo.email,
+					},
+				});
+				setLoadIndex(true)
+				return;
+			} catch (error) {
+				setLoadIndex(false)
+				return;
+			}
+		}
+		setLoadIndex(true)
+	};
 
 	useEffect(() => {
-		onAuthStateChanged(auth, () => {
-			setAuthLoaded(true)
-		});
-	}, []);
-
+		loadPage();
+	}, [authinfo]);
 
 	return (
 		<>
-			<div
-				id="page-container"
-				className="relative overflow-hidden w-screen h-screen"
-			>
-				<div id="Navbar-container" className="sticky top-0 drop-shadow-md z-50">
-					<Navbar />
-				</div>
-				<div
-					id="underNavbar-container"
-					className="h-[calc(100vh-48px)] w-screen flex  relative "
-				>
-					<ImageProvider>
-						<Routes>
-							<Route path="/" element={<Home />} />
+			{loadIndex ? (
+				<>
+					<div
+						id="page-container"
+						className="relative overflow-hidden w-screen h-screen"
+					>
+						<div
+							id="Navbar-container"
+							className="sticky top-0 drop-shadow-md z-50"
+						>
+							<Navbar />
+						</div>
+						<div
+							id="underNavbar-container"
+							className="h-[calc(100vh-48px)] w-screen flex  relative "
+						>
+							<ImageProvider>
+								<Routes>
+									<Route path="/" element={<Home />} />
 
-							<Route path="/publication/:id" element={<OpenPublication />} />
+									<Route
+										path="/publication/:id"
+										element={<OpenPublication />}
+									/>
 
-							<Route path="/:id" element={<OtherUsersPage />} />
+									<Route path="/:id" element={<OtherUsersPage />} />
 
-							{authinfo.email ? (
-								<Route path="/user" element={<User />} />
-							) : (
-								""
-							)}
+									{authinfo.email ? (
+										<Route path="/user" element={<User />} />
+									) : (
+										""
+									)}
 
+									{authinfo.email ? (
+										<Route path="/upload" element={<UploadPhoto />} />
+									) : (
+										""
+									)}
 
-							{authinfo.email  ? (
-								<Route path="/upload" element={<UploadPhoto />} />
-							) : (
-								""
-							)}
-
-							<Route path="*" element={<Error />} />
-							
-						</Routes>
-					</ImageProvider>
-				</div>
-				<div className="absolute top-[54px] right-2">{chatState.code}</div>
-			</div>
+									<Route path="*" element={<Error />} />
+								</Routes>
+							</ImageProvider>
+						</div>
+						<div className="absolute top-[54px] right-2">{chatState.code}</div>
+					</div>
+				</>
+			) : (
+				<>
+					<FinishCreationOfUser
+						handdleContinue={handdleContinue}
+						email={authinfo.email}
+					/>
+				</>
+			)}
 		</>
 	);
 };

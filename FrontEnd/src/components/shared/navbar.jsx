@@ -207,39 +207,43 @@ export const Navbar = () => {
 					</motion.div>
 
 					<motion.div
-						onClick={() => setOptions(!options)}
 						id="options-icon-container"
-						className={`h-[60%] w-[30px]
+						className={`
+						group relative
+						h-[60%] w-[30px]
 						flex place-items-center place-content-center
+						transition-all
+						
 						${options ? styles.pressed : styles.navbtn}`}
-						animate={options ? "open" : "closed"}
-						whileTap={"tap"}
+						onHoverStart={() => setOptions(true)}
+						onHoverEnd={() => setOptions(false)}
 					>
-						<motion.div
-							variants={{
-								open: { rotate: 180 },
-								close: { rotate: 0 },
-								tap: { scale: 0.8 },
-							}}
-							transition={{ type: "spring", stiffness: 500, damping: 30 }}
+						<div id="arrow" className="flex-none mx-2">
+							<img
+								src={arrow}
+								alt=""
+								className="h-2 transition-all group-hover:rotate-[180deg]"
+							/>
+						</div>
+						<div
+							className="h-5 w-8 bg-transparent 
+						absolute bottom-[-10px]
+						hidden  group-hover:block"
+						></div>
+						<div
+							className="h-[40px] w-[80px] bg-transparent 
+						absolute bottom-[-35px] right-0
+						hidden  group-hover:block"
+						></div>
+						<div
+							className="absolute bottom-[-116px] right-[-12px]
+						hidden  group-hover:block"
 						>
-							<div id="arrow" className="flex-none mx-2">
-								<img src={arrow} alt="" className="h-2" />
-							</div>
-						</motion.div>
+							<OptionsCard />
+						</div>
 					</motion.div>
 				</div>
 			</div>
-
-			<motion.div
-				className={`
-				${options ? "block" : "hidden"}
-				absolute right-1 mt-1
-				shadow-lg
-				rounded-full`}
-			>
-				<OptionsCard />
-			</motion.div>
 		</>
 	);
 };

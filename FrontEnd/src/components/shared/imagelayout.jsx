@@ -322,7 +322,7 @@ export const ImageLayout = memo(
 		const loader = () => {
 			return (
 				<>
-					<div className="absolute top-[-8px] left-0 z-50 ">
+					<div className="absolute top-[-8px] left-0 z-50 overflow-hidden">
 						<LayoutLoader />
 					</div>
 				</>
@@ -350,7 +350,7 @@ export const ImageLayout = memo(
 				<div
 					ref={divRef}
 					id="images-container"
-					className="relative w-full overflow-x-hidden"
+					className="relative w-full overflow-x-hidden overflow-hidden"
 				>
 					<input
 						type="checkbox"
@@ -366,11 +366,11 @@ export const ImageLayout = memo(
 					>
 						{loader()}
 					</div>
-
+					
 					<div
 						className={`
 						flex place-content-center gap-2 
-						transition-all duration-[1400ms] delay-[800ms]
+						transition-all duration-[1400ms] delay-[1000ms]
 						opacity-0 peer-checked:opacity-100`}
 					>
 						{html}
