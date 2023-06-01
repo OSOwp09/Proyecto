@@ -68,7 +68,7 @@ export const Index = () => {
 						</div>
 						<div
 							id="underNavbar-container"
-							className="h-[calc(100vh-48px)] w-screen flex  relative "
+							className="h-[calc(100vh-48px)] w-screen flex  relative z-0"
 						>
 							<ImageProvider>
 								<Routes>

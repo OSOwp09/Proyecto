@@ -29,6 +29,10 @@ export const ImageCard = ({
 		navigate(`/home/publication/${id}`);
 	};
 
+	const handdleUserClick = () =>{
+		navigate(`/home/${userName}`);
+	}
+
 	return (
 		<>
 			<div
@@ -37,7 +41,7 @@ export const ImageCard = ({
 				group
                 bg-secondary-light
                 h-full w-[240px] rounded-2xl
-                mx- mb-2
+                mb-2
                 font-inter text-[14px] text-primary-dark break-inside-avoid
 				drop-shadow
 				hover:drop-shadow-xl"
@@ -45,7 +49,7 @@ export const ImageCard = ({
 				<div
 					className="w-[240px] h-auto max-h-[448px] min-h-[120px]
                         rounded-t-2xl object-fit
-                        mb-2 select-none
+                        select-none
 						overflow-hidden relative"
 				>
 					<div className="relative">
@@ -58,7 +62,7 @@ export const ImageCard = ({
 							className="
 							w-[240px] h-auto max-h-[480px] min-h-[120px]
 							rounded-t-2xl object-fit
-							mb-2 select-none"
+							select-none"
 						/>
 
 						<div 
@@ -71,14 +75,35 @@ export const ImageCard = ({
 						bg-primary-dark opacity-50
 						hidden group-hover:block"></div>
 
-						<div
+						
+					</div>
+				</div>
+				<div id="description-container" className="p-2 relative">
+					<h1
+						id="description"
+						className="h-[14px] w-[240px] font-semibold flex place-items-center"
+					>
+						{title}
+					</h1>
+					<div
+						id="user"
+						onClick={()=>handdleUserClick()}
+						className="h-[32px] flex place-items-center gap-1 mt-1"
+					>
+						<img src={usericon} alt="" className="h-[32px] select-none" />
+						<h1>{userName}</h1>
+						<h1></h1>
+					</div>
+
+					<div
+							id="open-publications"
 							onClick={() => handdleOnOpenBtnClick()}
 							className="
 							group/open
 							h-auto w-auto
 							transition-all duration-[300ms] delay-0 ease-in
 							absolute 
-							bottom-0 group-hover:bottom-2 
+							top-[-30px] hover:top-[-36px] 
 							left-0 group-hover:left-2
 							opacity-0 group-hover:opacity-100
 							hidden group-hover:block"
@@ -125,23 +150,6 @@ export const ImageCard = ({
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-				<div id="description-container" className="p-1">
-					<h1
-						id="description"
-						className="h-[14px] w-[240px] font-semibold flex place-items-center"
-					>
-						{title}
-					</h1>
-					<div
-						id="user"
-						className="h-[32px] flex place-items-center gap-1 mt-1"
-					>
-						<img src={usericon} alt="" className="h-[32px] select-none" />
-						<h1>{userName}</h1>
-						<h1></h1>
-					</div>
 				</div>
 			</div>
 		</>

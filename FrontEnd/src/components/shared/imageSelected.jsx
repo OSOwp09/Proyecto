@@ -78,6 +78,7 @@ export const ImageSelected = ({ close }) => {
 
 	const [html, setHtml] = useState(<></>);
 	useEffect(() => {
+		scrollToTop();
 		setHtml(
 			<>
 				<ImageLayout
@@ -88,6 +89,10 @@ export const ImageSelected = ({ close }) => {
 			</>
 		);
 	}, [, image]);
+
+	const handdleUserClick = () => {
+		navigate(`/home/${image.user}`);
+	};
 
 	return (
 		<>
@@ -203,7 +208,9 @@ export const ImageSelected = ({ close }) => {
 						<div id="options" className="absolute top-10 left-[178px] z-50">
 							<div
 								ref={shareVisibility ? wrapperRefShare : nullRef}
-								className={`${shareVisibility ? "block" : "hidden"} translate-x-[-114px]`}
+								className={`${
+									shareVisibility ? "block" : "hidden"
+								} translate-x-[-114px]`}
 							>
 								<ShareButton src={shareUrl} />
 							</div>
@@ -257,6 +264,7 @@ export const ImageSelected = ({ close }) => {
 								className="
 								flex gap-2 place-items-center
 								text-lg"
+								onClick={()=>handdleUserClick()}
 							>
 								<img src={usericon} alt="" className="w-8 select-none" />
 								<h1>{image.user}</h1>

@@ -26,6 +26,7 @@ export const UploadPhoto = () => {
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [hashtags, setHashtags] = useState("");
+	const [showButton, setShowButton] = useState(true)
 
 	useEffect(() => {
 		onAuthStateChanged(auth, () => {
@@ -118,27 +119,35 @@ export const UploadPhoto = () => {
 
 	const handdleSave = async (file) => {
 		if (imgFile == "") {
-			console.log("sube algo peeee");
+			console.log("Upload an image");
 			return;
 		}
 
+		let titlevar = title;
 		if (title == "") {
-			console.log("escribi algo peeee");
-			return;
+			titlevar = " ";
 		}
 
-		let hashtags;
+		let hashtagsvar;
 
 		if (hashtagList[0] == undefined) {
-			console.log("escribi un hasgtag peeee");
-			hashtags = " ";
+			if (hashtags != "") {
+				hashtagsvar = hashtags
+			} else {
+				hashtagsvar = " ";
+			}
 		} else {
-			hashtags = hashtagList.join(" ");
+			hashtagsvar = hashtagList.join(" ");
 		}
-		
-		let result
+
+		let descriptionvar = description;
+		if (description == "") {
+			descriptionvar = " ";
+		}
+
+		let result;
+		setShowButton(false)
 		try {
-			
 			result = await uploadFile(file, userInfo.user); // upload image file to firebase
 
 			const url = `https://firebasestorage.googleapis.com/v0/b/${result.metadata.bucket}/o/publications%2F${result.metadata.name}?alt=media`; // get image link
@@ -148,9 +157,9 @@ export const UploadPhoto = () => {
 				{
 					photoURL: url,
 					firebaseId: result.metadata.name,
-					title: title,
-					description: description,
-					hashtags: hashtags,
+					title: titlevar,
+					description: descriptionvar,
+					hashtags: hashtagsvar,
 					userId: userId,
 				},
 				{
@@ -162,10 +171,10 @@ export const UploadPhoto = () => {
 			// console.log(resp);
 			setImgFile("");
 			navigate("/home/user");
-
 		} catch (error) {
-			await deleteFile(result?.metadata?.name)
+			await deleteFile(result?.metadata?.name);
 			console.log(error);
+			setShowButton(true)
 		}
 	};
 
@@ -310,7 +319,8 @@ export const UploadPhoto = () => {
 						<div className="h-[50px]"></div>
 						<button
 							id="save-button"
-							className="
+							className={`
+							${showButton ? "block":"hidden"}
                             px-2
                             text-2xl text-primary-highlight
                             border-2 border-primary-highlight
@@ -318,7 +328,7 @@ export const UploadPhoto = () => {
                             hover:text-secondary-light
                             rounded-2xl
                             absolute bottom-0 right-0
-                            flex gap-2"
+                            flex gap-2`}
 							onClick={() => handdleSave(imgFile)}
 						>
 							Save

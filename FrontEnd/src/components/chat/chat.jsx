@@ -3,6 +3,7 @@ import { FriendBubble } from "./friendChatBubble";
 import { OurBubble } from "./ourChatBubble";
 import { ChatContext } from "../../context/chatContext";
 import { ChatLoader } from "../loaders/chatLoader";
+import { useNavigate } from "react-router-dom";
 
 import heart from "../../assets/heart-fill-dark.svg";
 import send from "../../assets/send.svg";
@@ -26,6 +27,8 @@ const ENDPOINT = pathName;
 var socket, selectedChatCompare;
 
 export const Chat = ({ user, id }) => {
+
+	const navigate = useNavigate();
 	const { handleChatList, selectedChat, setSelectedChat } =
 		useContext(ChatContext);
 
@@ -166,7 +169,9 @@ export const Chat = ({ user, id }) => {
 	};
 	//--------------------------------------------------------
 
-	
+	const handdleUserClick = () => {
+		navigate(`/home/${user}`);
+	};
 
 	return (
 		<>
@@ -205,7 +210,8 @@ export const Chat = ({ user, id }) => {
 								<img src={backArrow} alt="" className="rotate-90 w-4" />
 							</div>
 						</div>
-						<div className="w-8">
+						<div className="w-8"
+						onClick={()=>handdleUserClick()}>
 							<img src={userIcon} alt="" className="w-full" />
 						</div>
 						<h1

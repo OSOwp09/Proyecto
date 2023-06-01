@@ -46,6 +46,8 @@ export const OpenPublication = memo(() => {
 
 	const jsonInfo = publicationsJson.filter((p) => p.publicationid == id);
 
+	const currentUserInfo = useSelector((state) => state.auth);
+
 	const [img, setImg] = useState("");
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
@@ -210,46 +212,50 @@ export const OpenPublication = memo(() => {
 		serUserId(userInfo.uid);
 	}, [, userInfo]);
 
+	const comentInputRef = useRef(null)
 	const handdleSendComment = async () => {
-		if (comment != "") {
-			try {
-				const currentDate = String(new Date());
+		if (userInfo.email) {
+			if (comment != "") {
+				try {
+					const currentDate = String(new Date());
 
-				const resp = await CreateCommentApi.post(
-					"",
-					{
-						text: comment,
-						date: currentDate,
-						publicationId: id,
-						userId: userId,
-					},
-					{
-						headers: {
-							"x-token": token,
+					const resp = await CreateCommentApi.post(
+						"",
+						{
+							text: comment,
+							date: currentDate,
+							publicationId: id,
+							userId: userId,
 						},
-					}
-				);
-				setComment("");
-				const newComment = () => {
-					return (
-						<>
-							<div className="my-2" key={comments.length + 1}>
-								<Commentary
-									user={userName}
-									coment={comment}
-									date={currentDate}
-								/>
-							</div>
-						</>
+						{
+							headers: {
+								"x-token": token,
+							},
+						}
 					);
-				};
-				const arr = new Array(comments)[0].reverse();
-				arr.push(newComment());
+					setComment("");
+					comentInputRef.current.style.height = "38px"
+					const newComment = () => {
+						return (
+							<>
+								<div className="my-2" key={comments.length + 1}>
+									<Commentary
+										user={currentUserInfo.user}
+										coment={comment}
+										date={currentDate}
+									/>
+								</div>
+							</>
+						);
+					};
+					const arr = new Array(comments)[0].reverse();
+					arr.push(newComment());
 
-				setComments(arr.reverse());
-				console.log(comments);
-			} catch (error) {
-				console.log(error);
+					setComments(arr.reverse());
+					console.log(comments);
+				} catch (error) {
+					console.log(error);
+				}
 			}
 		}
 	};
@@ -413,7 +419,7 @@ export const OpenPublication = memo(() => {
 							<div>{comments}</div>
 						</motion.div>
 
-						<div
+						{userInfo.email ? <div
 							id="add-commentary-input"
 							className="
 							w-[308px] 
@@ -435,6 +441,7 @@ export const OpenPublication = memo(() => {
 							>
 								<textarea
 									type="text"
+									ref={comentInputRef}
 									placeholder="Add comment"
 									className={`
 									text-sm
@@ -455,7 +462,7 @@ export const OpenPublication = memo(() => {
 									onClick={() => handdleSendComment()}
 								/>
 							</div>
-						</div>
+						</div>:<><hr className="h-2"/></>}
 					</div>
 				</div>
 				<h2 className="text-primary-dark font-semibold text-xl my-6">
