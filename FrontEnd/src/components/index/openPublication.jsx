@@ -38,12 +38,6 @@ export const OpenPublication = memo(() => {
 
 	const { id } = useParams(); // id extracted from the browser url
 
-	// const coment = [...Array(3)].map((x, i) => (
-	// 	<div key={i} className="my-2">
-	// 		<Commentary user={"user"} coment={"muy lindo"} heart={heart} />
-	// 	</div>
-	// ));
-
 	const jsonInfo = publicationsJson.filter((p) => p.publicationid == id);
 
 	const currentUserInfo = useSelector((state) => state.auth);
@@ -212,7 +206,7 @@ export const OpenPublication = memo(() => {
 		serUserId(userInfo.uid);
 	}, [, userInfo]);
 
-	const comentInputRef = useRef(null)
+	const comentInputRef = useRef(null);
 	const handdleSendComment = async () => {
 		if (userInfo.email) {
 			if (comment != "") {
@@ -234,7 +228,7 @@ export const OpenPublication = memo(() => {
 						}
 					);
 					setComment("");
-					comentInputRef.current.style.height = "38px"
+					comentInputRef.current.style.height = "38px";
 					const newComment = () => {
 						return (
 							<>
@@ -264,6 +258,36 @@ export const OpenPublication = memo(() => {
 	 *---------------------------------------------------------------------------
 	 *---------------------------------------------------------------------------
 	 */
+
+	const [alert, setAlert] = useState(false);
+	const linkAlert = () => {
+		return (
+			<div
+				className="transition-all delay-[2000ms]
+			/opacity-0"
+			>
+				<div
+					className={`
+				h-fit bg-primary-dark rounded-full
+				px-4 py-1
+				flex place-content-center place-items-center
+
+				transition-all
+				${alert ? "translate-y-[-36px]" : "translate-y-[opx]"}
+				${alert ? "opacity-100" : "opacity-0"}`}
+				>
+					<p className="text-secondary-light">Link copied</p>
+				</div>
+			</div>
+		);
+	};
+
+	const handdleLinkPressed = async () => {
+		setAlert(true);
+		setTimeout(() => {
+			setAlert(false);
+		}, 1500);
+	};
 
 	return (
 		<>
@@ -345,6 +369,7 @@ export const OpenPublication = memo(() => {
 							>
 								<CopyToClipboard text={shareUrl}>
 									<div
+										onClick={()=>handdleLinkPressed()}
 										className={`h-8 w-8 rounded-full
 									        hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
 									        flex place-content-center place-items-center`}
@@ -419,9 +444,10 @@ export const OpenPublication = memo(() => {
 							<div>{comments}</div>
 						</motion.div>
 
-						{userInfo.email ? <div
-							id="add-commentary-input"
-							className="
+						{userInfo.email ? (
+							<div
+								id="add-commentary-input"
+								className="
 							w-[308px] 
 							border-t border-secondary-dark
 							pt-[18px]
@@ -431,19 +457,19 @@ export const OpenPublication = memo(() => {
 							bg-secondary-light
 							h-auto
 							gap-2  select-none "
-						>
-							<img src={usericon} alt="" className="w-9" />
-							<div
-								className="flex place-items-end
+							>
+								<img src={usericon} alt="" className="w-9" />
+								<div
+									className="flex place-items-end
 							border border-primary-dark rounded-2xl
 							w-[308px] h-auto
 							pr-3"
-							>
-								<textarea
-									type="text"
-									ref={comentInputRef}
-									placeholder="Add comment"
-									className={`
+								>
+									<textarea
+										type="text"
+										ref={comentInputRef}
+										placeholder="Add comment"
+										className={`
 									text-sm
 									bg-transparent
 									h-[38px]  w-full
@@ -452,17 +478,22 @@ export const OpenPublication = memo(() => {
 									outline-none 
 									resize-none
 									overflow-hidden`}
-									onChange={(e) => handdleInputChange(e)}
-									value={comment}
-								/>
-								<img
-									src={send}
-									alt=""
-									className="w-7 rotate-45 mb-[6px]"
-									onClick={() => handdleSendComment()}
-								/>
+										onChange={(e) => handdleInputChange(e)}
+										value={comment}
+									/>
+									<img
+										src={send}
+										alt=""
+										className="w-7 rotate-45 mb-[6px]"
+										onClick={() => handdleSendComment()}
+									/>
+								</div>
 							</div>
-						</div>:<><hr className="h-2"/></>}
+						) : (
+							<>
+								<hr className="h-2" />
+							</>
+						)}
 					</div>
 				</div>
 				<h2 className="text-primary-dark font-semibold text-xl my-6">
@@ -500,6 +531,8 @@ export const OpenPublication = memo(() => {
 						onClick={() => navigate("/home")}
 					/>
 				</button>
+				<div className="absolute bottom-[-32px]">{linkAlert()}</div>
+
 			</div>
 		</>
 	);

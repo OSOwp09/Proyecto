@@ -94,6 +94,36 @@ export const ImageSelected = ({ close }) => {
 		navigate(`/home/${image.user}`);
 	};
 
+	const [alert, setAlert] = useState(false);
+	const linkAlert = () => {
+		return (
+			<div
+				className="transition-all delay-[2000ms]
+			/opacity-0"
+			>
+				<div
+					className={`
+				h-fit bg-primary-dark rounded-full
+				px-4 py-1
+				flex place-content-center place-items-center
+
+				transition-all
+				${alert ? "translate-y-[-36px]" : "translate-y-[opx]"}
+				${alert ? "opacity-100" : "opacity-0"}`}
+				>
+					<p className="text-secondary-light">Link copied</p>
+				</div>
+			</div>
+		);
+	};
+
+	const handdleLinkPressed = async () => {
+		setAlert(true);
+		setTimeout(() => {
+			setAlert(false);
+		}, 1500);
+	};
+
 	return (
 		<>
 			<div className="pt-2 h-full relative">
@@ -178,6 +208,7 @@ export const ImageSelected = ({ close }) => {
 							>
 								<CopyToClipboard text={shareUrl}>
 									<div
+										onClick={()=>handdleLinkPressed()}
 										className={`h-8 w-8 rounded-full
 									hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
 									flex place-content-center place-items-center`}
@@ -264,7 +295,7 @@ export const ImageSelected = ({ close }) => {
 								className="
 								flex gap-2 place-items-center
 								text-lg"
-								onClick={()=>handdleUserClick()}
+								onClick={() => handdleUserClick()}
 							>
 								<img src={usericon} alt="" className="w-8 select-none" />
 								<h1>{image.user}</h1>
@@ -304,6 +335,7 @@ export const ImageSelected = ({ close }) => {
 						{html}
 					</div>
 				</div>
+				<div className="absolute bottom-[-32px] left-[38%]">{linkAlert()}</div>
 			</div>
 		</>
 	);

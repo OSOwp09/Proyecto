@@ -16,11 +16,40 @@ import { useSelector } from "react-redux";
 export const User = () => {
 	const navigate = useNavigate();
 	const [shareVisibility, setShareVisibility] = useState(false);
-	const user = useSelector((state) => state.auth?.user)
-	const shareUrl =`${window.location.host}/home/${user}`;;
-	const email = useSelector((state) => state.auth.email)
+	const user = useSelector((state) => state.auth?.user);
+	const shareUrl = `${window.location.host}/home/${user}`;
+	const email = useSelector((state) => state.auth.email);
 
 	const { image } = useContext(ImageContext);
+
+	const [alert, setAlert] = useState(false);
+	const linkAlert = () => {
+		return (
+			<div
+				className="transition-all delay-[2000ms]
+			/opacity-0"
+			>
+				<div
+					className={`
+				h-fit bg-primary-dark rounded-full
+				px-4 py-1
+				flex place-content-center place-items-center
+
+				transition-all
+				${alert ? "translate-y-[-36px]" : "translate-y-[opx]"}`}
+				>
+					<p className="text-secondary-light">Link copied</p>
+				</div>
+			</div>
+		);
+	};
+
+	const handdleLinkPressed = async () => {
+		setAlert(true);
+		setTimeout(() => {
+			setAlert(false);
+		}, 1500);
+	};
 
 	return (
 		<>
@@ -51,11 +80,13 @@ export const User = () => {
 							/>
 							<CopyToClipboard text={shareUrl}>
 								<img
+									onClick={() => handdleLinkPressed()}
 									src={link}
 									alt=""
 									className="hover:bg-secondary-light rounded-full"
 								/>
 							</CopyToClipboard>
+
 							<motion.div
 								className={`
 								${shareVisibility ? "block" : "hidden"}
@@ -69,9 +100,10 @@ export const User = () => {
 
 						<UserCard />
 					</div>
-					<ImageLayout uid={email} words={"-"}/>
+					<ImageLayout uid={email} words={"-"} />
 				</div>
 				<div className="mt-2">{image.code}</div>
+				<div className="absolute bottom-[-32px]">{linkAlert()}</div>
 			</div>
 		</>
 	);
