@@ -4,7 +4,7 @@ import warning from "../../assets/exclamation-triangle.svg";
 import { CreateUserApi } from "../../api/Api";
 import { v4 } from "uuid";
 
-export const FinishCreationOfUser = ({ handdleContinue, email }) => {
+export default function FinishCreationOfUser  ({ handdleContinue, email }) {
 	const [name, setName] = useState("");
 	const [user, setUser] = useState("");
 
@@ -45,7 +45,7 @@ export const FinishCreationOfUser = ({ handdleContinue, email }) => {
 				place-items-center
 				px-2`}
 			>
-				<img src={warning} alt="" className="h-3" />
+				<img src={warning} alt="" className="h-3" loading="lazy"/>
 				Sorry,
 				{inputErrors.type == "errorEmpty" ? " empty field" : ""}
 				{inputErrors.type == "errorInvalid" ? inputErrors.description : ""}

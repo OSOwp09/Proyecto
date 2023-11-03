@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom";
 
 import openArrow from "../../assets/arrow-up-right-circle.svg";
 
-export const ImageCard = ({
+export default function ImageCard ({
 	image,
 	title,
 	description,
 	userName,
 	id,
 	hashtags,
-}) => {
+}) {
 	const { handleImageSelected } = useContext(ImageContext);
 
 	const navigate = useNavigate();
@@ -63,6 +63,7 @@ export const ImageCard = ({
 							w-[240px] h-auto max-h-[480px] min-h-[120px]
 							rounded-t-2xl object-fit
 							select-none"
+							loading="lazy"
 						/>
 
 						<div 

@@ -13,7 +13,7 @@ import { ShareButton } from "../../components/shared/publicationOptions";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useSelector } from "react-redux";
 
-export const User = () => {
+export default function User  () {
 	const navigate = useNavigate();
 	const [shareVisibility, setShareVisibility] = useState(false);
 	const user = useSelector((state) => state.auth?.user);

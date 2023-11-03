@@ -1,24 +1,44 @@
+import { lazy, Suspense } from "react";
+
 import { Navbar } from "../../components/shared/navbar";
 import { Home } from "../home/home";
-import { OpenPublication } from "../../components/index/openPublication";
-import { User } from "../mainUser/user";
-import { UploadPhoto } from "../../components/userPage/uploadPhoto";
+//import  OpenPublication  from "../../components/index/openPublication";
+const OpenPublication = lazy(() =>
+	import("../../components/index/openPublication")
+);
+
+//import  User from "../mainUser/user";
+const User = lazy(() => import("../mainUser/user"));
+
+//import  UploadPhoto  from "../../components/userPage/uploadPhoto";
+const UploadPhoto = lazy(() => import("../../components/userPage/uploadPhoto"));
+
 import { ImageProvider } from "../../context/imageSelectedProvider";
-import { Error } from "../ErrorPage/error";
-import { OtherUsersPage } from "../otherUsers/otherUsersPage";
+
+//import  Error  from "../ErrorPage/error";
+const Error = lazy(() => import("../ErrorPage/error"));
+
+//import  OtherUsersPage  from "../otherUsers/otherUsersPage";
+const OtherUsersPage = lazy(() => import("../otherUsers/otherUsersPage"));
 
 import { ChatContext } from "../../context/chatContext";
+
 import { useContext, useEffect, useState } from "react";
 
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { auth } from "../../firebase/config";
-import { onAuthStateChanged } from "firebase/auth";
+//import { auth } from "../../firebase/config";
+//import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { FinishCreationOfUser } from "../../components/googleUser/finishCreationOfUser";
+
+//import  FinishCreationOfUser from "../../components/googleUser/finishCreationOfUser";
+const FinishCreationOfUser = lazy(() =>
+	import("../../components/googleUser/finishCreationOfUser")
+);
+
 import { FindUserByEmail } from "../../api/Api";
 import { loadUser } from "../../store/slices/auth/AuthThunks";
 
-export const Index = () => {
+export default function Index() {
 	const dispatch = useDispatch();
 	const { chatState } = useContext(ChatContext);
 	const [loadIndex, setLoadIndex] = useState(true);
@@ -26,7 +46,7 @@ export const Index = () => {
 
 	const handdleContinue = () => {
 		dispatch(loadUser(authinfo.email));
-		setLoadIndex(true)
+		setLoadIndex(true);
 		return;
 	};
 
@@ -38,14 +58,14 @@ export const Index = () => {
 						email: authinfo.email,
 					},
 				});
-				setLoadIndex(true)
+				setLoadIndex(true);
 				return;
 			} catch (error) {
-				setLoadIndex(false)
+				setLoadIndex(false);
 				return;
 			}
 		}
-		setLoadIndex(true)
+		setLoadIndex(true);
 	};
 
 	useEffect(() => {
@@ -76,24 +96,56 @@ export const Index = () => {
 
 									<Route
 										path="/publication/:id"
-										element={<OpenPublication />}
+										element={
+											<Suspense>
+												<OpenPublication />
+											</Suspense>
+										}
 									/>
 
-									<Route path="/:id" element={<OtherUsersPage />} />
+									<Route
+										path="/:id"
+										element={
+											<Suspense>
+												<OtherUsersPage />
+											</Suspense>
+										}
+									/>
 
 									{authinfo.email ? (
-										<Route path="/user" element={<User />} />
+										<Route
+											path="/user"
+											element={
+												<Suspense>
+													<User />
+												</Suspense>
+											}
+										/>
 									) : (
 										""
 									)}
 
 									{authinfo.email ? (
-										<Route path="/upload" element={<UploadPhoto />} />
+										<Route
+											path="/upload"
+											element={
+												<Suspense>
+													<UploadPhoto />
+												</Suspense>
+											}
+										/>
 									) : (
 										""
 									)}
 
-									<Route path="*" element={<Error />} />
+									<Route
+										path="*"
+										element={
+											<Suspense>
+												<Error />
+											</Suspense>
+										}
+									/>
 								</Routes>
 							</ImageProvider>
 						</div>
@@ -102,12 +154,14 @@ export const Index = () => {
 				</>
 			) : (
 				<>
-					<FinishCreationOfUser
-						handdleContinue={handdleContinue}
-						email={authinfo.email}
-					/>
+					<Suspense>
+						<FinishCreationOfUser
+							handdleContinue={handdleContinue}
+							email={authinfo.email}
+						/>
+					</Suspense>
 				</>
 			)}
 		</>
 	);
-};
+}

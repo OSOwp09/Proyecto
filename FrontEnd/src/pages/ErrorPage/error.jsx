@@ -2,15 +2,15 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 import errorImg from "../../assets/imgs/error404.jpg";
 import styles from "../../components/shared/styles.module.css";
-import usericon from "../../assets/person-circle.svg"
+import usericon from "../../assets/person-circle.svg";
 import { useEffect } from "react";
 
-export const Error = () => {
-    const navigate = useNavigate();
+export default function Error () {
+	const navigate = useNavigate();
 	useEffect(() => {
-		navigate("/Error404")
-	}, [])
-	
+		navigate("/Error404");
+	}, []);
+
 	return (
 		<>
 			<div className="w-screen h-screen flex place-content-center place-items-center">
@@ -56,21 +56,22 @@ export const Error = () => {
 							</div>
 						</div>
 					</div>
-                    <div>
-                        <button 
-                        onClick={()=>navigate("/home")}
-                        className="w-[240px] 
+					<div>
+						<button
+							onClick={() => navigate("/home")}
+							className="w-[240px] 
                         border-2 border-primary-red
                         text-primary-red
                         hover:bg-primary-red 
                         hover:text-secondary-light
                         py-4 font-semibold 
-                        rounded-2xl">
-                            Go Home
-                        </button>
-                    </div>
+                        rounded-2xl"
+						>
+							Go Home
+						</button>
+					</div>
 				</div>
 			</div>
 		</>
 	);
-};
+}

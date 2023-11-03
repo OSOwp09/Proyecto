@@ -13,7 +13,7 @@ import { ShareButton } from "../../components/shared/publicationOptions";
 import { useSelector } from "react-redux";
 import { FindUserByUser } from "../../api/Api";
 
-export const OtherUsersPage = () => {
+export  default function OtherUsersPage () {
 	const navigate = useNavigate();
 	const [shareVisibility, setShareVisibility] = useState(false);
 	const shareUrl = `${window.location}`;

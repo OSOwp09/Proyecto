@@ -1,7 +1,12 @@
+import { lazy, Suspense } from "react";
+
 import { useState } from "react";
 import { ChatContext } from "./chatContext";
-import { ChatList } from "../components/chat/chatList";
-import { Chat } from "../components/chat/chat";
+//import { ChatList } from "../components/chat/chatList";
+const ChatList = lazy(() => import("../components/chat/chatList"));
+
+//import Chat from "../components/chat/chat";
+const Chat = lazy(() => import("../components/chat/chat"));
 
 export const ChatProvider = ({ children }) => {
 	const [selectedChat, setSelectedChat] = useState();
@@ -15,7 +20,9 @@ export const ChatProvider = ({ children }) => {
 			...chatState,
 			code: (
 				<>
-					<ChatList />
+					<Suspense>
+						<ChatList />
+					</Suspense>
 				</>
 			),
 		});
@@ -26,7 +33,9 @@ export const ChatProvider = ({ children }) => {
 			...chatState,
 			code: (
 				<>
-					<Chat user={user} id={id}/>
+					<Suspense>
+						<Chat user={user} id={id} />
+					</Suspense>
 				</>
 			),
 		});
@@ -45,7 +54,7 @@ export const ChatProvider = ({ children }) => {
 				handleOpenFriendChat,
 				closeChat,
 				setSelectedChat,
-				selectedChat
+				selectedChat,
 			}}
 		>
 			{children}

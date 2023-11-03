@@ -26,7 +26,7 @@ const ENDPOINT = pathName;
 
 var socket, selectedChatCompare;
 
-export const Chat = ({ user, id }) => {
+export default function Chat({ user, id }) {
 
 	const navigate = useNavigate();
 	const { handleChatList, selectedChat, setSelectedChat } =

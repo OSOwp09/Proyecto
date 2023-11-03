@@ -1,8 +1,12 @@
-import { ImageCard } from "./imagecard";
-import publicationsJson from "../../fakeData/publications.json";
+import { lazy, Suspense } from "react";
+
+//import  ImageCard  from "./imagecard";
+const ImageCard = lazy(() => import("./imagecard"));
+
+//import publicationsJson from "../../fakeData/publications.json";
 import userJson from "../../fakeData/users.json";
 import { useSelector } from "react-redux";
-import { memo, useEffect, useMemo, useRef, useState, createRef } from "react";
+import { memo, useEffect, useMemo, useState, createRef } from "react";
 import { useRefDimensions } from "../../customHooks/useRefDimensions";
 import {
 	FindUserByUser,
@@ -13,9 +17,8 @@ import { LayoutLoader } from "../../components/loaders/layoutLoader";
 
 export const ImageLayout = memo(
 	({ selectImg, words = "", uid = "", pid = "-" }) => {
-		
 		const [loaded, setLoaded] = useState(false);
-		
+
 		const wordsValidator = useSelector(
 			(state) => state.search
 		).words.toLowerCase();
@@ -146,7 +149,6 @@ export const ImageLayout = memo(
 		-------- on the width of the container of the layout ----------------------------
 		*/
 		const hanndleResize = (element) => {
-		
 			// element.target.style.height = "38px";
 			// element.target.style.height = element.target.scrollHeight + "px";
 		};
@@ -205,16 +207,18 @@ export const ImageLayout = memo(
 					// );
 					const images = [...Array(searchFilter.length)].map(
 						(image = searchFilter, i) => (
-							<ImageCard
-								key={i}
-								id={image[i]._id}
-								selectImg={selectImg}
-								image={image[i].photoURL}
-								title={image[i].title}
-								description={image[i].description}
-								userName={image.user}
-								hashtags={image[i].hashtags}
-							/>
+							<Suspense>
+								<ImageCard
+									key={i}
+									id={image[i]._id}
+									selectImg={selectImg}
+									image={image[i].photoURL}
+									title={image[i].title}
+									description={image[i].description}
+									userName={image.user}
+									hashtags={image[i].hashtags}
+								/>
+							</Suspense>
 						)
 					);
 
@@ -223,16 +227,18 @@ export const ImageLayout = memo(
 				if (searchByUseridOrHashtag == "userid") {
 					const images = [...Array(searchFilter.publications.length)].map(
 						(image = searchFilter, i) => (
-							<ImageCard
-								key={i}
-								id={image.publications[i]._id}
-								selectImg={selectImg}
-								image={image.publications[i].photoURL}
-								title={image.publications[i].title}
-								description={image.publications[i].description}
-								userName={image.user}
-								hashtags={image.publications[i].hashtags}
-							/>
+							<Suspense>
+								<ImageCard
+									key={i}
+									id={image.publications[i]._id}
+									selectImg={selectImg}
+									image={image.publications[i].photoURL}
+									title={image.publications[i].title}
+									description={image.publications[i].description}
+									userName={image.user}
+									hashtags={image.publications[i].hashtags}
+								/>
+							</Suspense>
 						)
 					);
 
@@ -255,16 +261,18 @@ export const ImageLayout = memo(
 
 				const images = [...Array(searchFilter.length)].map(
 					(image = searchFilter, i) => (
-						<ImageCard
-							key={i}
-							id={image[i]._id}
-							selectImg={selectImg}
-							image={image[i].photoURL}
-							title={image[i].title}
-							description={image[i].description}
-							userName={image[i].userId.user}
-							hashtags={image[i].hashtags}
-						/>
+						<Suspense>
+							<ImageCard
+								key={i}
+								id={image[i]._id}
+								selectImg={selectImg}
+								image={image[i].photoURL}
+								title={image[i].title}
+								description={image[i].description}
+								userName={image[i].userId.user}
+								hashtags={image[i].hashtags}
+							/>
+						</Suspense>
 					)
 				);
 
@@ -330,17 +338,17 @@ export const ImageLayout = memo(
 			);
 		};
 
-		const [loaderGone, setLoaderGone] = useState(false)
-		const hideLoader = async() =>{
+		const [loaderGone, setLoaderGone] = useState(false);
+		const hideLoader = async () => {
 			setTimeout(() => {
-				setLoaderGone(true)
+				setLoaderGone(true);
 			}, 1400);
-		}
-		useEffect(()=>{	
-			if(loaded){
-				hideLoader()
+		};
+		useEffect(() => {
+			if (loaded) {
+				hideLoader();
 			}
-		},[loaded])
+		}, [loaded]);
 
 		// useEffect(()=>{
 		// 	console.log("");
@@ -363,11 +371,11 @@ export const ImageLayout = memo(
 						overflow-hidden
 						transition-all duration-[1100ms] delay-[500ms]
 						opacity-100 peer-checked:opacity-0
-						${loaderGone ? "hidden":"block"}`}
+						${loaderGone ? "hidden" : "block"}`}
 					>
 						{loader()}
 					</div>
-					
+
 					<div
 						className={`
 						flex place-content-center gap-2 

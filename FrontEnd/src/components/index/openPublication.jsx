@@ -32,7 +32,7 @@ import { useSelector } from "react-redux";
 import { useRefDimensions } from "../../customHooks/useRefDimensions";
 import axios from "axios";
 
-export const OpenPublication = memo(() => {
+export default function OpenPublication () {
 	const navigate = useNavigate();
 	const { image } = useContext(ImageContext);
 
@@ -536,4 +536,4 @@ export const OpenPublication = memo(() => {
 			</div>
 		</>
 	);
-});
+};

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import userIcon from "../../assets/person-circle.svg";
 
-export const ChatList = () => {
+export default function ChatList() {
 	const [input, setInput] = useState("");
 	const [chats, setChats] = useState();
 	const userInfo = useSelector((state) => state.auth);
@@ -29,7 +29,7 @@ export const ChatList = () => {
 	};
 	useEffect(() => {
 		fetchChatList();
-	},[]);
+	}, []);
 
 	/* This code is creating a list of chat elements to be displayed in the chat list component. It uses
 	the `useState` hook to create a state variable `chatElement` and the `useEffect` hook to update it
@@ -129,7 +129,7 @@ export const ChatList = () => {
 		});
 
 		const listOfUsersToChat = await fetchUserToChat();
- 
+
 		const usersToChat = listOfUsersToChat.map((x, i) => {
 			const user = listOfUsersToChat[i].user;
 			const id = listOfUsersToChat[i].id;
@@ -223,4 +223,4 @@ export const ChatList = () => {
 			</div>
 		</>
 	);
-};
+}

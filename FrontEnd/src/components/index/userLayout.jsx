@@ -1,5 +1,5 @@
 import usersJson from "../../fakeData/users.json";
-import publicationsJson from "../../fakeData/publications.json";
+//import publicationsJson from "../../fakeData/publications.json";
 
 import usericon from "../../assets/person-circle.svg";
 import { useEffect, useState } from "react";
@@ -7,12 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { searchUserPublications, searchPublications } from "../../store/slices/filterSearch/FilterThunks";
 import { ListUsersByHashtag } from "../../api/Api";
 
-import uno from "../../assets/imgs/11.jpeg";
-import dos from "../../assets/imgs/12.jpeg";
-import tres from "../../assets/imgs/13.jpeg";
 import { useNavigate } from "react-router-dom";
 
-export const UserLayout = () => {
+export default function UserLayout  () {
 	const searchParams = useSelector((state) => state.search).words.toLowerCase();
 	const searchParamsArry = searchParams.split(" ");
 	const [searchFilter, setsearchFilter] = useState([]);

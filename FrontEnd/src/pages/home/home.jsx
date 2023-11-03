@@ -1,5 +1,9 @@
+import { lazy, Suspense } from "react";
+
 import { ImageLayout } from "../../components/shared/imagelayout";
-import { UserLayout } from "../../components/index/userLayout";
+
+//import UserLayout from "../../components/index/userLayout";
+const UserLayout = lazy(() => import("../../components/index/userLayout"));
 
 import { ImageContext } from "../../context/imageSelectedContext";
 import { useContext, useEffect, useState } from "react";
@@ -125,7 +129,9 @@ export const Home = () => {
 				${searchFor == "Profiles" ? "block" : "hidden"}
 				w-screen h-fit flex place-content-center`}
 				>
-					<UserLayout />
+					<Suspense>
+						<UserLayout />
+					</Suspense>
 				</div>
 			</div>
 		</>

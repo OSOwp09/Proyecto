@@ -1,3 +1,5 @@
+
+
 import { LoginBg } from "../../components/login/loginBg";
 import { LoginCard } from "../../components/login/loginCard";
 import { RegisterCard } from "../../components/login/registerCard";
@@ -7,7 +9,7 @@ import { auth } from "../../firebase/config";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export const Login = () => {
+export default function Login () {
 	const navigate = useNavigate();
 	const [html, setHtml] = useState(
 		<>

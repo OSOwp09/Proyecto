@@ -20,7 +20,7 @@ import { motion, useScroll } from "framer-motion";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import useClickOutside from "../../customHooks/useClickOutside";
 
-export const ImageSelected = ({ close }) => {
+export default function ImageSelected ({ close })  {
 	const navigate = useNavigate();
 	const { image } = useContext(ImageContext);
 

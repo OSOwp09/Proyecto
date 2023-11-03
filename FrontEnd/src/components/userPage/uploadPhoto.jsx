@@ -11,7 +11,7 @@ import { auth } from "../../firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 import { useSelector } from "react-redux";
 
-export const UploadPhoto = () => {
+export default function UploadPhoto () {
 	const navigate = useNavigate();
 
 	const userInfo = useSelector((state) => state.auth);
