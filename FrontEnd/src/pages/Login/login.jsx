@@ -1,6 +1,4 @@
-
-
-import { LoginBg } from "../../components/login/loginBg";
+import loginBgImage from "../../assets/loginBgImg.webp";
 import { LoginCard } from "../../components/login/loginCard";
 import { RegisterCard } from "../../components/login/registerCard";
 import { Routes, Route } from "react-router-dom";
@@ -9,7 +7,7 @@ import { auth } from "../../firebase/config";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export default function Login () {
+export default function Login() {
 	const navigate = useNavigate();
 	const [html, setHtml] = useState(
 		<>
@@ -41,31 +39,74 @@ export default function Login () {
 		<>
 			<div
 				className="w-screen h-screen
-				overflow-auto"
+				overflow-auto "
 			>
 				<div
-					className="h-screen w-screen
-					grid justify-center content-center "
+					className="h-full w-screen
+					grid justify-center content-center relative
+					overflow-hidden"
 				>
 					<div
+						id="background1"
+						className="absolute grid content-center justify-center
+						h-screen overflow-hidden"
+					>
+						<img
+							src={loginBgImage}
+							alt=""
+							className="object-cover h-screen w-screen"
+						/>
+						<div
+							id="darkOverlay"
+							className="absolute top-0 left-0 bg-primary-dark/60 h-full w-full backdrop-blur-md"
+						></div>
+					</div>
+					<div
 						className="
-						overflow-auto
-						overflow-x-hidden
+						overflow-hidden
 						min-[1401px]:rounded-2xl
-						drop-shadow-md
-						relative h-screen w-screen 
-						max-h-[700px] max-w-[1400px]
+						drop-shadow-lg
+						relative h-full w-screen 
+						max-h-[700px] max-w-[1500px]
 						select-none"
 					>
-						<div id="background" className="">
-							<LoginBg />
+						<div id="background2" className="">
+							<img
+								src={loginBgImage}
+								alt=""
+								className="object-cover h-screen w-screen max-h-[700px]"
+							/>
+
+							<div
+								id="darkOverlay"
+								className="absolute top-0 left-0 bg-primary-dark/60 h-[700px] w-screen max-w-[1500px]"
+							></div>
 						</div>
-						<div id="LoginCard" className="absolute top-[1%] right-6">
-							<Routes>
-								<Route path="/" element={<LoginCard />} />
-								<Route path="/login" element={<LoginCard />} />
-								<Route path="/register" element={<RegisterCard />} />
-							</Routes>
+
+						<div
+							id="LoginCard"
+							className="
+							absolute top-[0] 
+							w-full h-full
+							grid justify-end 
+							overflow-y-scroll
+							lg:overflow-hidden  
+							content-center "
+						>
+							<div
+								className="
+							h-fit
+							lg:scale-95
+							md:scale-95
+							sm:scale-90
+							scale-75"
+							>
+								<Routes>
+									<Route path="/" element={<LoginCard />} />
+									<Route path="/login" element={<LoginCard />} />
+									<Route path="/register" element={<RegisterCard />} />
+								</Routes>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -83,4 +124,4 @@ export default function Login () {
 	}, []);
 
 	return <>{html}</>;
-};
+}

@@ -378,7 +378,7 @@ export const ImageLayout = memo(
 
 					<div
 						className={`
-						flex place-content-center gap-2 
+						flex place-content-center 
 						transition-all duration-[1400ms] delay-[1000ms]
 						opacity-0 peer-checked:opacity-100`}
 					>
