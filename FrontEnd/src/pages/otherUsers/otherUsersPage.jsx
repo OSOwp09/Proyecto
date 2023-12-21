@@ -1,6 +1,6 @@
 import { UserCard } from "../../components/otherUser/otherUserCard";
 import { ImageLayout } from "../../components/shared/imagelayout";
-import { ImageContext } from "../../context/imageSelectedContext";
+import { ImageContext } from "../../context/imageSelected/imageSelectedContext";
 import { motion } from "framer-motion";
 
 import share from "../../assets/Group 98.svg";

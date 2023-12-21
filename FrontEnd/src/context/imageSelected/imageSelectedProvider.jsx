@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ImageContext } from "./imageSelectedContext";
 
 //import  ImageSelected  from "../components/shared/imageSelected";
-const ImageSelected = lazy(() => import("../components/shared/imageSelected"));
+const ImageSelected = lazy(() => import("../../components/shared/imageSelected"));
 
 export const ImageProvider = ({ children }) => {
 	const [image, setImage] = useState({

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { FriendBubble } from "./friendChatBubble";
 import { OurBubble } from "./ourChatBubble";
-import { ChatContext } from "../../context/chatContext";
+import { ChatContext } from "../../context/chat/chatContext";
 import { ChatLoader } from "../loaders/chatLoader";
 import { useNavigate } from "react-router-dom";
 

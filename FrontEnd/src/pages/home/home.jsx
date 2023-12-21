@@ -5,7 +5,7 @@ import { ImageLayout } from "../../components/shared/imagelayout";
 //import UserLayout from "../../components/index/userLayout";
 const UserLayout = lazy(() => import("../../components/index/userLayout"));
 
-import { ImageContext } from "../../context/imageSelectedContext";
+import { ImageContext } from "../../context/imageSelected/imageSelectedContext";
 import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
@@ -20,7 +20,7 @@ export const Home = () => {
 	const loader = () => {
 		return (
 			<>
-				<div className="absolute top-0 left-0 z-50">
+				<div className="absolute bg-primary-light top-0 left-0 z-50">
 					<LayoutLoader />
 				</div>
 			</>
@@ -36,7 +36,7 @@ export const Home = () => {
 			}, 1000);
 			setTimeout(() => {
 				setLayoutHtml(<></>);
-			}, 1500);
+			}, 1600);
 		}
 	}, [, words]);
 

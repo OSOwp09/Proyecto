@@ -1,19 +1,12 @@
 import { lazy, Suspense } from "react";
 
-// --- components ---
+// --- components (test) ---
 
-/*import { Navbar } from "./components/shared/navbar";
-import { ImageLayout } from "./components/shared/imagelayout";
-import { ImageSelected } from "./components/shared/imageSelected";
-import { ChatList } from "./components/chat/chatList";
-import { Chat } from "./components/chat/chat";
-import { OptionsCard } from "./components/shared/options";
-import { UserCard } from "./components/userPage/userCard";*/
 
 // ---- Pages ---
 
 //import Login  from "./pages/Login/login";
-const Login = lazy(() => import("./pages/Login/login"));
+const Login = lazy(() => import("./pages/Login/loginPage"));
 
 //import Index from "./pages/Index";
 const Index = lazy(() => import("./pages/Index"));
@@ -22,7 +15,7 @@ const Index = lazy(() => import("./pages/Index"));
 const Error = lazy(() => import("./pages/ErrorPage/error"));
 
 //---- Other ---
-import { ChatProvider } from "./context/chatProvider";
+import { ChatProvider } from "./context/chat/chatProvider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
@@ -95,7 +88,9 @@ function App() {
 
 	return (
 		<>
-			<div className="font-inter ">{loadApp}</div>
+			<div className="font-inter ">
+				{loadApp}
+				</div>
 		</>
 	);
 }

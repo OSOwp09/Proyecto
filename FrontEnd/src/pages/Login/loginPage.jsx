@@ -1,4 +1,6 @@
 import loginBgImage from "../../assets/loginBgImg.webp";
+import loginBgImageMobil from "../../assets/movilLoginbg.webp"
+
 import { LoginCard } from "../../components/login/loginCard";
 import { RegisterCard } from "../../components/login/registerCard";
 import { Routes, Route } from "react-router-dom";
@@ -47,9 +49,10 @@ export default function Login() {
 					overflow-hidden"
 				>
 					<div
-						id="background1"
-						className="absolute grid content-center justify-center
-						h-screen overflow-hidden"
+						id="background1Desktop"
+						className="absolute hidden sm:grid content-center justify-center
+						h-screen overflow-hidden
+						"
 					>
 						<img
 							src={loginBgImage}
@@ -67,19 +70,32 @@ export default function Login() {
 						min-[1401px]:rounded-2xl
 						drop-shadow-lg
 						relative h-full w-screen 
-						max-h-[700px] max-w-[1500px]
+						sm:max-h-[700px] max-w-[1500px]
 						select-none"
 					>
-						<div id="background2" className="">
+						<div id="background2Desktop" className="hidden sm:block">
 							<img
 								src={loginBgImage}
 								alt=""
-								className="object-cover h-screen w-screen max-h-[700px]"
+								className="object-cover h-screen w-screen"
 							/>
 
 							<div
 								id="darkOverlay"
 								className="absolute top-0 left-0 bg-primary-dark/60 h-[700px] w-screen max-w-[1500px]"
+							></div>
+						</div>
+
+						<div id="backgroundMobile" className="block sm:hidden">
+							<img
+								src={loginBgImageMobil}
+								alt=""
+								className="object-cover h-screen w-screen"
+							/>
+
+							<div
+								id="darkOverlay"
+								className="absolute top-0 left-0 bg-primary-dark/60 h-screen w-screen max-w-[1500px]"
 							></div>
 						</div>
 
@@ -89,7 +105,7 @@ export default function Login() {
 							absolute top-[0] 
 							w-full h-full
 							grid justify-end 
-							overflow-y-scroll
+							sm:overflow-y-scroll
 							lg:overflow-hidden  
 							content-center "
 						>
@@ -98,8 +114,7 @@ export default function Login() {
 							h-fit
 							lg:scale-95
 							md:scale-95
-							sm:scale-90
-							scale-75"
+							sm:scale-90"
 							>
 								<Routes>
 									<Route path="/" element={<LoginCard />} />

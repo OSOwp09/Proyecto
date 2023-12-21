@@ -1,4 +1,4 @@
-import { ChatContext } from "../../context/chatContext";
+import { ChatContext } from "../../context/chat/chatContext";
 import friendPhoto from "../../assets/person-circle.svg";
 import { useContext } from "react";
 

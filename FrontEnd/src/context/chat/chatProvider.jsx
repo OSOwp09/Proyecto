@@ -3,10 +3,10 @@ import { lazy, Suspense } from "react";
 import { useState } from "react";
 import { ChatContext } from "./chatContext";
 //import { ChatList } from "../components/chat/chatList";
-const ChatList = lazy(() => import("../components/chat/chatList"));
+const ChatList = lazy(() => import("../../components/chat/chatList"));
 
 //import Chat from "../components/chat/chat";
-const Chat = lazy(() => import("../components/chat/chat"));
+const Chat = lazy(() => import("../../components/chat/chat"));
 
 export const ChatProvider = ({ children }) => {
 	const [selectedChat, setSelectedChat] = useState();

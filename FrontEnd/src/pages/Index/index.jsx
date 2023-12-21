@@ -13,7 +13,7 @@ const User = lazy(() => import("../mainUser/user"));
 //import  UploadPhoto  from "../../components/userPage/uploadPhoto";
 const UploadPhoto = lazy(() => import("../../components/userPage/uploadPhoto"));
 
-import { ImageProvider } from "../../context/imageSelectedProvider";
+import { ImageProvider } from "../../context/imageSelected/imageSelectedProvider";
 
 //import  Error  from "../ErrorPage/error";
 const Error = lazy(() => import("../ErrorPage/error"));
@@ -21,7 +21,7 @@ const Error = lazy(() => import("../ErrorPage/error"));
 //import  OtherUsersPage  from "../otherUsers/otherUsersPage";
 const OtherUsersPage = lazy(() => import("../otherUsers/otherUsersPage"));
 
-import { ChatContext } from "../../context/chatContext";
+import { ChatContext } from "../../context/chat/chatContext";
 
 import { useContext, useEffect, useState } from "react";
 
@@ -82,10 +82,11 @@ export default function Index() {
 					>
 						<div
 							id="Navbar-container"
-							className="sticky top-0 drop-shadow-md z-50"
+							className="hidden sm:block sticky top-0 z-50"
 						>
 							<Navbar />
 						</div>
+
 						<div
 							id="underNavbar-container"
 							className="h-[calc(100vh-48px)] w-screen flex  relative z-0"
@@ -149,7 +150,15 @@ export default function Index() {
 								</Routes>
 							</ImageProvider>
 						</div>
+						
+						<div id="Navbar-container"
+							className="sm:hidden absolute bottom-0"
+						>
+							<Navbar />
+						</div>
+
 						<div className="absolute top-[54px] right-2">{chatState.code}</div>
+						
 					</div>
 				</>
 			) : (

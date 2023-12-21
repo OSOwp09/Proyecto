@@ -20,6 +20,122 @@ import copyLink from "../../assets/link-45deg.svg";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { motion } from "framer-motion";
 
+import { closeShareOptions } from "../../store/slices/shareOptions/shareOptionsThunks";
+import { useDispatch, useSelector } from "react-redux";
+
+export const MobileShareButton = () => {
+	const shareOptions = useSelector((state) => state.shareOptions);
+	const shareUrl = shareOptions.code;
+	const dispatch = useDispatch()
+	return (
+		<>
+			<div className="w-screen h-screen flex flex-col justify-end">
+				<div
+					onClick={() => dispatch(closeShareOptions())}
+					id="darkOverlay"
+					className="absolute top-0 left-0 bg-primary-dark/60 h-full w-full backdrop-blur-sm"
+				></div>
+				
+				<div
+					id="Share"
+					className="
+						h-fit w-screen bg-secondary-light
+						pb-3
+						rounded-2xl shadow-[0px_0px_10px_-2px_rgba(0,0,0,0.25)]
+						flex flex-col gap-3 pt-3 place-items-center relative"
+				>
+					<h1 className="ml-4 font-semibold text-sm">Share</h1>
+					<div id="buttons" className="text-xs flex place-items-center justify-center gap-5 flex-wrap px-3">
+						<WhatsappShareButton
+							url={shareUrl}
+							className="flex flex-col gap-1 place-items-center"
+						>
+							<motion.div
+								whileTap={{ scale: 0.9 }}
+								transition={{ type: "spring", stiffness: 400, damping: 17 }}
+							>
+								<WhatsappIcon size={44} className="rounded-full" />
+							</motion.div>
+							<h2>Whatsapp</h2>
+						</WhatsappShareButton>
+
+						<FacebookShareButton
+							url={shareUrl}
+							className="flex flex-col gap-1 place-items-center"
+						>
+							<motion.div
+								whileTap={{ scale: 0.9 }}
+								transition={{ type: "spring", stiffness: 400, damping: 17 }}
+							>
+								<FacebookIcon size={44} className="rounded-full" />
+							</motion.div>
+							<h2>Facebook</h2>
+						</FacebookShareButton>
+
+						<TwitterShareButton
+							url={shareUrl}
+							className="flex flex-col gap-1 place-items-center"
+						>
+							<motion.div
+								whileTap={{ scale: 0.9 }}
+								transition={{ type: "spring", stiffness: 400, damping: 17 }}
+							>
+								<TwitterIcon size={44} className="rounded-full" />
+							</motion.div>
+							<h2>Twitter</h2>
+						</TwitterShareButton>
+
+						<TelegramShareButton
+							url={shareUrl}
+							className="flex flex-col gap-1 place-items-center"
+						>
+							<motion.div
+								whileTap={{ scale: 0.9 }}
+								transition={{ type: "spring", stiffness: 400, damping: 17 }}
+							>
+								<TelegramIcon size={44} className="rounded-full" />
+							</motion.div>
+							<h2>Telegram</h2>
+						</TelegramShareButton>
+
+						<EmailShareButton
+							url={shareUrl}
+							className="flex flex-col gap-1 place-items-center"
+						>
+							<motion.div
+								whileTap={{ scale: 0.9 }}
+								transition={{ type: "spring", stiffness: 400, damping: 17 }}
+							>
+								<EmailIcon size={44} className="rounded-full" />
+							</motion.div>
+							<h2>Email</h2>
+						</EmailShareButton>
+
+						<CopyToClipboard text={shareUrl}>
+							<button className="flex flex-col gap-1 place-items-center">
+								<motion.div
+									whileTap={{ scale: 0.9 }}
+									transition={{ type: "spring", stiffness: 400, damping: 17 }}
+								>
+									<div className="bg-secondary-highlight h-12 w-12 rounded-full flex place-content-center place-items-center">
+										<img src={copyLink} alt="" className="h-8" />
+									</div>
+								</motion.div>
+								<h2 className="text-center">Copy link</h2>
+							</button>
+						</CopyToClipboard>
+					</div>
+					<div onClick={() => dispatch(closeShareOptions())}>
+						<button className="font-semibold font-inter text-primary-dark  bg-secondary-light rounded-2xl py-3 px-4 drop-shadow-md">
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+		</>
+	);
+};
+
 export const ShareButton = (src) => {
 	const shareUrl = src.src;
 	return (
@@ -121,7 +237,6 @@ export const ShareButton = (src) => {
 };
 
 export const ThreeDots = (src) => {
-	
 	const download = async () => {
 		const image = await fetch(src.src);
 

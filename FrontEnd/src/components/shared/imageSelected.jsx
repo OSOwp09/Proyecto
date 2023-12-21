@@ -1,6 +1,6 @@
 import { ImageLayout } from "./imagelayout";
 import { Commentary } from "./comentary";
-import { ImageContext } from "../../context/imageSelectedContext";
+import { ImageContext } from "../../context/imageSelected/imageSelectedContext";
 import { useNavigate } from "react-router-dom";
 import { ShareButton, ThreeDots } from "./publicationOptions";
 

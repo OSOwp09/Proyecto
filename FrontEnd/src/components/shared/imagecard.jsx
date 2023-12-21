@@ -1,12 +1,12 @@
 import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import usericon from "../../assets/person-circle.svg";
-import { ImageContext } from "../../context/imageSelectedContext";
+import { ImageContext } from "../../context/imageSelected/imageSelectedContext";
 import { useNavigate } from "react-router-dom";
 
 import openArrow from "../../assets/arrow-up-right-circle.svg";
 
-export default function ImageCard ({
+export default function ImageCard({
 	image,
 	title,
 	description,
@@ -29,15 +29,17 @@ export default function ImageCard ({
 		navigate(`/home/publication/${id}`);
 	};
 
-	const handdleUserClick = () =>{
+	const handdleUserClick = () => {
 		navigate(`/home/${userName}`);
-	}
+	};
 
-	return (
-		<>
-			<div
-				id="container"
-				className="
+	//Desktop
+	const desktopImageCard = () => {
+		return (
+			<>
+				<div
+					id="container"
+					className="
 				group
                 bg-secondary-light
                 h-full w-[240px] rounded-2xl
@@ -45,58 +47,57 @@ export default function ImageCard ({
                 font-inter text-[14px] text-primary-dark break-inside-avoid
 				drop-shadow
 				hover:drop-shadow-xl"
-			>
-				<div
-					className="w-[240px] h-auto max-h-[448px] min-h-[120px]
+				>
+					<div
+						className="w-[240px] h-auto max-h-[448px] min-h-[120px]
                         rounded-t-2xl object-fit
                         select-none
 						overflow-hidden relative"
-				>
-					<div className="relative">
-						<img
-							onClick={() => {
-								handdleInput();
-							}}
-							src={image}
-							alt=""
-							className="
+					>
+						<div className="relative">
+							<img
+								onClick={() => {
+									handdleInput();
+								}}
+								src={image}
+								alt=""
+								className="
 							w-[240px] h-auto max-h-[480px] min-h-[120px]
 							rounded-t-2xl object-fit
 							select-none"
-							loading="lazy"
-						/>
+								loading="lazy"
+							/>
 
-						<div 
-						onClick={() => {
-							handdleInput();
-						}}
-						className="
+							<div
+								onClick={() => {
+									handdleInput();
+								}}
+								className="
 						absolute top-0 left-0
 						h-full w-full
 						bg-primary-dark opacity-50
-						hidden group-hover:block"></div>
-
-						
+						hidden group-hover:block"
+							></div>
+						</div>
 					</div>
-				</div>
-				<div id="description-container" className="p-2 relative">
-					<h1
-						id="description"
-						className="h-[14px] w-[240px] font-semibold flex place-items-center"
-					>
-						{title}
-					</h1>
-					<div
-						id="user"
-						onClick={()=>handdleUserClick()}
-						className="h-[32px] flex place-items-center gap-1 mt-1"
-					>
-						<img src={usericon} alt="" className="h-[32px] select-none" />
-						<h1>{userName}</h1>
-						<h1></h1>
-					</div>
+					<div id="description-container" className="p-2 relative">
+						<h1
+							id="description"
+							className="h-[14px] w-[240px] font-semibold flex place-items-center"
+						>
+							{title}
+						</h1>
+						<div
+							id="user"
+							onClick={() => handdleUserClick()}
+							className="h-[32px] flex place-items-center gap-1 mt-1"
+						>
+							<img src={usericon} alt="" className="h-[32px] select-none" />
+							<h1>{userName}</h1>
+							<h1></h1>
+						</div>
 
-					<div
+						<div
 							id="open-publications"
 							onClick={() => handdleOnOpenBtnClick()}
 							className="
@@ -151,8 +152,45 @@ export default function ImageCard ({
 								</div>
 							</div>
 						</div>
+					</div>
 				</div>
-			</div>
+			</>
+		);
+	};
+
+	//Mobile
+	const mobileImageCard = () => {
+		return (
+			<>
+				{/* <img
+					onClick={() => {
+						handdleInput();
+					}}
+					src={image}
+					alt=""
+					className="
+							min-[390px]:w-[90px] w-[100vw] h-auto max-h-[480px] min-h-[120px]
+							rounded-2xl object-fit
+							select-none px-1 my-2 "
+					loading="lazy"
+				/> */}
+				<div className="w-screen  min-[304px]:w-[50vw]  min-[724px]:w-[30vw] py-1 px-[4px]">
+					<img
+						onClick={() => { handdleOnOpenBtnClick()}}
+						src={image}
+						alt=""
+						className="w-full h-full min-h-[120px] object-cover rounded-2xl"
+						loading="lazy"
+					/>
+				</div>
+			</>
+		);
+	};
+
+	return (
+		<>
+			<div className="block  min-[855px]:hidden">{mobileImageCard()}</div>
+			<div className="hidden min-[855px]:block">{desktopImageCard()}</div>
 		</>
 	);
-};
+}

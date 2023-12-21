@@ -172,11 +172,11 @@ export const RegisterCard = () => {
 		<div
 			id="labelAndError"
 			className="
-					self-start ml-[80px]
-					h-5 w-[400px]
-					flex place-items-center
-					place-content-between
-					text-xs"
+			self-start mt-1
+			h-fit w-full pr-4
+			flex place-items-center
+			place-content-between
+			text-[2vw]"
 		>
 			<label
 				htmlFor=""
@@ -197,7 +197,7 @@ export const RegisterCard = () => {
 				place-items-center
 				px-2`}
 			>
-				<img src={warning} alt="" className="h-3" />
+				<img src={warning} alt="" className="h-[2vw]" />
 				Sorry,
 				{inputErrors.type == "errorEmpty" ? " empty field" : ""}
 				{inputErrors.type == "errorInvalid" ? inputErrors.description : ""}
@@ -212,41 +212,43 @@ export const RegisterCard = () => {
 		}
 	};
 
-	return (
-		<>
-			<div
-				id="card1"
-				className="
+	//desktop
+	const desktopRegister = () => {
+		return (
+			<>
+				<div
+					id="card1"
+					className="
                         w-[560px] h-auto
                         bg-secondary-light
                         rounded-2xl
                         flex flex-col place-items-center
                         font-inter
                         text-primary-dark"
-			>
-				<img
-					src={logo}
-					className="
+				>
+					<img
+						src={logo}
+						className="
 					w-[56px] h-[56px]
 					mt-6"
-				/>
-				<h1
-					id="logo-name"
-					className="
+					/>
+					<h1
+						id="logo-name"
+						className="
 						h-[48px] mb-2
                         font-semibold
                         text-[48px]
                         text-primary-dark"
-				>
-					Vintarest
-				</h1>
-				{labelAndError({ fieldLabel: "Name", fieldInput: fields.name })}
-				<input
-					id="name"
-					type="text"
-					placeholder="Name"
-					onChange={(e) => setFields({ ...fields, name: e.target.value })}
-					className={`
+					>
+						Vintarest
+					</h1>
+					{labelAndError({ fieldLabel: "Name", fieldInput: fields.name })}
+					<input
+						id="name"
+						type="text"
+						placeholder="Name"
+						onChange={(e) => setFields({ ...fields, name: e.target.value })}
+						className={`
                         px-[16px]
                         bg-secondary-light
                         border rounded-2xl
@@ -260,15 +262,15 @@ export const RegisterCard = () => {
                         text-[16px]
                         placeholder:text-secondary-dark
                         mb-1`}
-				/>
-				{labelAndError({ fieldLabel: "User", fieldInput: fields.user })}
-				<input
-					id="user"
-					type="text"
-					placeholder="User"
-					onChange={(e) => handdleUserChange(e.target.value)}
-					value={fields.user}
-					className={`
+					/>
+					{labelAndError({ fieldLabel: "User", fieldInput: fields.user })}
+					<input
+						id="user"
+						type="text"
+						placeholder="User"
+						onChange={(e) => handdleUserChange(e.target.value)}
+						value={fields.user}
+						className={`
                         px-[16px]
                         bg-secondary-light
                         border rounded-2xl
@@ -282,17 +284,17 @@ export const RegisterCard = () => {
                         text-[16px]
                         placeholder:text-secondary-dark
                         mb-1`}
-				/>
-				{labelAndError({ fieldLabel: "Email", fieldInput: fields.email })}
-				<input
-					id="email"
-					type="text"
-					placeholder="Email"
-					value={fields.email}
-					onChange={(e) =>
-						setFields({ ...fields, email: e.target.value.toLowerCase() })
-					}
-					className={`
+					/>
+					{labelAndError({ fieldLabel: "Email", fieldInput: fields.email })}
+					<input
+						id="email"
+						type="text"
+						placeholder="Email"
+						value={fields.email}
+						onChange={(e) =>
+							setFields({ ...fields, email: e.target.value.toLowerCase() })
+						}
+						className={`
                         px-[16px]
                         bg-secondary-light
                         border rounded-2xl
@@ -306,14 +308,17 @@ export const RegisterCard = () => {
                         text-[16px]
                         placeholder:text-secondary-dark
                         mb-1`}
-				/>
-				{labelAndError({ fieldLabel: "Password", fieldInput: fields.password })}
-				<input
-					id="password"
-					type="password"
-					placeholder="Password"
-					onChange={(e) => setFields({ ...fields, password: e.target.value })}
-					className={`
+					/>
+					{labelAndError({
+						fieldLabel: "Password",
+						fieldInput: fields.password,
+					})}
+					<input
+						id="password"
+						type="password"
+						placeholder="Password"
+						onChange={(e) => setFields({ ...fields, password: e.target.value })}
+						className={`
                         px-[16px]
                         bg-secondary-light
                         border rounded-2xl
@@ -328,19 +333,19 @@ export const RegisterCard = () => {
                         text-[16px]
                         placeholder:text-secondary-dark
                         mb-1`}
-				/>
-				{labelAndError({
-					fieldLabel: "Confirm Password",
-					fieldInput: fields.confirmation,
-				})}
-				<input
-					id="confirm-password"
-					type="password"
-					placeholder="Confirm password"
-					onChange={(e) =>
-						setFields({ ...fields, confirmation: e.target.value })
-					}
-					className={`
+					/>
+					{labelAndError({
+						fieldLabel: "Confirm Password",
+						fieldInput: fields.confirmation,
+					})}
+					<input
+						id="confirm-password"
+						type="password"
+						placeholder="Confirm password"
+						onChange={(e) =>
+							setFields({ ...fields, confirmation: e.target.value })
+						}
+						className={`
                         px-[16px]
                         bg-secondary-light
                         border rounded-2xl
@@ -355,11 +360,11 @@ export const RegisterCard = () => {
                         text-[16px]
                         placeholder:text-secondary-dark
                         mb-6`}
-				/>
-				<button
-					onClick={() => handleInput()}
-					id="Register-btn"
-					className="
+					/>
+					<button
+						onClick={() => handleInput()}
+						id="Register-btn"
+						className="
 						border-[1px]
 						text-primary-red
 						border-primary-red
@@ -369,13 +374,13 @@ export const RegisterCard = () => {
                         w-[432px] h-[48px]
                         font-semibold 
                         mb-6"
-				>
-					Register
-				</button>
-			</div>
-			<div
-				id="card2"
-				className="
+					>
+						Register
+					</button>
+				</div>
+				<div
+					id="card2"
+					className="
                         w-[560px] h-auto
                         bg-secondary-light
                         rounded-2xl
@@ -383,10 +388,10 @@ export const RegisterCard = () => {
                         font-inter
                         text-primary-dark
                         mt-4"
-			>
-				<button
-					onClick={() => navigate("/login")}
-					className="px-4
+				>
+					<button
+						onClick={() => navigate("/login")}
+						className="px-4
                         w-[432px] h-[48px]
                         bg-secondary-light
                         border rounded-full border-primary-highlight
@@ -395,10 +400,216 @@ export const RegisterCard = () => {
 						hover:bg-primary-highlight
 						hover:text-secondary-light
                         "
+					>
+						Login
+					</button>
+				</div>
+			</>
+		);
+	};
+
+	//Mobile
+	const mobileRegister = () => {
+		return (
+			<>
+				<div
+					className="w-screen p-[14px]
+				flex flex-col place-items-center"
 				>
-					Login
-				</button>
-			</div>
+					<div
+						id="card1"
+						className="
+						relative
+						w-full h-auto
+						px-10 py-4
+						bg-secondary-light
+						rounded-2xl
+						flex flex-col place-items-center
+						font-inter
+						text-primary-dark"
+					>
+						<img
+							src={logo}
+							className="
+							w-[34px]"
+						/>
+						<h1
+							id="logo-name"
+							className="
+							font-semibold
+							text-[3em] 
+							text-primary-dark mb-[8px]"
+						>
+							Vintarest
+						</h1>
+						{labelAndError({ fieldLabel: "Name", fieldInput: fields.name })}
+						<input
+							id="name"
+							type="text"
+							placeholder="Name"
+							onChange={(e) => setFields({ ...fields, name: e.target.value })}
+							className={`
+							px-[14px]
+							bg-secondary-light
+							border rounded-2xl
+							${
+								inputErrors.id == "name" && inputErrors.type.startsWith("error")
+									? "border-secondary-red"
+									: "border-primary-dark"
+							}
+							outline-none
+							h-[34px] w-full
+							text-[14px]
+							placeholder:text-secondary-dark`}
+						/>
+						{labelAndError({ fieldLabel: "User", fieldInput: fields.user })}
+						<input
+							id="user"
+							type="text"
+							placeholder="User"
+							onChange={(e) => handdleUserChange(e.target.value)}
+							value={fields.user}
+							className={`
+                        px-[16px]
+                        bg-secondary-light
+                        border rounded-2xl
+						${
+							inputErrors.id == "user" && inputErrors.type.startsWith("error")
+								? "border-secondary-red"
+								: "border-primary-dark"
+						}
+						outline-none
+							h-[34px] w-full
+							text-[14px]
+							placeholder:text-secondary-dark`}
+						/>
+						{labelAndError({ fieldLabel: "Email", fieldInput: fields.email })}
+						<input
+							id="email"
+							type="text"
+							placeholder="Email"
+							value={fields.email}
+							onChange={(e) =>
+								setFields({ ...fields, email: e.target.value.toLowerCase() })
+							}
+							className={`
+                        px-[16px]
+                        bg-secondary-light
+                        border rounded-2xl
+						${
+							inputErrors.id == "email" && inputErrors.type.startsWith("error")
+								? "border-secondary-red"
+								: "border-primary-dark"
+						}
+						outline-none
+							h-[34px] w-full
+							text-[14px]
+							placeholder:text-secondary-dark`}
+						/>
+						{labelAndError({
+							fieldLabel: "Password",
+							fieldInput: fields.password,
+						})}
+						<input
+							id="password"
+							type="password"
+							placeholder="Password"
+							onChange={(e) =>
+								setFields({ ...fields, password: e.target.value })
+							}
+							className={`
+                        px-[16px]
+                        bg-secondary-light
+                        border rounded-2xl
+						${
+							inputErrors.id == "password" &&
+							inputErrors.type.startsWith("error")
+								? "border-secondary-red"
+								: "border-primary-dark"
+						}
+						outline-none
+							h-[34px] w-full
+							text-[14px]
+							placeholder:text-secondary-dark`}
+						/>
+						{labelAndError({
+							fieldLabel: "Confirm Password",
+							fieldInput: fields.confirmation,
+						})}
+						<input
+							id="confirm-password"
+							type="password"
+							placeholder="Confirm password"
+							onChange={(e) =>
+								setFields({ ...fields, confirmation: e.target.value })
+							}
+							className={`
+                        px-[16px]
+                        bg-secondary-light
+                        border rounded-2xl
+						${
+							inputErrors.id == "confirm password" &&
+							inputErrors.type.startsWith("error")
+								? "border-secondary-red"
+								: "border-primary-dark"
+						}
+						outline-none
+							h-[34px] w-full
+							text-[14px]
+							placeholder:text-secondary-dark`}
+						/>
+						<button
+							onClick={() => handleInput()}
+							id="Register-btn"
+							className="
+							border-[1px]
+							text-primary-red
+							border-primary-red
+							hover:bg-primary-red
+							hover:text-secondary-light
+							rounded-full
+							w-full h-[34px]
+							font-semibold
+							text-[14px] mt-4"
+						>
+							Register
+						</button>
+					</div>
+					<div
+						id="card2"
+						className="
+                        relative mt-4
+						w-full h-auto
+						px-10 py-3
+						bg-secondary-light
+						rounded-2xl
+						flex flex-col place-items-center
+						font-inter
+						text-primary-dark"
+					>
+						<button
+							onClick={() => navigate("/login")}
+							className="px-4
+                        w-full h-[36px]
+                        bg-secondary-light
+                        border rounded-full border-primary-highlight
+                        font-semibold text-center text-primary-highlight
+						hover:bg-primary-highlight
+						hover:text-secondary-light
+                        "
+						>
+							Login
+						</button>
+					</div>
+				</div>
+			</>
+		);
+	};
+
+	return (
+		<>
+			<div className="block sm:hidden">{mobileRegister()}</div>
+			<div className="hidden sm:block">{desktopRegister()}</div>
 		</>
 	);
 };

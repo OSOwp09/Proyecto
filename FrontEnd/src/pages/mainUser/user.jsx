@@ -1,6 +1,6 @@
 import { UserCard } from "../../components/userPage/userCard";
 import { ImageLayout } from "../../components/shared/imagelayout";
-import { ImageContext } from "../../context/imageSelectedContext";
+import { ImageContext } from "../../context/imageSelected/imageSelectedContext";
 import { motion } from "framer-motion";
 
 import add from "../../assets/plus-circle 1.svg";

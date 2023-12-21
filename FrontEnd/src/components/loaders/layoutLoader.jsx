@@ -1,11 +1,14 @@
 import { motion } from "framer-motion";
 
-export const LayoutLoader = ({columns}) => {
+export const LayoutLoader = () => {
 	const inicialOp = 0;
+	const numOfCols = (window.innerWidth/240)-  (window.innerWidth/240 % 1)
     
-	const images = [...Array((( window.innerWidth/240)-  (window.innerWidth/240 % 1)))].map(() => (
+	const images = [...Array(numOfCols)].map((_,i) => (
 		<>
-			<div className="flex flex-col gap-4 mt-2">
+			<div 
+			key={(numOfCols/(i+1))}
+			className="flex flex-col gap-4 mt-2">
 				<motion.div
 					className=" h-[340px] w-[240px] bg-secondary-light rounded-2xl"
 					initial={{ opacity: inicialOp, y: 100 }}
@@ -27,7 +30,9 @@ export const LayoutLoader = ({columns}) => {
 					transition={{ duration: 0.6 }}
 				></motion.div>
 			</div>
-			<div className=" flex flex-col gap-4 mt-2">
+			<div 
+			key={(numOfCols/(i+1))*2}
+			className=" flex flex-col gap-4 mt-2">
 				<motion.div
 					className=" h-[240px] w-[240px] bg-secondary-light rounded-2xl"
 					initial={{ opacity: inicialOp, y: 100 }}
@@ -47,7 +52,9 @@ export const LayoutLoader = ({columns}) => {
 					transition={{ duration: 0.6 }}
 				></motion.div>
 			</div>
-			<div className=" flex flex-col gap-4 mt-2">
+			<div 
+			key={(numOfCols/(i+1))*3}
+			className=" flex flex-col gap-4 mt-2">
 				<motion.div
 					className=" h-[300px] w-[240px] bg-secondary-light rounded-2xl"
 					initial={{ opacity: inicialOp, y: 100 }}
