@@ -9,6 +9,11 @@ import { motion } from "framer-motion";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { ImageContext } from "../../context/imageSelected/imageSelectedContext";
 import { openShareOptions } from "../../store/slices/shareOptions/shareOptionsThunks";
+import { openPublicationsOptions } from "../../store/slices/publicationsOptions/publicationsOptionsThunk";
+import {
+	createListOfComments,
+	openListOfComments,
+} from "../../store/slices/commentsList/commentsListThunk";
 import { useContext } from "react";
 import { FindPublicationApi, CreateCommentApi } from "../../api/Api";
 import publicationsJson from "../../fakeData/publications.json";
@@ -30,6 +35,7 @@ export default function OpenPublication() {
 	const { id } = useParams(); // id extracted from the browser url
 
 	const currentUserInfo = useSelector((state) => state.auth);
+	const listOfComments = useSelector((state) => state.commentsList);
 
 	const [img, setImg] = useState("");
 	const [title, setTitle] = useState("");
@@ -40,9 +46,8 @@ export default function OpenPublication() {
 	const [layoutHtml, setLayoutHtml] = useState({ code: <></> });
 
 	const refDesktop = useRef(null);
-	const refMobile = useRef(null)
+	const refMobile = useRef(null);
 	const scrollToTop = () => {
-		
 		refDesktop?.current?.scroll({
 			top: 0,
 		});
@@ -81,6 +86,9 @@ export default function OpenPublication() {
 					/>
 				</div>
 			));
+
+			dispatch(createListOfComments(commentsInfo));
+
 			setComments(comentsList.reverse());
 
 			setLayoutHtml({
@@ -95,8 +103,36 @@ export default function OpenPublication() {
 					</>
 				),
 			});
+		} catch (error) {
+			console.log(error);
+			navigate("/home");
+		}
+	};
 
-			
+	const handleLoadComments = async () => {
+		try {
+			const resp = await FindPublicationApi.get("", {
+				params: {
+					id: id,
+				},
+			});
+
+			const commentsInfo = resp.data.commentaries;
+			const commentariesCant = commentsInfo.length;
+
+			const comentsList = [...Array(commentariesCant)].map((x, i) => (
+				<div key={i} className="my-2">
+					<Commentary
+						user={commentsInfo[i].userId.user}
+						coment={commentsInfo[i].text}
+						date={commentsInfo[i].date}
+					/>
+				</div>
+			));
+
+			dispatch(createListOfComments(commentsInfo));
+
+			setComments(comentsList.reverse());
 		} catch (error) {
 			console.log(error);
 			navigate("/home");
@@ -105,9 +141,11 @@ export default function OpenPublication() {
 
 	useEffect(() => {
 		handdleLoadPublication();
-		
 	}, [, id]);
 
+	useEffect(() => {
+		handleLoadComments();
+	}, [listOfComments.code]);
 	/**
 	 * Hook that alerts clicks outside of the passed ref
 	 */
@@ -149,6 +187,7 @@ export default function OpenPublication() {
 
 	const [isComentsOpen, setIsComentsOpen] = useState(false);
 	const [isCommentsFinishedOpen, setIsCommentsFinishedOpen] = useState(false);
+
 	const handdleOpenCommentaries = async () => {
 		if (isComentsOpen == false) {
 			setTimeout(() => {
@@ -184,6 +223,7 @@ export default function OpenPublication() {
 	const userInfo = useSelector((state) => state.auth);
 	const [token, setToken] = useState("");
 	const [userId, serUserId] = useState("");
+
 	useEffect(() => {
 		setToken(userInfo.token);
 		serUserId(userInfo.uid);
@@ -210,8 +250,10 @@ export default function OpenPublication() {
 							},
 						}
 					);
+
 					setComment("");
 					comentInputRef.current.style.height = "38px";
+
 					const newComment = () => {
 						return (
 							<>
@@ -225,11 +267,11 @@ export default function OpenPublication() {
 							</>
 						);
 					};
+
 					const arr = new Array(comments)[0].reverse();
 					arr.push(newComment());
 
 					setComments(arr.reverse());
-					console.log(comments);
 				} catch (error) {
 					console.log(error);
 				}
@@ -243,7 +285,7 @@ export default function OpenPublication() {
 	 */
 
 	const [alert, setAlert] = useState(false);
-	
+
 	const linkAlert = () => {
 		return (
 			<div
@@ -268,9 +310,16 @@ export default function OpenPublication() {
 
 	const handdleLinkPressed = async () => {
 		setAlert(true);
+
 		setTimeout(() => {
 			setAlert(false);
-		}, 1500);
+		}, 2000);
+	};
+
+	const handdleUserClick = () => {
+		try {
+			navigate(`/home/${userName}`);
+		} catch (error) {}
 	};
 
 	/*---------------------------------------------------------------------------
@@ -316,10 +365,12 @@ export default function OpenPublication() {
 
 						<div
 							id="info-container"
-							className="relative flex flex-col h-auto
-					min-h-[470px]"
+							className="relative flex flex-col h-auto min-h-[470px]"
 						>
-							<div id="options" className="flex gap-3 mt-4 relative">
+							<div
+								id="options"
+								className="flex gap-3 mt-4 relative select-none"
+							>
 								<motion.div
 									whileTap={{ scale: 0.9 }}
 									transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -327,13 +378,9 @@ export default function OpenPublication() {
 									<div
 										onClick={() => setThreeDotsVisibility(true)}
 										className={`h-8 w-8 rounded-full
-								    	hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
-								        ${
-													threeDotsVisibility
-														? "shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]"
-														: ""
-												}
-								        flex place-content-center place-items-center`}
+										hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
+										${threeDotsVisibility ? "shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]" : ""}
+												flex place-content-center place-items-center`}
 									>
 										<img src={threeDots} alt="" className="w-6" />
 									</div>
@@ -362,8 +409,8 @@ export default function OpenPublication() {
 										<div
 											onClick={() => handdleLinkPressed()}
 											className={`h-8 w-8 rounded-full
-									        hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
-									        flex place-content-center place-items-center`}
+											hover:shadow-[0px_0px_10px_-4px_rgba(0,0,0,0.25)]
+											flex place-content-center place-items-center`}
 										>
 											<img src={link} alt="" className="w-6" />
 										</div>
@@ -396,7 +443,12 @@ export default function OpenPublication() {
 								flex gap-2 place-items-center
 								text-lg mt-6"
 							>
-								<img src={usericon} alt="" className="w-8 select-none" />
+								<img
+									onClick={() => handdleUserClick()}
+									src={usericon}
+									alt=""
+									className="w-8 select-none"
+								/>
 								<h1>{userName}</h1>
 							</div>
 							<div
@@ -420,6 +472,7 @@ export default function OpenPublication() {
 									<img src={arrow} alt="" className="" />
 								</motion.button>
 							</div>
+
 							<motion.div
 								id="commentaries"
 								className={`
@@ -444,7 +497,7 @@ export default function OpenPublication() {
 									pt-[18px]
 									pb-[18px]
 									sticky bottom-0
-									flex place-items-end
+									flex place-items-center
 									bg-secondary-light
 									h-auto
 									gap-2  select-none "
@@ -488,14 +541,14 @@ export default function OpenPublication() {
 						</div>
 					</div>
 
-					<h2 className="text-primary-dark font-semibold text-xl my-6">
+					<h2 className="text-primary-dark font-semibold text-xl my-6 select-none">
 						Related publications
 					</h2>
 
 					<div className="w-screen flex ">
 						<div
 							id="imageLayout-container"
-							className="grow /pr-6 h-full pt-2 overflow-x-hidden overflow-y-auto "
+							className="grow /pr-6 h-full pt-2 overflow-x-hidden overflow-y-auto select-none"
 						>
 							{layoutHtml.code}
 						</div>
@@ -526,7 +579,6 @@ export default function OpenPublication() {
 					</button>
 
 					<div className="absolute bottom-[-32px]">{linkAlert()}</div>
-
 				</div>
 			</>
 		);
@@ -547,6 +599,21 @@ export default function OpenPublication() {
 					ref={refMobile}
 					className="w-screen h-[calc(100vh-48px)] overflow-auto overflow-x-hidden flex flex-col place-items-center relative"
 				>
+					<div className="sticky top-0 z-50 h-0">
+						<div
+							className={`
+								h-fit bg-primary-dark rounded-full
+								px-4 py-1
+								flex place-content-center place-items-center
+
+								transition-all duration-300
+								${alert ? "translate-y-[8px]" : "translate-y-[-30px]"}
+								${alert ? "opacity-100" : "opacity-0"}`}
+						>
+							<p className="text-secondary-light">Link copied</p>
+						</div>
+					</div>
+
 					<div
 						id="publication-info"
 						className="w-full h-auto pb-3
@@ -576,16 +643,16 @@ export default function OpenPublication() {
 								flex gap-2 place-items-center
 								text-md "
 							>
-								<img src={usericon} alt="" className="w-8 select-none" />
+								<img onClick={()=> handdleUserClick()} src={usericon} alt="" className="w-8 select-none" />
 								<h1>{userName}</h1>
 							</div>
 							<h1 className="font-semibold text-lg"> {title} </h1>
 							<p className="w-[308px] text-sm">{description}</p>
 						</div>
 
-						<div id="options" className="flex gap-3">
+						<div id="options" className="flex gap-3 select-none">
 							<div
-								onClick={() => {}}
+								onClick={() => dispatch(openPublicationsOptions(img))}
 								className={`h-8 w-8 rounded-full
 								flex place-content-center place-items-center`}
 							>
@@ -602,16 +669,19 @@ export default function OpenPublication() {
 								<img src={share} alt="" className="w-6" />
 							</div>
 
-							<div
-								onClick={() => {}}
-								className={`h-8 w-8 rounded-full
+							<CopyToClipboard text={shareUrl}>
+								<div
+									onClick={() => handdleLinkPressed()}
+									className={`h-8 w-8 rounded-full
 								flex place-content-center place-items-center`}
-							>
-								<img src={link} alt="" className="w-6" />
-							</div>
+								>
+									<img src={link} alt="" className="w-6" />
+								</div>
+							</CopyToClipboard>
 						</div>
 
 						<div
+							onClick={() => dispatch(openListOfComments())}
 							id="commentaries-title"
 							className="flex place-items-center gap-2 select-none"
 						>
@@ -630,11 +700,11 @@ export default function OpenPublication() {
 						</div>
 					</div>
 
-					<h2 className="text-primary-dark font-semibold text-sm my-3">
+					<h2 className="text-primary-dark font-semibold text-sm my-3 select-none">
 						Related publications
 					</h2>
 
-					<div className="w-screen flex ">
+					<div className="w-screen flex select-none">
 						<div
 							id="imageLayout-container"
 							className="grow /pr-6 h-full overflow-x-hidden overflow-y-auto "

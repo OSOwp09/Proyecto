@@ -103,8 +103,6 @@ export const loginAuth = (email, password) => {
 				getEmail = findUser.data.usuario.email.toLowerCase();
 			}
 
-			console.log(getEmail);
-
 			const resp = await LoginUserApi.post("", {
 				email: getEmail,
 				password: password,

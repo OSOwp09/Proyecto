@@ -11,10 +11,12 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShareButton } from "../../components/shared/publicationOptions";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { openShareOptions } from "../../store/slices/shareOptions/shareOptionsThunks";
 
-export default function User  () {
+export default function User() {
 	const navigate = useNavigate();
+	const dispatch = useDispatch()
 	const [shareVisibility, setShareVisibility] = useState(false);
 	const user = useSelector((state) => state.auth?.user);
 	const shareUrl = `${window.location.host}/home/${user}`;
@@ -23,6 +25,7 @@ export default function User  () {
 	const { image } = useContext(ImageContext);
 
 	const [alert, setAlert] = useState(false);
+
 	const linkAlert = () => {
 		return (
 			<div
@@ -53,10 +56,23 @@ export default function User  () {
 
 	return (
 		<>
-			<div className="flex place-content-center w-screen h-auto">
+			<div className="flex flex-col place-items-center w-screen h-auto">
+				<div className="block md:hidden sticky top-0 z-50 h-0">
+					<div
+						className={`
+								h-fit bg-primary-dark rounded-full
+								px-4 py-1 w-fit
+								flex place-content-center place-items-center
+								transition-all duration-300
+								${alert ? "translate-y-[8px]" : "translate-y-[-30px]"}
+								${alert ? "opacity-100" : "opacity-0"}`}
+					>
+						<p className="text-secondary-light">Link copied</p>
+					</div>
+				</div>
 				<div
 					id="imageLayout-container"
-					className="grow pr-6 h-auto pt-2 overflow-x-hidden overflow-y-auto "
+					className="grow w-full md:pr-6 h-auto pt-2 overflow-x-hidden overflow-y-auto "
 				>
 					<div
 						className="
@@ -72,12 +88,25 @@ export default function User  () {
 								alt=""
 								className="hover:bg-secondary-light rounded-full"
 							/>
+
 							<img
+								onClick={() => {
+									dispatch(openShareOptions(shareUrl));
+								}}
+								id="mobile-share"
+								src={share}
+								alt=""
+								className="sm:hidden hover:bg-secondary-light rounded-full"
+							/>
+
+							<img
+								id="desktop-share"
 								onClick={() => setShareVisibility(!shareVisibility)}
 								src={share}
 								alt=""
-								className="hover:bg-secondary-light rounded-full"
+								className="hidden sm:block hover:bg-secondary-light rounded-full"
 							/>
+
 							<CopyToClipboard text={shareUrl}>
 								<img
 									onClick={() => handdleLinkPressed()}
@@ -103,8 +132,10 @@ export default function User  () {
 					<ImageLayout uid={email} words={"-"} />
 				</div>
 				<div className="mt-2">{image.code}</div>
-				<div className="absolute bottom-[-32px]">{linkAlert()}</div>
+				<div className="hidden md:block absolute bottom-[-32px]">
+					{linkAlert()}
+				</div>
 			</div>
 		</>
 	);
-};
+}

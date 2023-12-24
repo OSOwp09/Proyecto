@@ -162,21 +162,11 @@ export default function ImageCard({
 	const mobileImageCard = () => {
 		return (
 			<>
-				{/* <img
-					onClick={() => {
-						handdleInput();
-					}}
-					src={image}
-					alt=""
-					className="
-							min-[390px]:w-[90px] w-[100vw] h-auto max-h-[480px] min-h-[120px]
-							rounded-2xl object-fit
-							select-none px-1 my-2 "
-					loading="lazy"
-				/> */}
 				<div className="w-screen  min-[304px]:w-[50vw]  min-[724px]:w-[30vw] py-1 px-[4px]">
 					<img
-						onClick={() => { handdleOnOpenBtnClick()}}
+						onClick={() => {
+							handdleOnOpenBtnClick();
+						}}
 						src={image}
 						alt=""
 						className="w-full h-full min-h-[120px] object-cover rounded-2xl"

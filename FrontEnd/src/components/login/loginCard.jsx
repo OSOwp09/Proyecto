@@ -59,7 +59,6 @@ export const LoginCard = () => {
 		try {
 			const promise = dispatch(loginAuth(email, password));
 			promise.then((value) => {
-				console.log(value?.response?.data?.msg);
 				//----- mongo ----------
 				if (value?.response?.data?.msg) {
 					switch (value?.response?.data?.msg) {
@@ -115,7 +114,6 @@ export const LoginCard = () => {
 	const handdleGoogleLogin = () => {
 		const promise = dispatch(logWithGoogleAuth());
 		promise.then((value) => {
-			console.log(value);
 			switch (value) {
 				case "auth/popup-closed-by-user":
 					break;

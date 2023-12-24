@@ -101,8 +101,7 @@ export default function Chat({ user, id }) {
 				room: `${id}-room-${userInfo.uid}`,
 				message: newMessage,
 			});
-
-			console.log("aquiiii", messages);
+			
 			if (messages == undefined) {
 				setMessages([
 					{

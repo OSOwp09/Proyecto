@@ -139,11 +139,9 @@ export const RegisterCard = () => {
 				hashtags: "",
 			});
 
-			console.log(resp);
 			const promise = dispatch(registerAuth(email, password, name, user));
 
 			promise.then((result) => {
-				console.log(result);
 				navigate("/");
 			});
 		} catch (error) {

@@ -5,6 +5,8 @@ import { auth } from "../../firebase/config";
 import { searchPublications } from "../../store/slices/filterSearch/FilterThunks";
 import { openOptions } from "../../store/slices/navbarOptions/navbarOptionsThunks";
 import { MobileShareButton } from "../shared/publicationOptions";
+import { MobileThreeDots } from "../shared/publicationOptions";
+import { MobileCommentList } from "../shared/publicationOptions";
 
 import { ChatContext } from "../../context/chat/chatContext";
 
@@ -257,12 +259,14 @@ export const Navbar = () => {
 	//Mobile
 	const optionsOpenedOrCLosed = useSelector((state) => state.navbarOptions);
 	const shareOptions = useSelector((state) => state.shareOptions);
+	const publicationsOptions = useSelector((state) => state.publicationsOptions);
+	const commentsList = useSelector((state) => state.commentsList);
 
 	const mobileNavbar = () => {
 		return (
 			<>
-				<div className="absolute bottom-0 h-[48px] bg-secondary-light w-screen flex justify-between px-8 p-3">
-					<img src={homeIcon} alt="" />
+				<div className="absolute bottom-0 h-[48px] bg-secondary-light w-screen flex justify-between px-8 p-3 select-none">
+					<img onClick={() => navigate("/home")} src={homeIcon} alt="" />
 					<img
 						src={chatIcon}
 						alt=""
@@ -270,6 +274,7 @@ export const Navbar = () => {
 					/>
 					<img src={search} alt="" />
 					<img
+						onClick={() => navigate("user")}
 						src={usericon}
 						alt=""
 						className={`${login ? "block" : "hidden"}`}
@@ -280,7 +285,6 @@ export const Navbar = () => {
 						alt=""
 					/>
 				</div>
-
 				<div
 					className={`absolute bottom-0 z-50 ${
 						optionsOpenedOrCLosed.code != "" ? "block" : "hidden"
@@ -288,13 +292,27 @@ export const Navbar = () => {
 				>
 					<OptionsCard />
 				</div>
-
 				<div
 					className={`absolute bottom-0 z-50 ${
 						shareOptions.code != "" ? "block" : "hidden"
 					}`}
 				>
-					<MobileShareButton/>
+					<MobileShareButton />
+				</div>
+				<div
+					className={`absolute bottom-0 z-50 ${
+						publicationsOptions.code != "" ? "block" : "hidden"
+					}`}
+				>
+					<MobileThreeDots />
+				</div>
+
+				<div
+					className={`absolute bottom-0 z-50 ${
+						commentsList.code != "" ? "block" : "hidden"
+					}`}
+				>
+					<MobileCommentList />
 				</div>
 			</>
 		);

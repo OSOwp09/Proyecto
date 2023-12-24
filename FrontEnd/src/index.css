@@ -22,5 +22,11 @@
 	-o-border-radius: 9999px;
 }
 
+@media only screen and (max-width: 600px) {
+	*::-webkit-scrollbar {
+		width: 0px;
+	}
+}
+
 @tailwind components;
 @tailwind utilities;

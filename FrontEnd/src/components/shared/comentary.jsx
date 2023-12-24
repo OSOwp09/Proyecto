@@ -37,7 +37,7 @@ export const Commentary = ({ user, coment, date }) => {
 				return "1s";
 			}
 			//		-----------------------
-			
+
 			for (let i = 0; i < shortDateTexts.length; i++) {
 				if (differenceArray[i] != 0) {
 					return `${differenceArray[i]}${shortDateTexts[i]}`;
@@ -56,18 +56,18 @@ export const Commentary = ({ user, coment, date }) => {
 		<>
 			<div
 				className="font-inter text-sm
-			text-primary-dark gap-2 flex"
+			text-primary-dark gap-2 flex "
 			>
 				<img
 					src={usericon}
 					alt=""
-					className="w-[32px] place-self-start select-none"
+					className="w-[32px] pt-[1px] place-self-start select-none "
 				/>
-				<div className="w-auto max-w-[240px] place-self-start">
-					<h1 className="">
-						{<b>{user}</b>} {timeDifference()}
+				<div className="w-full place-self-start ">
+					<h1 className="font-normal">
+						<b>{user}</b> {timeDifference()}
 					</h1>
-					<p>{coment}</p>
+					<p className="font-normal">{coment}</p>
 				</div>
 			</div>
 		</>

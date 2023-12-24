@@ -48,7 +48,6 @@ export default function UploadPhoto () {
 			};
 
 			reader.readAsDataURL(file);
-			console.log(file);
 			setImgFile(file);
 			return file;
 		});
