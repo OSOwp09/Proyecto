@@ -5,6 +5,7 @@ import { navbarOptionsSlice } from "./slices/navbarOptions/navbarOptionsSlice";
 import { shareOptionsSlice } from "./slices/shareOptions/shareOptionsSlice";
 import { publicationsOptionsSlice } from "./slices/publicationsOptions/publicationsOptionsSlice";
 import { commentsListSlice } from "./slices/commentsList/commentsListSlice";
+import { ChatsSlice } from "./slices/chats/chatsSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
 		shareOptions: shareOptionsSlice.reducer,
 		publicationsOptions: publicationsOptionsSlice.reducer,
 		commentsList: commentsListSlice.reducer,
+		ChatsSlice: ChatsSlice.reducer
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({

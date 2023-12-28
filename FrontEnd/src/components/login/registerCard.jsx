@@ -242,7 +242,7 @@ export const RegisterCard = () => {
 					</h1>
 					{labelAndError({ fieldLabel: "Name", fieldInput: fields.name })}
 					<input
-						id="name"
+						id="desktop-name"
 						type="text"
 						placeholder="Name"
 						onChange={(e) => setFields({ ...fields, name: e.target.value })}
@@ -263,7 +263,7 @@ export const RegisterCard = () => {
 					/>
 					{labelAndError({ fieldLabel: "User", fieldInput: fields.user })}
 					<input
-						id="user"
+						id="desktop-user"
 						type="text"
 						placeholder="User"
 						onChange={(e) => handdleUserChange(e.target.value)}
@@ -285,7 +285,7 @@ export const RegisterCard = () => {
 					/>
 					{labelAndError({ fieldLabel: "Email", fieldInput: fields.email })}
 					<input
-						id="email"
+						id="desktop-email"
 						type="text"
 						placeholder="Email"
 						value={fields.email}
@@ -312,7 +312,7 @@ export const RegisterCard = () => {
 						fieldInput: fields.password,
 					})}
 					<input
-						id="password"
+						id="desktop-password"
 						type="password"
 						placeholder="Password"
 						onChange={(e) => setFields({ ...fields, password: e.target.value })}
@@ -337,7 +337,7 @@ export const RegisterCard = () => {
 						fieldInput: fields.confirmation,
 					})}
 					<input
-						id="confirm-password"
+						id="desktop-confirm-password"
 						type="password"
 						placeholder="Confirm password"
 						onChange={(e) =>

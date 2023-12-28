@@ -2,7 +2,6 @@ import { lazy, Suspense } from "react";
 
 // --- components (test) ---
 
-
 // ---- Pages ---
 
 //import Login  from "./pages/Login/login";
@@ -15,7 +14,7 @@ const Index = lazy(() => import("./pages/Index"));
 const Error = lazy(() => import("./pages/ErrorPage/error"));
 
 //---- Other ---
-import { ChatProvider } from "./context/chat/chatProvider";
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
@@ -57,11 +56,9 @@ function App() {
 						<Route
 							path="/home/*"
 							element={
-								<ChatProvider>
-									<Suspense>
-										<Index />
-									</Suspense>
-								</ChatProvider>
+								<Suspense>
+									<Index />
+								</Suspense>
 							}
 						/>
 						<Route
@@ -88,9 +85,7 @@ function App() {
 
 	return (
 		<>
-			<div className="font-inter ">
-				{loadApp}
-				</div>
+			<div className="font-inter ">{loadApp}</div>
 		</>
 	);
 }

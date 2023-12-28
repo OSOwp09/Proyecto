@@ -199,7 +199,7 @@ export const LoginCard = () => {
 						</p>
 					</div>
 					<input
-						id="email"
+						id="desktop-email"
 						type="text"
 						placeholder="Email / User"
 						onChange={(e) => setEmail(e.target.value)}
@@ -258,7 +258,7 @@ export const LoginCard = () => {
 					</div>
 
 					<input
-						id="password-input"
+						id="desktop-password-input"
 						onChange={(e) => setPassword(e.target.value)}
 						type="password"
 						placeholder="Password"

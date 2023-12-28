@@ -1,18 +1,48 @@
-import { ChatContext } from "../../context/chat/chatContext";
+
 import friendPhoto from "../../assets/person-circle.svg";
-import { useContext } from "react";
+
+import {
+	UpdateCurrentChat,
+	UpdateChatList,
+} from "../../store/slices/chats/chatsThunk";
+import { useDispatch, useSelector } from "react-redux";
 
 export const FriendChat = ({ user, message, id }) => {
-	const { handleOpenFriendChat, setSelectedChat } = useContext(ChatContext);
+	const dispatch = useDispatch();
+	const ChatsSlice = useSelector((state) => state.ChatsSlice);
+
+	const handleUpdateChatList = (user, id) => {
+		if (ChatsSlice.chatsList != null) {
+			if (ChatsSlice.chatsList.hasOwnProperty(user)) return;
+		} else {
+			const newUser = {};
+			newUser[user] = {
+				user: user,
+				id: id,
+			};
+			dispatch(UpdateChatList(newUser));
+			return;
+		}
+
+		const currentChats = JSON.parse(JSON.stringify(ChatsSlice.chatsList));
+
+		currentChats[user] = {
+			user: user,
+			id: id,
+		};
+
+		dispatch(UpdateChatList(currentChats));
+		return;
+	};
 
 	return (
 		<>
 			<div
 				onClick={() => {
-					handleOpenFriendChat(user, id);
-					setSelectedChat(id);
+					dispatch(UpdateCurrentChat(user));
+					handleUpdateChatList(user, id);
 				}}
-				className="font-inter text-primary-dark flex"
+				className="font-inter text-primary-dark flex gap-2 "
 			>
 				<img src={friendPhoto} alt="" className="w-[32px] mx-1" />
 				<div

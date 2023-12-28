@@ -56,7 +56,7 @@ export default function User() {
 
 	return (
 		<>
-			<div className="flex flex-col place-items-center w-screen h-auto">
+			<div className="flex md:flex-row flex-col place-items-center w-screen h-auto">
 				<div className="block md:hidden sticky top-0 z-50 h-0">
 					<div
 						className={`
@@ -70,9 +70,10 @@ export default function User() {
 						<p className="text-secondary-light">Link copied</p>
 					</div>
 				</div>
+				
 				<div
 					id="imageLayout-container"
-					className="grow w-full md:pr-6 h-auto pt-2 overflow-x-hidden overflow-y-auto "
+					className="grow w-full md:pr-6 h-[calc(100vh-48px)] pt-2 overflow-x-hidden overflow-y-auto "
 				>
 					<div
 						className="
@@ -129,9 +130,11 @@ export default function User() {
 
 						<UserCard />
 					</div>
-					<ImageLayout uid={email} words={"-"} />
+					<ImageLayout uid={user} words={"-"} />
 				</div>
-				<div className="mt-2">{image.code}</div>
+
+				<div className="hidden md:block mt-2">{image.code}</div>
+				
 				<div className="hidden md:block absolute bottom-[-32px]">
 					{linkAlert()}
 				</div>

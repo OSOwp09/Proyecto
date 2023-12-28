@@ -42,9 +42,14 @@ export const DropArea = ({ onDrop, img }) => {
 					text-primary-highlight`}
 				>
 					<img className="h-8" src={boxArrow} alt="" />
-					<div className="flex flex-col place-items-center">
+
+					<div className="hidden sm:flex flex-col place-items-center">
 						<h1>Drag and drop</h1>
 						<h1>or</h1>
+						<h1>Click to upload</h1>
+					</div>
+					
+					<div className="sm:hidden flex flex-col place-items-center text-sm w-full text-center px-1">
 						<h1>Click to upload</h1>
 					</div>
 				</div>

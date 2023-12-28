@@ -3,7 +3,7 @@ import { FriendChat } from "./friendChat";
 import searchIcon from "../../assets/search.svg";
 import styles from "./chat.module.css";
 import { ListChats, LsitUsersToChat } from "../../api/Api";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import userIcon from "../../assets/person-circle.svg";
 
@@ -12,6 +12,8 @@ export default function ChatList() {
 	const [chats, setChats] = useState();
 	const userInfo = useSelector((state) => state.auth);
 	const [firstChatFetchs, setFirstChatFetchs] = useState(false);
+	const [isMyInputFocused, setIsMyInputFocused] = useState(false);
+	const ChatsSlice = useSelector((state) => state.ChatsSlice);
 
 	/**
 	 * Fetches the chats that thet current user belongs to
@@ -29,7 +31,7 @@ export default function ChatList() {
 	};
 	useEffect(() => {
 		fetchChatList();
-	}, []);
+	}, [, ChatsSlice.currentChat]);
 
 	/* This code is creating a list of chat elements to be displayed in the chat list component. It uses
 	the `useState` hook to create a state variable `chatElement` and the `useEffect` hook to update it
@@ -118,13 +120,11 @@ export default function ChatList() {
 				chatElement[i].props.children.props.children.props.message;
 
 			return (
-				<>
-					<motion.div key={i} whileHover={{ scale: 1.01 }}>
-						<div className="mb-2 rounded-2xl /hover:border /hover:py-1 /hover:px-1 border-primary-dark">
-							<FriendChat user={user} message={lastMessage} id={id} />
-						</div>
-					</motion.div>
-				</>
+				<motion.div key={i} whileHover={{ scale: 1.01 }}>
+					<div className="mb-2 rounded-2xl /hover:border /hover:py-1 /hover:px-1 border-primary-dark">
+						<FriendChat user={user} message={lastMessage} id={id} />
+					</div>
+				</motion.div>
 			);
 		});
 
@@ -136,13 +136,11 @@ export default function ChatList() {
 			const photoURL = listOfUsersToChat[i].photoURL;
 
 			return (
-				<>
-					<motion.div key={i} whileHover={{ scale: 1.01 }}>
-						<div className="mb-2 rounded-2xl /hover:border /hover:py-1 /hover:px-1 border-primary-dark">
-							<FriendChat user={user} message="" id={id} />
-						</div>
-					</motion.div>
-				</>
+				<motion.div key={i} whileHover={{ scale: 1.01 }}>
+					<div className="mb-2 rounded-2xl /hover:border /hover:py-1 /hover:px-1 border-primary-dark">
+						<FriendChat user={user} message="" id={id} />
+					</div>
+				</motion.div>
 			);
 		});
 
@@ -162,6 +160,7 @@ export default function ChatList() {
 			</>
 		);
 	};
+
 	useEffect(() => {
 		if (input != "") {
 			const delay = setTimeout(() => {
@@ -173,54 +172,123 @@ export default function ChatList() {
 		}
 	}, [input]);
 
+	useEffect(() => {
+		setInput("");
+	}, [chats]);
+
 	const handdleInputChange = (e) => {
 		if (!e.includes(" ")) {
 			setInput(e);
 		}
 	};
 
+	//Desktop
+	const desktop = () => {
+		return (
+			<>
+				<div
+					id="container"
+					className="
+					bg-secondary-light
+					h-[calc(100vh-88px)]
+					max-h-[calc(672px-72px)] w-[360px] rounded-2xl
+					calc(100vh-48px)
+					flex flex-col
+					drop-shadow-xl
+					font-inter text-primary-dark"
+				>
+					<h1
+						id="title"
+						className="place-self-center 
+						font-semibold text-base
+						my-6"
+					>
+						Chats
+					</h1>
+					<div
+						id="chats"
+						className="h-full mx-2 overflow-auto overflow-x-hidden"
+					>
+						{input == "" ? <>{chatElement}</> : <>{searchChats}</>}
+					</div>
+					<div
+						id="search-input"
+						className={`border border-primary-dark rounded-full 
+				h-8 text-base 
+				flex
+				mx-4 my-2
+				`}
+					>
+						<img src={searchIcon} alt="" className="w-4 mx-2" />
+						<input
+							value={input}
+							onChange={(e) => handdleInputChange(e.target.value)}
+							type="text"
+							placeholder="Search chat"
+							className="text-base bg-transparent  w-full outline-none"
+						/>
+					</div>
+				</div>
+			</>
+		);
+	};
+
+	//Mobile
+	const mobile = () => {
+		return (
+			<>
+				<div
+					id="container"
+					className={`
+					bg-secondary-light
+					${isMyInputFocused ? "h-screen" : "h-full"}
+					verflow-auto
+					w-screen
+					flex flex-col
+					font-inter text-primary-dark`}
+				>
+					<h1
+						id="title"
+						className="place-self-center 
+						font-semibold text-base
+						my-6"
+					>
+						Chats
+					</h1>
+					<div
+						id="chats"
+						className="h-full mx-6 overflow-auto overflow-x-hidden"
+					>
+						{input == "" ? <>{chatElement}</> : <>{searchChats}</>}
+					</div>
+					<div
+						id="search-input"
+						className={`border border-primary-dark rounded-full 
+						h-8 text-base 
+						flex
+						mx-4 my-2
+						`}
+					>
+						<img src={searchIcon} alt="" className="w-4 mx-2" />
+						<input
+							onFocus={() => setIsMyInputFocused(true)}
+							onBlur={() => setIsMyInputFocused(false)}
+							value={input}
+							onChange={(e) => handdleInputChange(e.target.value)}
+							type="text"
+							placeholder="Search chat"
+							className="text-base bg-transparent  w-full outline-none"
+						/>
+					</div>
+				</div>
+			</>
+		);
+	};
+
 	return (
 		<>
-			<div
-				id="container"
-				className="
-                bg-secondary-light
-				h-[calc(100vh-88px)]
-                max-h-[calc(672px-72px)] w-[360px] rounded-2xl
-				calc(100vh-48px)
-                flex flex-col
-                drop-shadow-xl
-                font-inter text-primary-dark"
-			>
-				<h1
-					id="title"
-					className="place-self-center 
-                    font-semibold text-base
-                    my-6"
-				>
-					Chats
-				</h1>
-				<div id="chats" className="h-full mx-6 overflow-auto overflow-x-hidden">
-					{input == "" ? <>{chatElement}</> : <>{searchChats}</>}
-				</div>
-				<div
-					id="search-input"
-					className={`border border-primary-dark rounded-full 
-                    h-8 text-base 
-                    flex
-                    mx-4 my-2
-					`}
-				>
-					<img src={searchIcon} alt="" className="w-4 mx-2" />
-					<input
-						value={input}
-						onChange={(e) => handdleInputChange(e.target.value)}
-						type="text"
-						placeholder="Search chat"
-						className="text-base bg-transparent  w-full outline-none"
-					/>
-				</div>
-			</div>
+			<div className="block sm:hidden h-full">{mobile()}</div>
+			<div className="hidden sm:block">{desktop()}</div>
 		</>
 	);
 }

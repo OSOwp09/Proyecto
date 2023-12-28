@@ -58,16 +58,16 @@ export const ImageLayout = memo(({ words = "", uid = "", pid = "-" }) => {
 			console.log(error);
 		}
 
-		try {
-			const respUser = await FindUserByEmail.get("", {
-				params: {
-					email: user,
-				},
-			});
-			setsearchFilter(respUser.data.usuario);
-		} catch (error) {
-			console.log(error);
-		}
+		// try {
+		// 	const respUser = await FindUserByEmail.get("", {
+		// 		params: {
+		// 			email: user,
+		// 		},
+		// 	});
+		// 	setsearchFilter(respUser.data.usuario);
+		// } catch (error) {
+		// 	console.log(error);
+		// }
 	};
 
 	const handdleListPublicationsByHashtags = async () => {
@@ -208,9 +208,8 @@ export const ImageLayout = memo(({ words = "", uid = "", pid = "-" }) => {
 				// );
 				const images = [...Array(searchFilter.length)].map(
 					(image = searchFilter, i) => (
-						<Suspense>
+						<Suspense key={i}>
 							<ImageCard
-								key={i}
 								id={image[i]._id}
 								//selectImg={//selectImg}
 								image={image[i].photoURL}
@@ -228,9 +227,8 @@ export const ImageLayout = memo(({ words = "", uid = "", pid = "-" }) => {
 			if (searchByUseridOrHashtag == "userid") {
 				const images = [...Array(searchFilter.publications.length)].map(
 					(image = searchFilter, i) => (
-						<Suspense>
+						<Suspense key={i}>
 							<ImageCard
-								key={i}
 								id={image.publications[i]._id}
 								//selectImg={//selectImg}
 								image={image.publications[i].photoURL}
@@ -262,9 +260,8 @@ export const ImageLayout = memo(({ words = "", uid = "", pid = "-" }) => {
 
 			const images = [...Array(searchFilter.length)].map(
 				(image = searchFilter, i) => (
-					<Suspense>
+					<Suspense key={i}>
 						<ImageCard
-							key={i}
 							id={image[i]._id}
 							//selectImg={//selectImg}
 							image={image[i].photoURL}

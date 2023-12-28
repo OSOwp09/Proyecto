@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { FriendBubble } from "./friendChatBubble";
 import { OurBubble } from "./ourChatBubble";
-import { ChatContext } from "../../context/chat/chatContext";
+
 import { ChatLoader } from "../loaders/chatLoader";
 import { useNavigate } from "react-router-dom";
 
@@ -10,30 +10,31 @@ import send from "../../assets/send.svg";
 import backArrow from "../../assets/arrow.svg";
 import userIcon from "../../assets/person-circle.svg";
 
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { FetchChat, NewMessage, pathName } from "../../api/Api";
-
+import { UpdateCurrentChat } from "../../store/slices/chats/chatsThunk";
 import styles from "./chat.module.css";
 
 //--------- socket stuff ------------
 
 import { io } from "socket.io-client";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 const ENDPOINT = pathName;
 
-var socket, selectedChatCompare;
+var socket;
 
 export default function Chat({ user, id }) {
+	const dispatch = useDispatch();
 
 	const navigate = useNavigate();
-	const { handleChatList, selectedChat, setSelectedChat } =
-		useContext(ChatContext);
+
+	const [isMyInputFocused, setIsMyInputFocused] = useState(false);
 
 	const [isScrolled, setIsScrolled] = useState(false);
 	const divScrollRef = useRef(null);
+
 	const scrollToBottom = () => {
 		divScrollRef.current.scroll({
 			top: 99999,
@@ -48,14 +49,13 @@ export default function Chat({ user, id }) {
 	const userInfo = useSelector((state) => state.auth);
 	const [messages, setMessages] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [newMessage, setNewMessage] = useState();
+	const [newMessage, setNewMessage] = useState(null);
 
-
-	const textArea = useRef(null)
+	const textAreaRef = useRef(null);
 	const hanndleResizeInput = (e) => {
 		e.target.style.height = "24px";
 		e.target.style.height = e.target.scrollHeight + "px";
-	};	
+	};
 
 	const handdleInputChange = (e) => {
 		setNewMessage(e.target.value);
@@ -69,25 +69,28 @@ export default function Chat({ user, id }) {
 	}, [messages]);
 
 	const fetchMessages = async () => {
-		if (!selectedChat) return;
+		try {
+			const resp = await FetchChat.get("", {
+				params: {
+					userId1: userInfo.uid,
+					userId2: id,
+				},
+			});
 
-		const resp = await FetchChat.get("", {
-			params: {
-				userId1: userInfo.uid,
-				userId2: id,
-			},
-		});
-
-		const messagesList = resp.data.chat.messages;
-		setMessages(messagesList?.reverse());
-		setLoading(false);
-		socket.emit("join chat", `${userInfo.uid}-room-${id}`);
+			const messagesList = resp.data.chat.messages;
+			setMessages(messagesList?.reverse());
+			setLoading(false);
+			socket.emit("join chat", `${userInfo.uid}-room-${id}`);
+		} catch (error) {
+			console.log(error.message);
+			return;
+		}
 	};
 
 	const sendMessage = async () => {
 		if (newMessage) {
 			setNewMessage("");
-			textArea.current.style.height = "24px"
+			textAreaRef.current.style.height = "24px";
 			const resp = await NewMessage.post("", {
 				userId1: userInfo.uid,
 				userId2: id,
@@ -101,7 +104,7 @@ export default function Chat({ user, id }) {
 				room: `${id}-room-${userInfo.uid}`,
 				message: newMessage,
 			});
-			
+
 			if (messages == undefined) {
 				setMessages([
 					{
@@ -135,9 +138,7 @@ export default function Chat({ user, id }) {
 
 	useEffect(() => {
 		fetchMessages();
-
-		selectedChatCompare = selectedChat;
-	}, [selectedChat]);
+	}, []);
 
 	useEffect(() => {
 		socket.on("message recieved", (newMessageRecieved) => {
@@ -176,13 +177,21 @@ export default function Chat({ user, id }) {
 		<>
 			<div
 				id="container"
-				className="
+				className={`
                 bg-secondary-light
-                h-[calc(100vh-88px)]
-                max-h-[calc(672px-72px)] w-[360px] rounded-2xl
-                flex flex-col
-                drop-shadow-xl
-                font-inter text-primary-dark"
+
+				${isMyInputFocused ? "h-screen" : "h-full"}
+				
+				w-screen pb-2
+
+                sm:h-[calc(100vh-88px)]
+                sm:max-h-[calc(672px-72px)] 
+				sm:w-[360px] 
+				sm:rounded-2xl
+                sm:drop-shadow-xl 
+				
+				flex flex-col
+                font-inter text-primary-dark`}
 			>
 				<div
 					id="userContainer"
@@ -196,8 +205,7 @@ export default function Chat({ user, id }) {
 					>
 						<div
 							onClick={() => {
-								handleChatList();
-								setSelectedChat("");
+								dispatch(UpdateCurrentChat(null));
 							}}
 							id="arrow"
 							className="place-self-center w-auto "
@@ -209,15 +217,14 @@ export default function Chat({ user, id }) {
 								<img src={backArrow} alt="" className="rotate-90 w-4" />
 							</div>
 						</div>
-						<div className="w-8"
-						onClick={()=>handdleUserClick()}>
+						<div className="w-8" onClick={() => handdleUserClick()}>
 							<img src={userIcon} alt="" className="w-full" />
 						</div>
 						<h1
 							id="title"
 							className=" 
-                			font-semibold text-base 
-                        	/text-center"
+							font-semibold text-base 
+							/text-center"
 						>
 							{user}
 						</h1>
@@ -244,24 +251,20 @@ export default function Chat({ user, id }) {
 											if (messages[i].user == userInfo.user) {
 												ourMessage.unshift(messages[i].text);
 												return (
-													<>
-														<div key={i} className="flex place-content-end">
-															<OurBubble messageList={messages[i].text} />
-														</div>
-													</>
+													<div key={i} className="flex place-content-end">
+														<OurBubble messageList={messages[i].text} />
+													</div>
 												);
 											} else {
 												friendMessage.unshift(messages[i].text);
 
 												return (
-													<>
-														<div key={i}>
-															<FriendBubble
-																messageList={messages[i].text}
-																user={user}
-															/>
-														</div>
-													</>
+													<div key={i}>
+														<FriendBubble
+															messageList={messages[i].text}
+															user={user}
+														/>
+													</div>
 												);
 											}
 										})}
@@ -276,24 +279,28 @@ export default function Chat({ user, id }) {
 
 				<div
 					id="message-input"
-					className="
-					relative
-					border border-primary-dark rounded-2xl 
-                    h-auto text-base 
-                    flex place-items-end
-                    mx-4 my-2"
+					onBlur={() => setIsMyInputFocused(false)}
+					onFocus={() => setIsMyInputFocused(true)}
+					className="w-full flex gap-2 place-items-center px-2"
 				>
 					<div
-						id="scroll-to-bottom-btn"
-						className={`
+						className="
+						relative
+						border border-primary-dark rounded-2xl 
+						h-auto w-full py-1 text-base 
+						flex place-items-end"
+					>
+						<div
+							id="scroll-to-bottom-btn"
+							className={`
 						${scrollDistance >= 150 ? "block" : "hidden"}
 						select-none
 						absolute top-[-30px]
 						w-full flex place-content-center`}
-					>
-						<div
-							onClick={() => scrollToBottom()}
-							className={`
+						>
+							<div
+								onClick={() => scrollToBottom()}
+								className={`
 							group
 							bg-secondary-light hover:bg-secondary-dark
 							border border-secondary-dark
@@ -301,54 +308,67 @@ export default function Chat({ user, id }) {
 							px-5 py-2 
 							transition-all 
 							scale-[0.8] hover:scale-[1]`}
-						>
-							<svg
-								width="12"
-								height="7"
-								viewBox="0 0 12 7"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-								className="transition-all
-								stroke-secondary-dark group-hover:stroke-secondary-light"
 							>
-								<path
-									d="M1 1L6 6L11 1"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								/>
-							</svg>
+								<svg
+									width="12"
+									height="7"
+									viewBox="0 0 12 7"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									className="transition-all
+								stroke-secondary-dark group-hover:stroke-secondary-light"
+								>
+									<path
+										d="M1 1L6 6L11 1"
+										strokeWidth="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									/>
+								</svg>
+							</div>
 						</div>
-					</div>
-					<motion.div
+
+						{/* <motion.div
 						whileTap={{ scale: 0.9 }}
 						transition={{ type: "spring", stiffness: 400, damping: 17 }}
 						className="mb-1"
 					>
 						<img src={heart} alt="" className="h-4 mx-2" />
-					</motion.div>
+					</motion.div> */}
 
-					<textarea
-						ref={textArea}
-						type="text"
-						value={newMessage}
-						onChange={(e) => handdleInputChange(e)}
-						placeholder="Send a message"
-						className={`first-line:marker:text-base bg-transparent w-full h-[24px] max-h-[120px]
+						<textarea
+							ref={textAreaRef}
+							type="text"
+							value={newMessage ? newMessage : ""}
+							onChange={(e) => handdleInputChange(e)}
+							placeholder="Send a message"
+							className={`first-line:marker:text-base bg-transparent 
+							w-full 
+							h-[24px] max-h-[120px]
 							pl-2 ${styles.scrollbar}
 							outline-none resize-none`}
-					/>
+						/>
+					</div>
 
-					<motion.div
-						onClick={() => sendMessage()}
-						whileTap={{ scale: 0.9 }}
-						transition={{ type: "spring", stiffness: 400, damping: 17 }}
-						className="mb-1"
+					<div
+						className={`${
+							newMessage != null && newMessage != "" ? "block" : "hidden"
+						} border border-primary-dark rounded-full flex place-content-center place-items-center p-1`}
 					>
-						<img src={send} alt="" className="h-4 mr-4 rotate-45" />
-					</motion.div>
+						<motion.div
+							onClick={() => {
+								textAreaRef.current.focus();
+								sendMessage();
+							}}
+							whileTap={{ scale: 0.9 }}
+							transition={{ type: "spring", stiffness: 400, damping: 17 }}
+							className="h-6 w-6 pr-0.5"
+						>
+							<img src={send} alt="" className="h-full rotate-45" />
+						</motion.div>
+					</div>
 				</div>
 			</div>
 		</>
 	);
-};
+}

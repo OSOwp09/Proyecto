@@ -109,10 +109,11 @@ export default function UserLayout  () {
 				} catch (error) {}
 
 				return (
-					<>
+					
 						<div
 							//onClick={()=>console.log(users[i].uid)}
 							//onClick={() => handdleUserClick(users[i].uid)}
+							key={i}
 							onClick={() => handdleUserClick(searchFilter[i].user)}
 							id="userContainer"
 							className="bg-secondary-light w-fit h-fit
@@ -139,7 +140,7 @@ export default function UserLayout  () {
 								</h1>
 							</div>
 						</div>
-					</>
+					
 				);
 			}
 		);

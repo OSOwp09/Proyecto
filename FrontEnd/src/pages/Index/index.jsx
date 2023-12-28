@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 
 import { Navbar } from "../../components/shared/navbar";
 import { Home } from "../home/home";
+
 //import  OpenPublication  from "../../components/index/openPublication";
 const OpenPublication = lazy(() =>
 	import("../../components/index/openPublication")
@@ -21,9 +22,9 @@ const Error = lazy(() => import("../ErrorPage/error"));
 //import  OtherUsersPage  from "../otherUsers/otherUsersPage";
 const OtherUsersPage = lazy(() => import("../otherUsers/otherUsersPage"));
 
-import { ChatContext } from "../../context/chat/chatContext";
+const ChatPage = lazy(() => import("../chatPage/chatPage"));
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Routes, Route, useNavigate } from "react-router-dom";
 //import { auth } from "../../firebase/config";
@@ -40,9 +41,11 @@ import { loadUser } from "../../store/slices/auth/AuthThunks";
 
 export default function Index() {
 	const dispatch = useDispatch();
-	const { chatState } = useContext(ChatContext);
+	const navigate = useNavigate();
+
 	const [loadIndex, setLoadIndex] = useState(true);
 	const authinfo = useSelector((state) => state.auth);
+	const ChatsSlice = useSelector((state) => state.ChatsSlice);
 
 	const handdleContinue = () => {
 		dispatch(loadUser(authinfo.email));
@@ -89,7 +92,7 @@ export default function Index() {
 
 						<div
 							id="underNavbar-container"
-							className="h-[calc(100vh-48px)] w-screen flex  relative z-0"
+							className="h-[calc(100vh-48px)] w-screen flex  relative sm:z-0 z-50"
 						>
 							<ImageProvider>
 								<Routes>
@@ -139,6 +142,23 @@ export default function Index() {
 										""
 									)}
 
+									{authinfo.email ? (
+										window.innerWidth < 640 ? (
+											<Route
+												path="/chat"
+												element={
+													<Suspense>
+														<ChatPage />
+													</Suspense>
+												}
+											/>
+										) : (
+											""
+										)
+									) : (
+										""
+									)}
+
 									<Route
 										path="*"
 										element={
@@ -150,15 +170,21 @@ export default function Index() {
 								</Routes>
 							</ImageProvider>
 						</div>
-						
-						<div id="Navbar-container"
-							className="sm:hidden absolute bottom-0"
+
+						<div
+							id="Navbar-container"
+							className="sm:hidden absolute bottom-0 z-0"
 						>
 							<Navbar />
 						</div>
 
-						<div className="absolute top-[54px] right-2">{chatState.code}</div>
-						
+						<div
+							className={`${
+								ChatsSlice.isChatOpen ? "sm:block" : "hidden"
+							} hidden absolute top-[54px] right-[360px]`}
+						>
+							<ChatPage />
+						</div>
 					</div>
 				</>
 			) : (

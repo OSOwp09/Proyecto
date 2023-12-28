@@ -4,11 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase/config";
 import { searchPublications } from "../../store/slices/filterSearch/FilterThunks";
 import { openOptions } from "../../store/slices/navbarOptions/navbarOptionsThunks";
+import { OpenChat, CloseChat } from "../../store/slices/chats/chatsThunk";
 import { MobileShareButton } from "../shared/publicationOptions";
 import { MobileThreeDots } from "../shared/publicationOptions";
 import { MobileCommentList } from "../shared/publicationOptions";
-
-import { ChatContext } from "../../context/chat/chatContext";
 
 import logo from "../../assets/Logo.svg";
 import search from "../../assets/search.svg";
@@ -28,11 +27,10 @@ export const Navbar = () => {
 	const [navbar, setNavbar] = useState("hidden"); // navbar visibility controller
 	const [login, setLogin] = useState("hidden");
 
-	const { handleChatList, chatState, closeChat } = useContext(ChatContext);
 	const navigate = useNavigate();
-
+	const ChatsSlice = useSelector((state) => state.ChatsSlice);
 	const handdleOpenCloseChat = () => {
-		chatState.code != "" ? closeChat() : handleChatList();
+		ChatsSlice.isChatOpen ? dispatch(CloseChat()):dispatch(OpenChat())
 	};
 
 	const [options, setOptions] = useState(false); // logout menu visibility controller
@@ -130,13 +128,13 @@ export const Navbar = () => {
 						id="login"
 						onClick={() => navigate("/login")}
 						className={`ml-3 
-					text-secondary-red
-					border rounded-2xl
-					border-secondary-red
-					hover:border-primary-red
-					hover:bg-primary-red 
-					hover:text-secondary-light
-					hover:shadow-md
+						text-secondary-red
+						border rounded-2xl
+						border-secondary-red
+						hover:border-primary-red
+						hover:bg-primary-red 
+						hover:text-secondary-light
+						hover:shadow-md
 					${login}
 					${login ? "hidden" : "block"}`}
 					>
@@ -155,7 +153,7 @@ export const Navbar = () => {
 							onClick={() => handdleOpenCloseChat()}
 							className={`h-[60%] w-[30px]
 						flex place-items-center place-content-center
-						${chatState.code != "" ? styles.pressed : styles.navbtn}`}
+						${ChatsSlice.isChatOpen != "" ? styles.pressed : styles.navbtn}`}
 							initial={"tapnt"}
 							whileTap={"tap"}
 						>
@@ -168,7 +166,7 @@ export const Navbar = () => {
 							>
 								<div id="chat-image" className="flex-none">
 									<img
-										src={chatState.code != "" ? closeIcon : chatIcon}
+										src={ChatsSlice.isChatOpen!= "" ? closeIcon : chatIcon}
 										alt=""
 										className="h-[20px]"
 									/>
@@ -179,13 +177,13 @@ export const Navbar = () => {
 						<motion.div
 							id="user-icon-container"
 							className={`h-[60%] w-[30px]
-					flex place-items-center place-content-center
-					${
-						location.pathname == "/home/user" ||
-						location.pathname == "/home/upload"
-							? styles.pressed
-							: styles.navbtn
-					}`}
+							flex place-items-center place-content-center
+							${
+								location.pathname == "/home/user" ||
+								location.pathname == "/home/upload"
+									? styles.pressed
+									: styles.navbtn
+							}`}
 							onClick={() => navigate("user")}
 							initial={"tapnt"}
 							whileTap={"tap"}
@@ -268,6 +266,7 @@ export const Navbar = () => {
 				<div className="absolute bottom-0 h-[48px] bg-secondary-light w-screen flex justify-between px-8 p-3 select-none">
 					<img onClick={() => navigate("/home")} src={homeIcon} alt="" />
 					<img
+						onClick={() => navigate("chat")}
 						src={chatIcon}
 						alt=""
 						className={`${login ? "block" : "hidden"}`}

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import userIcon from "../../assets/person-circle.svg";
 import closeIcon from "../../assets/x-circle.svg";
 import deleteHashtag from "../../assets/x.svg";
+import backArrow from "../../assets/arrow.svg";
 import React, { useCallback, useState, useEffect } from "react";
 import { DropArea } from "./dropArea";
 import { motion } from "framer-motion";
@@ -11,7 +12,7 @@ import { auth } from "../../firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 import { useSelector } from "react-redux";
 
-export default function UploadPhoto () {
+export default function UploadPhoto() {
 	const navigate = useNavigate();
 
 	const userInfo = useSelector((state) => state.auth);
@@ -26,7 +27,7 @@ export default function UploadPhoto () {
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [hashtags, setHashtags] = useState("");
-	const [showButton, setShowButton] = useState(true)
+	const [showButton, setShowButton] = useState(true);
 
 	useEffect(() => {
 		onAuthStateChanged(auth, () => {
@@ -131,7 +132,7 @@ export default function UploadPhoto () {
 
 		if (hashtagList[0] == undefined) {
 			if (hashtags != "") {
-				hashtagsvar = hashtags
+				hashtagsvar = hashtags;
 			} else {
 				hashtagsvar = " ";
 			}
@@ -145,7 +146,7 @@ export default function UploadPhoto () {
 		}
 
 		let result;
-		setShowButton(false)
+		setShowButton(false);
 		try {
 			result = await uploadFile(file, userInfo.user); // upload image file to firebase
 
@@ -173,7 +174,7 @@ export default function UploadPhoto () {
 		} catch (error) {
 			await deleteFile(result?.metadata?.name);
 			console.log(error);
-			setShowButton(true)
+			setShowButton(true);
 		}
 	};
 
@@ -182,38 +183,46 @@ export default function UploadPhoto () {
 			<div
 				className="
                 select-none
-                h-screem w-screen
+                w-screen h-screen bg-primary-light sm:h-full sm:bg-transparent
                 flex place-content-center place-items-center"
 			>
 				<div
 					id="container"
 					className="
                     relative
-                    min-h-[496px] w-auto
+                    min-h-[496px] w-auto p-6
                     bg-secondary-light
                     rounded-2xl
                     shadow-lg
-                    flex"
+                    flex gap-6 place-items-center
+					max-[560px]:flex-col
+					max-[560px]:w-[90vw]"
 				>
 					<img
 						id="close"
 						onClick={() => navigate("/home/user")}
 						className="
                         absolute right-2 top-2
-                        h-6"
+                        h-6
+						max-[560px]:hidden"
 						src={closeIcon}
 						alt=""
 					/>
+
 					<div
 						id="photoContainer"
 						className={`
                         w-[240px] 
-						h-[448px]
-						${image == "" ? "h-[448px]" : "h-fit"}
+						/h-[448px] 
+						
+						${
+							image == ""
+								? "h-[448px] max-[560px]:h-[40vh]  max-[560px]:w-[40vw]"
+								: "h-fit max-[560px]:max-h-[50vh]  max-[560px]:w-[30vw]"
+						}
 						overflow-hidden
                         bg-secondary-highlight
-                        rounded-2xl
-                        m-6
+                        rounded-2xl    
                         flex
 						relative`}
 					>
@@ -237,11 +246,11 @@ export default function UploadPhoto () {
 							<img src={image} alt="" />
 						</div>
 					</div>
+
 					<div
 						id="inputsContainer"
 						className="
-                        w-auto /max-w-[200px] 
-                        my-6 mr-6
+                        max-[560px]:w-full
                         font-semibold
                         relative"
 					>
@@ -249,10 +258,9 @@ export default function UploadPhoto () {
 							id="Title"
 							className="
                             bg-transparent
-                            mt-6 outline-none text-2xl
-							h-[26px]
-							w-[240px]
-							/hyphens-auto
+                            outline-none text-2xl
+							h-[26px] 
+							w-[240px] max-[560px]:w-full
 							resize-none
 							overflow-hidden"
 							type="text"
@@ -260,17 +268,19 @@ export default function UploadPhoto () {
 							value={title}
 							onChange={(e) => handdleTitleChange(e)}
 						/>
-						<hr className="h-[1px] w-[240px] bg-primary-dark border-0" />
+						<hr className="h-[1px] w-[240px] max-[560px]:w-full bg-primary-dark border-0" />
+
 						<div id="userPhoto" className="flex gap-3 mt-6 place-items-center">
 							<img className="h-12" src={userIcon} alt="" />
 							<h1 className="text-xl  w-auto h- /break-words hyphens-auto">
 								{user}
 							</h1>
 						</div>
+
 						<textarea
 							id="Description"
 							className="
-							w-[240px]
+							w-[240px] max-[560px]:w-full
 							h-[18px]
                             bg-transparent
                             mt-6 outline-none text-sm
@@ -281,7 +291,8 @@ export default function UploadPhoto () {
 							value={description}
 							onChange={(e) => handdleDescriptionChange(e)}
 						/>
-						<hr className="h-[1px] w-[240px] bg-primary-dark border-0" />
+						<hr className="h-[1px] w-[240px] max-[560px]:w-full bg-primary-dark border-0" />
+
 						<input
 							id="Hashtags"
 							className="
@@ -302,10 +313,9 @@ export default function UploadPhoto () {
 						<div
 							id="hashtagsContainer"
 							className="
-							w-[220px]
-							h-auto
-							mt-3
-							flex flex-wrap gap-1"
+							w-[220px] max-[560px]:w-full
+							h-auto max-h-[170px]  max-[560px]:max-h-[70px] overflow-auto
+							mt-3 flex flex-wrap gap-1"
 						>
 							{hashtagElementList.map((hashtag, index) => (
 								<HashtagComponent
@@ -315,26 +325,39 @@ export default function UploadPhoto () {
 								/>
 							))}
 						</div>
-						<div className="h-[50px]"></div>
-						<button
-							id="save-button"
-							className={`
-							${showButton ? "block":"hidden"}
+
+						<div className="w-full h-full pt-6 flex place-content-between place-items-center">
+							<img
+								id="close"
+								onClick={() => navigate("/home/user")}
+								className="
+								rotate-90
+								h-3
+								hidden
+								max-[560px]:block"
+								src={backArrow}
+								alt=""
+							/>
+							<button
+								id="save-button"
+								className={`
+							${showButton ? "block" : "hidden"}
                             px-2
                             text-2xl text-primary-highlight
                             border-2 border-primary-highlight
                             hover:bg-primary-highlight
                             hover:text-secondary-light
                             rounded-2xl
-                            absolute bottom-0 right-0
+                            /absolute bottom-0 right-0
                             flex gap-2`}
-							onClick={() => handdleSave(imgFile)}
-						>
-							Save
-						</button>
+								onClick={() => handdleSave(imgFile)}
+							>
+								Save
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</>
 	);
-};
+}
