@@ -15,7 +15,8 @@ import {
 } from "../../api/Api";
 import { LayoutLoader } from "../../components/loaders/layoutLoader";
 
-export const ImageLayout = memo(({ words = "", uid = "", pid = "-" }) => {
+
+export default function  ImageLayout ({ words = "", uid = "", pid = "-" }) {
 	const [loaded, setLoaded] = useState(false);
 
 	const wordsValidator = useSelector(
@@ -329,19 +330,25 @@ export const ImageLayout = memo(({ words = "", uid = "", pid = "-" }) => {
 	const loader = () => {
 		return (
 			<>
-				<div className="absolute top-[-8px] left-0 z-50 overflow-hidden">
+				<div className="absolute top-[-4px] bg-primary-light left-0 z-50 overflow-hidden">
 					<LayoutLoader />
 				</div>
 			</>
 		);
 	};
+	const [layoutLoaderHtml, setLayoutLoaderHtml] = useState(loader());
 
 	const [loaderGone, setLoaderGone] = useState(false);
 	const hideLoader = async () => {
+		const time = 1400
 		setTimeout(() => {
 			setLoaderGone(true);
-		}, 1400);
+		}, time);
+		setTimeout(() => {
+			setLayoutLoaderHtml(<></>);
+		}, time+200);
 	};
+
 	useEffect(() => {
 		if (loaded) {
 			hideLoader();
@@ -356,6 +363,13 @@ export const ImageLayout = memo(({ words = "", uid = "", pid = "-" }) => {
 				className="relative w-full overflow-x-hidden overflow-hidden"
 			>
 				<div
+					className={`transition-all duration-700  ${
+						loaderGone ? "opacity-0" : "opacity-100"
+					}`}
+				>
+					{layoutLoaderHtml}
+				</div>
+				<div
 					className={`
 						flex place-content-center 
 						opacity-100 `}
@@ -365,4 +379,4 @@ export const ImageLayout = memo(({ words = "", uid = "", pid = "-" }) => {
 			</div>
 		</>
 	);
-});
+};

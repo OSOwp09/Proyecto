@@ -179,8 +179,8 @@ export default function ImageCard({
 
 	return (
 		<>
-			<div className="block  min-[855px]:hidden">{mobileImageCard()}</div>
-			<div className="hidden min-[855px]:block">{desktopImageCard()}</div>
+			<div className="block  sm:hidden">{mobileImageCard()}</div>
+			<div className="hidden sm:block">{desktopImageCard()}</div>
 		</>
 	);
 }

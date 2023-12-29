@@ -24,7 +24,9 @@ const OtherUsersPage = lazy(() => import("../otherUsers/otherUsersPage"));
 
 const ChatPage = lazy(() => import("../chatPage/chatPage"));
 
-import { useEffect, useState } from "react";
+const SearchPage = lazy(() => import("../searchPage/searchPage"));
+
+import { useEffect, useState, createRef } from "react";
 
 import { Routes, Route, useNavigate } from "react-router-dom";
 //import { auth } from "../../firebase/config";
@@ -39,9 +41,23 @@ const FinishCreationOfUser = lazy(() =>
 import { FindUserByEmail } from "../../api/Api";
 import { loadUser } from "../../store/slices/auth/AuthThunks";
 
+import { useRefDimensions } from "../../customHooks/useRefDimensions";
+
 export default function Index() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	const divRef = createRef();
+	const dimensions = useRefDimensions(divRef);
+
+	useEffect(() => {
+		if (
+			dimensions.width >= 640 &&
+			window.location.pathname.split("/").includes("chat")
+		) {
+			navigate("/home");
+		}
+	}, [dimensions]);
 
 	const [loadIndex, setLoadIndex] = useState(true);
 	const authinfo = useSelector((state) => state.auth);
@@ -80,6 +96,7 @@ export default function Index() {
 			{loadIndex ? (
 				<>
 					<div
+						ref={divRef}
 						id="page-container"
 						className="relative overflow-hidden w-screen h-screen"
 					>
@@ -143,21 +160,26 @@ export default function Index() {
 									)}
 
 									{authinfo.email ? (
-										window.innerWidth < 640 ? (
-											<Route
-												path="/chat"
-												element={
-													<Suspense>
-														<ChatPage />
-													</Suspense>
-												}
-											/>
-										) : (
-											""
-										)
+										<Route
+											path="/chat"
+											element={
+												<Suspense>
+													<ChatPage />
+												</Suspense>
+											}
+										/>
 									) : (
 										""
 									)}
+
+									<Route
+										path="/search"
+										element={
+											<Suspense>
+												<SearchPage />
+											</Suspense>
+										}
+									/>
 
 									<Route
 										path="*"

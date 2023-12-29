@@ -1,12 +1,16 @@
+import { lazy, useContext, useEffect, useState } from "react";
+
 import { UserCard } from "../../components/otherUser/otherUserCard";
-import { ImageLayout } from "../../components/shared/imagelayout";
+//import { ImageLayout } from "../../components/shared/imagelayout";
+const ImageLayout = lazy(()=> import("../../components/shared/imagelayout"))
+
 import { ImageContext } from "../../context/imageSelected/imageSelectedContext";
 import { motion } from "framer-motion";
 
 import share from "../../assets/Group 98.svg";
 import link from "../../assets/Group 99.svg";
 
-import { useContext, useEffect, useState } from "react";
+
 import { useNavigate } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { ShareButton } from "../../components/shared/publicationOptions";

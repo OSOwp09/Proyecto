@@ -1,8 +1,11 @@
-import { ImageLayout } from "../shared/imagelayout";
+
 import { Commentary } from "../shared/comentary";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, lazy } from "react";
+//import { ImageLayout } from "../shared/imagelayout";
+const ImageLayout = lazy(()=> import("../shared/imagelayout"))
+
 import { ShareButton, ThreeDots } from "../shared/publicationOptions";
 
 import { motion } from "framer-motion";

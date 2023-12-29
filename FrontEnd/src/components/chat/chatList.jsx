@@ -11,7 +11,7 @@ export default function ChatList() {
 	const [input, setInput] = useState("");
 	const [chats, setChats] = useState();
 	const userInfo = useSelector((state) => state.auth);
-	const [firstChatFetchs, setFirstChatFetchs] = useState(false);
+	//const [firstChatFetchs, setFirstChatFetchs] = useState(false);
 	const [isMyInputFocused, setIsMyInputFocused] = useState(false);
 	const ChatsSlice = useSelector((state) => state.ChatsSlice);
 
@@ -26,7 +26,7 @@ export default function ChatList() {
 				},
 			});
 			setChats(data.chats);
-			firstChatFetchs(true);
+			//firstChatFetchs(true);
 		} catch (error) {}
 	};
 	useEffect(() => {
@@ -79,7 +79,7 @@ export default function ChatList() {
 			if (chatElement != "") {
 				const currentUsers = [...Array(chatElement.length)].map(
 					(x, i) => chatElement[i].props.children.props.children.props.user
-				);
+				);	
 
 				const { data } = await LsitUsersToChat.get("", {
 					params: {
@@ -106,12 +106,21 @@ export default function ChatList() {
 		}
 	};
 
+	//Search existing chats and user to chat with
 	const [searchChats, setSearchChats] = useState(<></>);
 	const listOfSearchedChatsAndUsers = async () => {
+
+		/* The code is mapping over the `chatElement` array, which contains the chat elements to be displayed
+		in the chat list component. For each element in the array, it checks if the user's name (obtained
+		from `chatElement[i].props.children.props.children.props.user`) includes the input value (after
+		converting both to lowercase). If it does, it creates a new chat element with the user's name,
+		last message, and ID, and adds it to the `existingChats` array. If the user's name does not
+		include the input value, it returns nothing. Finally, the `existingChats` array is rendered in the
+		component. */
 		const existingChats = chatElement.map((x, i) => {
 			const user = chatElement[i].props.children.props.children.props.user;
 
-			if (!user.includes(input)) {
+			if (!user.toLocaleLowerCase().includes(input.toLocaleLowerCase())) {
 				return;
 			}
 
@@ -128,7 +137,11 @@ export default function ChatList() {
 			);
 		});
 
-		const listOfUsersToChat = await fetchUserToChat();
+		/* The code is fetching a list of users to chat with using the `fetchUserToChat` function. It then
+		maps over the list of users and creates a chat element for each user. The chat element includes
+		the user's name, an empty message, and the user's ID. The chat elements are stored in the
+		`usersToChat` array. */
+		const listOfUsersToChat = await fetchUserToChat()
 
 		const usersToChat = listOfUsersToChat.map((x, i) => {
 			const user = listOfUsersToChat[i].user;

@@ -1,4 +1,8 @@
-import { ImageLayout } from "./imagelayout";
+
+import { useContext, useRef, useState, useEffect, lazy } from "react";
+
+//import { ImageLayout } from "../shared/imagelayout";
+const ImageLayout = lazy(()=> import("./imagelayout"))
 import { Commentary } from "./comentary";
 import { ImageContext } from "../../context/imageSelected/imageSelectedContext";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +19,6 @@ import heart from "../../assets/heart-fill-red.svg";
 import arrow from "../../assets/arrow.svg";
 import openArrow from "../../assets/arrow-up-right-circle.svg";
 
-import { useContext, useRef, useState, useEffect } from "react";
 import { motion, useScroll } from "framer-motion";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import useClickOutside from "../../customHooks/useClickOutside";

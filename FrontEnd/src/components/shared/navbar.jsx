@@ -271,7 +271,7 @@ export const Navbar = () => {
 						alt=""
 						className={`${login ? "block" : "hidden"}`}
 					/>
-					<img src={search} alt="" />
+					<img onClick={()=> navigate("search")} src={search} alt="" />
 					<img
 						onClick={() => navigate("user")}
 						src={usericon}
@@ -284,6 +284,7 @@ export const Navbar = () => {
 						alt=""
 					/>
 				</div>
+				
 				<div
 					className={`absolute bottom-0 z-50 ${
 						optionsOpenedOrCLosed.code != "" ? "block" : "hidden"

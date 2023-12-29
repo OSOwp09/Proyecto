@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 
-import { ImageLayout } from "../../components/shared/imagelayout";
+//import { ImageLayout } from "../../components/shared/imagelayout";
+const ImageLayout = lazy(() => import("../../components/shared/imagelayout"));
 
 //import UserLayout from "../../components/index/userLayout";
 const UserLayout = lazy(() => import("../../components/index/userLayout"));
@@ -20,23 +21,24 @@ export const Home = () => {
 	const loader = () => {
 		return (
 			<>
-				<div className="absolute bg-primary-light top-0 left-0 z-50">
+				<div className={"absolute w-full bg-primary-light top-0 left-0 z-50"}>
 					<LayoutLoader />
 				</div>
 			</>
 		);
 	};
-	const [layoutHtml, setLayoutHtml] = useState(loader());
+
+	const [layoutLoaderHtml, setLayoutLoaderHtml] = useState(loader());
 	const [loaded, setLoaded] = useState(false);
 
 	useEffect(() => {
 		if (!loaded) {
 			setTimeout(() => {
 				setLoaded(true);
-			}, 1000);
-			setTimeout(() => {
-				setLayoutHtml(<></>);
 			}, 1600);
+			setTimeout(() => {
+				//setLoaded(true);
+			}, 2600);
 		}
 	}, [, words]);
 
@@ -100,16 +102,24 @@ export const Home = () => {
 					className={`relative
 					h-full overflow-auto overflow-x-hidden
 					${searchFor == "Explore" ? "block" : "hidden"}
-					w-screen flex gap-2 h-fit`}
+					w-screen flex gap-2 h-fit `}
 				>
 					<div id="imageLayout-container" className={`grow h-full pt-2`}>
-						{layoutHtml}
+						{/* <div
+							className={`transition-all   ${
+								loaded ? "opacity-0" : "opacity-100"
+							}`}
+						>
+							{layoutLoaderHtml}
+						</div> */}
 						<div className={`absolute w-full flex`}>
 							<ImageLayout words={words} />
+
 							<div
 								className={`
-							${image.code.props?.children ? "block" : "hidden"}
-							invisible h-2 w-[1020px] bg-black`}
+							${image.code.props?.children ? "hidden md:block" : "hidden"}
+							invisible h-2 w-[1020px] bg-black
+							`}
 							></div>
 						</div>
 					</div>
@@ -118,6 +128,7 @@ export const Home = () => {
 						id="image-selected"
 						className="h-[calc(100vh-90px)] w-fit mr-2
 								rounded-2xl
+								hidden md:block
 								sticky top-0 z-50"
 					>
 						{image.code}

@@ -1,5 +1,5 @@
 import { UserCard } from "../../components/userPage/userCard";
-import { ImageLayout } from "../../components/shared/imagelayout";
+//import { ImageLayout } from "../../components/shared/imagelayout";
 import { ImageContext } from "../../context/imageSelected/imageSelectedContext";
 import { motion } from "framer-motion";
 
@@ -7,7 +7,9 @@ import add from "../../assets/plus-circle 1.svg";
 import share from "../../assets/Group 98.svg";
 import link from "../../assets/Group 99.svg";
 
-import { useContext, useEffect, useState } from "react";
+import { lazy, useContext, useEffect, useState } from "react";
+const ImageLayout = lazy(()=> import("../../components/shared/imagelayout"))
+
 import { useNavigate } from "react-router-dom";
 import { ShareButton } from "../../components/shared/publicationOptions";
 import { CopyToClipboard } from "react-copy-to-clipboard";
