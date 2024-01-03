@@ -2,8 +2,8 @@ export const SearchCards = ({image, text}) => {
 	return (
 		<>
 			<div
-				className="w-[50vw] h-[20vw] bg-secondary-dark rounded-2xl relative 
-			flex place-items-center place-content-center overflow-hidden"
+				className="w-[48vw] h-[20vw] bg-secondary-dark rounded-2xl relative 
+			flex place-items-center place-content-center overflow-hidden drop-shadow-md"
 			>
 				<img
 					src={image}

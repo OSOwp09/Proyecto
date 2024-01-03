@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useRef } from "react";
 
 //import { ImageLayout } from "../../components/shared/imagelayout";
 const ImageLayout = lazy(() => import("../../components/shared/imagelayout"));
@@ -9,54 +9,39 @@ const UserLayout = lazy(() => import("../../components/index/userLayout"));
 import { ImageContext } from "../../context/imageSelected/imageSelectedContext";
 import { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useSelector } from "react-redux";
-import { LayoutLoader } from "../../components/loaders/layoutLoader";
+import { useLocation } from "react-router-dom";
 
 export const Home = () => {
+	const location = useLocation();
+	const words = new URLSearchParams(location.search).get("q");
+
 	const { image } = useContext(ImageContext);
 
-	const words = useSelector((state) => state.search).words.toLowerCase();
+	//const words = useSelector((state) => state.search).words.toLowerCase();
 	const [searchFor, setSearchFor] = useState("Explore");
 
-	const loader = () => {
-		return (
-			<>
-				<div className={"absolute w-full bg-primary-light top-0 left-0 z-50"}>
-					<LayoutLoader />
-				</div>
-			</>
-		);
+	const divScrollRef = useRef(null);
+	const scrollUp = () => {
+		divScrollRef.current.scroll({
+			top: 0,
+		});
 	};
 
-	const [layoutLoaderHtml, setLayoutLoaderHtml] = useState(loader());
-	const [loaded, setLoaded] = useState(false);
-
 	useEffect(() => {
-		if (!loaded) {
-			setTimeout(() => {
-				setLoaded(true);
-			}, 1600);
-			setTimeout(() => {
-				//setLoaded(true);
-			}, 2600);
-		}
-	}, [, words]);
-
-	useEffect(() => {
-		words == "" ? setSearchFor("Explore") : "";
-	}, [, words]);
+		scrollUp()
+	}, [words])
 
 	return (
 		<>
 			<div
 				className="
-				w-screen
+				w-screen h-[calc(100vh-48px)]
 				flex flex-col place-items-center
-				overflow-y-auto overflow-x-hidden relative"
+				overflow-auto overflow-x-hidden relative"
 			>
 				<div
 					className={`
-						${words == "" ? "hidden" : "block"}
+						${words ? "block" : "hidden"}
 						bg-secondary-light
 						w-fit h-auto rounded-full
 						py-2 px-7
@@ -98,22 +83,16 @@ export const Home = () => {
 				</div>
 
 				<div
+					ref={divScrollRef}
 					id="images-and-imageSelected"
 					className={`relative
 					h-full overflow-auto overflow-x-hidden
-					${searchFor == "Explore" ? "block" : "hidden"}
+					${words ? (searchFor == "Explore" ? "block" : "hidden") : "block"}
 					w-screen flex gap-2 h-fit `}
 				>
 					<div id="imageLayout-container" className={`grow h-full pt-2`}>
-						{/* <div
-							className={`transition-all   ${
-								loaded ? "opacity-0" : "opacity-100"
-							}`}
-						>
-							{layoutLoaderHtml}
-						</div> */}
 						<div className={`absolute w-full flex`}>
-							<ImageLayout words={words} />
+							<ImageLayout words={words ? words : ""} />
 
 							<div
 								className={`
@@ -135,15 +114,17 @@ export const Home = () => {
 					</div>
 				</div>
 
-				<div
-					className={`
+				{words && (
+					<div
+						className={`
 				${searchFor == "Profiles" ? "block" : "hidden"}
 				w-screen h-fit flex place-content-center`}
-				>
-					<Suspense>
-						<UserLayout />
-					</Suspense>
-				</div>
+					>
+						<Suspense>
+							<UserLayout />
+						</Suspense>
+					</div>
+				)}
 			</div>
 		</>
 	);

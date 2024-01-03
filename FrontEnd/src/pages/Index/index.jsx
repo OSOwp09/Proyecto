@@ -3,6 +3,11 @@ import { lazy, Suspense } from "react";
 import { Navbar } from "../../components/shared/navbar";
 import { Home } from "../home/home";
 
+import { MobileShareButton } from "../../components/shared/publicationOptions";
+import { MobileThreeDots } from "../../components/shared/publicationOptions";
+import { MobileCommentList } from "../../components/shared/publicationOptions";
+import { OptionsCard } from "../../components/shared/options";
+
 //import  OpenPublication  from "../../components/index/openPublication";
 const OpenPublication = lazy(() =>
 	import("../../components/index/openPublication")
@@ -61,7 +66,6 @@ export default function Index() {
 
 	const [loadIndex, setLoadIndex] = useState(true);
 	const authinfo = useSelector((state) => state.auth);
-	const ChatsSlice = useSelector((state) => state.ChatsSlice);
 
 	const handdleContinue = () => {
 		dispatch(loadUser(authinfo.email));
@@ -91,12 +95,19 @@ export default function Index() {
 		loadPage();
 	}, [authinfo]);
 
+	//Mobile
+	const navbarOptions = useSelector((state) => state.navbarOptions);
+	const shareOptions = useSelector((state) => state.shareOptions);
+	const publicationsOptions = useSelector((state) => state.publicationsOptions);
+	const commentsList = useSelector((state) => state.commentsList);
+	const ChatsSlice = useSelector((state) => state.ChatsSlice);
+
 	return (
 		<>
 			{loadIndex ? (
 				<>
 					<div
-						ref={divRef}
+						//ref={divRef}
 						id="page-container"
 						className="relative overflow-hidden w-screen h-screen"
 					>
@@ -195,7 +206,7 @@ export default function Index() {
 
 						<div
 							id="Navbar-container"
-							className="sm:hidden absolute bottom-0 z-0"
+							className="sm:hidden absolute bottom-0 z-0 sm:z-50"
 						>
 							<Navbar />
 						</div>
@@ -206,6 +217,36 @@ export default function Index() {
 							} hidden absolute top-[54px] right-[360px]`}
 						>
 							<ChatPage />
+						</div>
+
+						<div
+							className={`absolute bottom-0 z-50 ${
+								navbarOptions.code != "" ? "block" : "hidden"
+							}`}
+						>
+							<OptionsCard />
+						</div>
+						<div
+							className={`absolute bottom-0 z-50 ${
+								shareOptions.code != "" ? "block" : "hidden"
+							}`}
+						>
+							<MobileShareButton />
+						</div>
+						<div
+							className={`absolute bottom-0 z-50 ${
+								publicationsOptions.code != "" ? "block" : "hidden"
+							}`}
+						>
+							<MobileThreeDots />
+						</div>
+
+						<div
+							className={`absolute bottom-0 z-50 ${
+								commentsList.code != "" ? "block" : "hidden"
+							}`}
+						>
+							<MobileCommentList />
 						</div>
 					</div>
 				</>

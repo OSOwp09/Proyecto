@@ -15,8 +15,7 @@ import {
 } from "../../api/Api";
 import { LayoutLoader } from "../../components/loaders/layoutLoader";
 
-
-export default function  ImageLayout ({ words = "", uid = "", pid = "-" }) {
+export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 	const [loaded, setLoaded] = useState(false);
 
 	const wordsValidator = useSelector(
@@ -330,7 +329,7 @@ export default function  ImageLayout ({ words = "", uid = "", pid = "-" }) {
 	const loader = () => {
 		return (
 			<>
-				<div className="absolute top-[-4px] bg-primary-light left-0 z-50 overflow-hidden">
+				<div className="absolute top-[-4px] h-screen /bg-primary-light left-0 z-50 overflow-hidden">
 					<LayoutLoader />
 				</div>
 			</>
@@ -340,20 +339,28 @@ export default function  ImageLayout ({ words = "", uid = "", pid = "-" }) {
 
 	const [loaderGone, setLoaderGone] = useState(false);
 	const hideLoader = async () => {
-		const time = 1400
+		const time = 1400;
 		setTimeout(() => {
 			setLoaderGone(true);
 		}, time);
 		setTimeout(() => {
 			setLayoutLoaderHtml(<></>);
-		}, time+200);
+		}, time + 200);
 	};
 
 	useEffect(() => {
 		if (loaded) {
 			hideLoader();
 		}
-	}, [loaded]);
+	}, [, loaded]);
+
+	const urlParams = new URLSearchParams(location.search).get("q");
+
+	useEffect(() => {
+		setLoaderGone(false);
+		setLayoutLoaderHtml(loader());
+		hideLoader();
+	}, [urlParams]);
 
 	return (
 		<>
@@ -363,20 +370,21 @@ export default function  ImageLayout ({ words = "", uid = "", pid = "-" }) {
 				className="relative w-full overflow-x-hidden overflow-hidden"
 			>
 				<div
-					className={`transition-all duration-700  ${
-						loaderGone ? "opacity-0" : "opacity-100"
+					className={`transition-all duration-700 z-50  ${
+						loaderGone ? "opacity-0 " : "opacity-100 h-screen "
 					}`}
 				>
 					{layoutLoaderHtml}
 				</div>
 				<div
 					className={`
-						flex place-content-center 
-						opacity-100 `}
+					transition-all 
+					${loaderGone ? "opacity-100 delay-150" : "opacity-0"}
+						flex place-content-center `}
 				>
 					{html}
 				</div>
 			</div>
 		</>
 	);
-};
+}

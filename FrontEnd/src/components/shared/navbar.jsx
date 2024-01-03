@@ -1,13 +1,10 @@
 import styles from "../shared/styles.module.css";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { auth } from "../../firebase/config";
 import { searchPublications } from "../../store/slices/filterSearch/FilterThunks";
 import { openOptions } from "../../store/slices/navbarOptions/navbarOptionsThunks";
 import { OpenChat, CloseChat } from "../../store/slices/chats/chatsThunk";
-import { MobileShareButton } from "../shared/publicationOptions";
-import { MobileThreeDots } from "../shared/publicationOptions";
-import { MobileCommentList } from "../shared/publicationOptions";
 
 import logo from "../../assets/Logo.svg";
 import search from "../../assets/search.svg";
@@ -18,7 +15,7 @@ import closeIcon from "../../assets/x-circle.svg";
 import homeIcon from "../../assets/homelogo.svg";
 import threeDotsIcon from "../../assets/three-dots.svg";
 
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { OptionsCard } from "./options";
 import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,9 +25,11 @@ export const Navbar = () => {
 	const [login, setLogin] = useState("hidden");
 
 	const navigate = useNavigate();
+	const [searchParams, setSearchParams] = useSearchParams();
+
 	const ChatsSlice = useSelector((state) => state.ChatsSlice);
 	const handdleOpenCloseChat = () => {
-		ChatsSlice.isChatOpen ? dispatch(CloseChat()):dispatch(OpenChat())
+		ChatsSlice.isChatOpen ? dispatch(CloseChat()) : dispatch(OpenChat());
 	};
 
 	const [options, setOptions] = useState(false); // logout menu visibility controller
@@ -53,12 +52,17 @@ export const Navbar = () => {
 	const dispatch = useDispatch();
 
 	const handdleSearchInput = (words) => {
-		navigate("/home");
+		var searchWords = words;
 		if (words.split(" ").slice(-1)[0] == "") {
-			dispatch(searchPublications(words.replace(/.$/, "")));
-			return;
+			searchWords = words.replace(/.$/, "");
 		}
-		dispatch(searchPublications(words));
+		setSearchParams({ q: searchWords });
+		// navigate("/home");
+		// if (words.split(" ").slice(-1)[0] == "") {
+		// 	dispatch(searchPublications(words.replace(/.$/, "")));
+		// 	return;
+		// }
+		// dispatch(searchPublications(words));
 	};
 
 	//Desktop
@@ -68,18 +72,18 @@ export const Navbar = () => {
 				<div
 					id="navbar-container"
 					className={`
-				${navbar}
-                h-[48px] w-auto 
-                flex place-items-center 
-				max-sm:gap-1 max-sm:px-2
-				sm:gap-2 sm:px-4
-				md:gap-4 md:px-6
-				lg:gap-6 lg:px-8
+					${navbar}
+					h-[48px] w-auto 
+					flex place-items-center 
+					max-sm:gap-1 max-sm:px-2
+					sm:gap-2 sm:px-4
+					md:gap-4 md:px-6
+					lg:gap-6 lg:px-8
 
-                bg-secondary-light
-                font-inter select-none
-				
-                drop-shadow-md`}
+					bg-secondary-light
+					font-inter select-none
+					
+					drop-shadow-md`}
 				>
 					<img
 						id="logo"
@@ -88,7 +92,7 @@ export const Navbar = () => {
 					h-[24px]
 					mx-3"
 						onClick={() => {
-							navigate("/home"), dispatch(searchPublications(""));
+							navigate("/home"), setWordsInput("");
 						}}
 					/>
 
@@ -104,12 +108,12 @@ export const Navbar = () => {
 							src={search}
 							alt=""
 							className="h-[14px] ml-4"
-							onClick={() => handdleSearchInput(wordsInput)}
+							onClick={() => handdleSearchInput(e.target.value)}
 						/>
 						<input
 							onChange={(e) => setWordsInput(e.target.value)}
 							onKeyDown={(e) =>
-								e.key == "Enter" ? handdleSearchInput(wordsInput) : ""
+								e.key == "Enter" ? handdleSearchInput(e.target.value) : ""
 							}
 							value={wordsInput}
 							type="text"
@@ -166,7 +170,7 @@ export const Navbar = () => {
 							>
 								<div id="chat-image" className="flex-none">
 									<img
-										src={ChatsSlice.isChatOpen!= "" ? closeIcon : chatIcon}
+										src={ChatsSlice.isChatOpen != "" ? closeIcon : chatIcon}
 										alt=""
 										className="h-[20px]"
 									/>
@@ -254,12 +258,6 @@ export const Navbar = () => {
 		);
 	};
 
-	//Mobile
-	const optionsOpenedOrCLosed = useSelector((state) => state.navbarOptions);
-	const shareOptions = useSelector((state) => state.shareOptions);
-	const publicationsOptions = useSelector((state) => state.publicationsOptions);
-	const commentsList = useSelector((state) => state.commentsList);
-
 	const mobileNavbar = () => {
 		return (
 			<>
@@ -271,7 +269,7 @@ export const Navbar = () => {
 						alt=""
 						className={`${login ? "block" : "hidden"}`}
 					/>
-					<img onClick={()=> navigate("search")} src={search} alt="" />
+					<img onClick={() => navigate("search")} src={search} alt="" />
 					<img
 						onClick={() => navigate("user")}
 						src={usericon}
@@ -283,36 +281,6 @@ export const Navbar = () => {
 						src={threeDotsIcon}
 						alt=""
 					/>
-				</div>
-				
-				<div
-					className={`absolute bottom-0 z-50 ${
-						optionsOpenedOrCLosed.code != "" ? "block" : "hidden"
-					}`}
-				>
-					<OptionsCard />
-				</div>
-				<div
-					className={`absolute bottom-0 z-50 ${
-						shareOptions.code != "" ? "block" : "hidden"
-					}`}
-				>
-					<MobileShareButton />
-				</div>
-				<div
-					className={`absolute bottom-0 z-50 ${
-						publicationsOptions.code != "" ? "block" : "hidden"
-					}`}
-				>
-					<MobileThreeDots />
-				</div>
-
-				<div
-					className={`absolute bottom-0 z-50 ${
-						commentsList.code != "" ? "block" : "hidden"
-					}`}
-				>
-					<MobileCommentList />
 				</div>
 			</>
 		);

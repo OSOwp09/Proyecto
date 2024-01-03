@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
+import warning from "../../assets/exclamation-triangle.svg";
 import { useDispatch } from "react-redux";
 import {
 	loginAuth,
@@ -22,14 +23,45 @@ export const LoginCard = () => {
 	const errors = {
 		id: "",
 		type: "",
+		description: "",
 	};
 
+	const [fields, setFields] = useState({
+		email: "",
+		password: "",
+	});
+
 	const [inputErrors, setInputErrors] = useState(errors);
+
 	const dispatch = useDispatch();
 
+	useEffect(() => {
+		if (
+			email != "" &&
+			inputErrors.id == "email" &&
+			inputErrors.type == "errorEmpty"
+		) {
+			errors.type = "";
+			setInputErrors(errors);
+		}
+
+		if (
+			password != "" &&
+			inputErrors.id == "password" &&
+			inputErrors.type == "errorEmpty"
+		) {
+			errors.type = "";
+			setInputErrors(errors);
+		}
+	}, [email, password]);
+
 	const validateLogin = () => {
+		if (fields.email == "" && password == "") {
+			return;
+		}
+
 		errors.id = "email";
-		if (email == "") {
+		if (fields.email == "") {
 			errors.type = "errorEmpty";
 			setInputErrors(errors);
 			return;
@@ -126,6 +158,45 @@ export const LoginCard = () => {
 		});
 	};
 
+	const labelAndError = ({ fieldLabel, fieldInput, fieldType }) => (
+		<div
+			id="labelAndError"
+			className="
+			mt-1
+			h-fit w-full sm:w-[400px] px-4 sm:px-1
+			flex place-items-center
+			place-content-between
+			text-[2vw] sm:text-[12px]"
+		>
+			<label
+				htmlFor=""
+				className={`${fieldInput == "" ? "invisible" : "visible"}`}
+			>
+				{fieldLabel}
+			</label>
+			<p
+				className={`
+					${
+						inputErrors.id == fieldType.toLowerCase() &&
+						inputErrors.type.startsWith("error")
+							? "visible"
+							: "invisible"
+					}
+				bg-secondary-red h-full rounded-t-md
+				flex gap-1
+				place-items-center
+				px-2`}
+			>
+				<img src={warning} alt="" className="h-[2vw] sm:h-[12px]" />
+				Sorry,
+				{inputErrors.type == "errorEmpty" ? " empty field" : ""}
+				{inputErrors.type == "errorUserNotFound" ? " user not found" : ""}
+				{inputErrors.type == "errorEmailNotFound" ? " email not found" : ""}
+				{inputErrors.type == "errorInvalid" ? " wrong password" : ""}
+			</p>
+		</div>
+	);
+
 	//Desktop
 	const desktopLogin = () => {
 		return (
@@ -158,51 +229,19 @@ export const LoginCard = () => {
 					>
 						Vintarest
 					</h1>
-					<div
-						id="email-labelAndError"
-						className="
-					self-start ml-[80px]
-					h-5 w-[400px]
-					flex place-items-center
-					place-content-between
-					text-xs"
-					>
-						<label
-							htmlFor=""
-							className={`${email == "" ? "invisible" : "visible"}`}
-						>
-							Email / User
-						</label>
-						<p
-							className={`
-						${
-							inputErrors.id == "email" && inputErrors.type.startsWith("error")
-								? "visible"
-								: "invisible"
-						}
-					bg-secondary-red h-full rounded-t-md
-					flex gap-1 
-					place-items-center
-					px-2`}
-						>
-							<img
-								src="src/assets/exclamation-triangle.svg"
-								alt=""
-								className="h-3"
-							/>
-							Sorry,
-							{inputErrors.type == "errorEmpty" ? " empty field" : ""}
-							{inputErrors.type == "errorUserNotFound" ? " user not found" : ""}
-							{inputErrors.type == "errorEmailNotFound"
-								? " email not found"
-								: ""}
-						</p>
-					</div>
+					{labelAndError({
+						fieldLabel: "Email / User",
+						fieldInput: fields.email,
+						fieldType: "email",
+					})}
 					<input
 						id="desktop-email"
 						type="text"
 						placeholder="Email / User"
-						onChange={(e) => setEmail(e.target.value)}
+						onChange={(e) => {
+							setEmail(e.target.value);
+							setFields({ ...fields, email: e.target.value });
+						}}
 						className={`
                         px-[16px]
                         bg-secondary-light
@@ -218,7 +257,7 @@ export const LoginCard = () => {
                         placeholder:text-secondary-dark
                         mb-2`}
 					/>
-					<div
+					{/* <div
 						id="password-labelAndError"
 						className="
 					self-start ml-[80px]
@@ -255,11 +294,16 @@ export const LoginCard = () => {
 							{inputErrors.type == "errorEmpty" ? " empty field" : ""}
 							{inputErrors.type == "errorInvalid" ? " wrong password" : ""}
 						</p>
-					</div>
-
+					</div> */}
+					{labelAndError({
+						fieldLabel: "Password",
+						fieldInput: fields.password,
+						fieldType: "Password",
+					})}
 					<input
 						id="desktop-password-input"
-						onChange={(e) => setPassword(e.target.value)}
+						onChange={(e) => {setPassword(e.target.value)
+							setFields({ ...fields, password: e.target.value })}}
 						type="password"
 						placeholder="Password"
 						className={`
@@ -448,7 +492,8 @@ export const LoginCard = () => {
 							bg-secondary-light
 							border rounded-2xl
 							${
-								inputErrors.id == "email" && inputErrors.type.startsWith("error")
+								inputErrors.id == "email" &&
+								inputErrors.type.startsWith("error")
 									? "border-secondary-red"
 									: "border-primary-dark"
 							}

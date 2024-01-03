@@ -30,6 +30,13 @@ export const RegisterCard = () => {
 		description: "",
 	};
 
+	useEffect(() => {
+		if (fields[inputErrors.id] != "" && inputErrors.type == "errorEmpty") {
+			errors.type = "";
+			setInputErrors(errors);
+		}
+	}, [fields]);
+
 	const handleInput = () => {
 		//----- Name ----------
 		errors.id = "name";
@@ -170,11 +177,11 @@ export const RegisterCard = () => {
 		<div
 			id="labelAndError"
 			className="
-			self-start mt-1
-			h-fit w-full pr-4
+			mt-1
+			h-fit w-full sm:w-[400px] px-4 sm:px-1
 			flex place-items-center
 			place-content-between
-			text-[2vw]"
+			text-[2vw] sm:text-[12px]"
 		>
 			<label
 				htmlFor=""
@@ -195,7 +202,7 @@ export const RegisterCard = () => {
 				place-items-center
 				px-2`}
 			>
-				<img src={warning} alt="" className="h-[2vw]" />
+				<img src={warning} alt="" className="h-[2vw] sm:h-[12px]" />
 				Sorry,
 				{inputErrors.type == "errorEmpty" ? " empty field" : ""}
 				{inputErrors.type == "errorInvalid" ? inputErrors.description : ""}
