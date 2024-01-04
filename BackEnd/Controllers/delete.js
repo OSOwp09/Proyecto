@@ -7,8 +7,6 @@ const ChatSchema = require("../models/chatSchema")
 const deleteUser = async (req, res = express.request) => {
 	const { id } = req.body;
 	try {
-		
-
 		await CommentariesSchema.deleteMany({ userId: id });
 		await PublicationScheme.deleteMany({ userId: id });
 		await Usuario.deleteMany({ _id: id });

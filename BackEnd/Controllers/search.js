@@ -296,6 +296,54 @@ const listPublicationsByHashtags = async (req, res = express.request) => {
 	}
 };
 
+const listSearchCards = async (req, res = express.request) => {
+	const { hashtagsCant } = req.query;
+	try {
+		const pipeline = [
+			{
+				$project: {
+					hashtags: { $split: ["$hashtags", " "] },
+					photoURL: 1,
+				},
+			},
+			{
+				$unwind: "$hashtags",
+			},
+			{
+				$match: {
+					hashtags: { $ne: "" },
+				},
+			},
+			{
+				$group: {
+					_id: "$hashtags",
+					photoURL: { $first: "$photoURL" },
+					count: { $sum: 1 },
+				},
+			},
+			{
+				$sort: { count: -1 },
+			},
+		];
+
+		if (hashtagsCant > 0) {
+			pipeline.push({ $limit: parseInt(hashtagsCant) });
+		}
+
+		const hashtagFrequency = await PublicationScheme.aggregate(pipeline);
+
+		return res.status(200).json({
+			ok: true,
+			hashtagsFound: hashtagFrequency,
+		});
+	} catch (error) {
+		return res.status(500).json({
+			ok: false,
+			msg: error,
+		});
+	}
+};
+
 // ------- commentaries ------------>
 
 const findCommentaries = async (req, res = express.request) => {
@@ -344,10 +392,13 @@ const listChats = async (req, res = express.request) => {
 
 const listUsersToChat = async (req, res = express.request) => {
 	const { currentUser, searchUser, currentUsers } = req.query;
-	
+
 	try {
 		const users = (await Usuario.find().select("user photoURL")).filter(
-			(p) => p.user.toLowerCase().includes(searchUser.toLowerCase()) && !currentUsers.includes(p.user) && !p.user.includes(currentUser)
+			(p) =>
+				p.user.toLowerCase().includes(searchUser.toLowerCase()) &&
+				!currentUsers.includes(p.user) &&
+				!p.user.includes(currentUser)
 		);
 
 		return res.status(200).json({
@@ -373,6 +424,7 @@ module.exports = {
 	findPublication,
 	listPublications,
 	listPublicationsByHashtags,
+	listSearchCards,
 	findCommentaries,
 	listChats,
 	listUsersToChat,

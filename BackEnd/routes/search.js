@@ -8,6 +8,7 @@ const {
 	findPublication,
     listPublications,
 	listPublicationsByHashtags,
+	listSearchCards,
 	listChats,
 	listUsersToChat
 } = require("../Controllers/search");
@@ -23,6 +24,8 @@ router.get("/findUserByUser", findUserByUser)
 router.get("/listPublications", listPublications)
 
 router.get("/listPublicationsByHashtags", listPublicationsByHashtags)
+
+router.get("/listSearchCards", listSearchCards)
 
 router.get("/findPublication", findPublication)
 
