@@ -52,6 +52,10 @@ export const ListUsersByHashtag = axios.create({
 	baseURL: `${pathName}/api/search/listUsersByHashtag`,
 });
 
+export const ListSearchCards = axios.create({
+	baseURL: `${pathName}/api/search/listSearchCards`,
+});
+
 export const FindUserByEmail = axios.create({
 	baseURL: `${pathName}/api/search/findUserByEmail`,
 });

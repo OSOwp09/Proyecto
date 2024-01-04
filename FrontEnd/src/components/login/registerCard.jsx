@@ -231,12 +231,13 @@ export const RegisterCard = () => {
                         font-inter
                         text-primary-dark"
 				>
-					<img
-						src={logo}
-						className="
-					w-[56px] h-[56px]
-					mt-6"
-					/>
+					<div
+						onClick={() => navigate("/home")}
+						className="h-fit w-fit p-4 rounded-full mt-2
+						shadow-md hover:shadow-lg hover:translate-y-[-2px]"
+					>
+						<img src={logo} className="w-[34px] sm:w-[56px] " />
+					</div>
 					<h1
 						id="logo-name"
 						className="
@@ -433,11 +434,13 @@ export const RegisterCard = () => {
 						font-inter
 						text-primary-dark"
 					>
-						<img
-							src={logo}
-							className="
-							w-[34px]"
-						/>
+						<div
+							onClick={() => navigate("/home")}
+							className="h-fit w-fit p-4 rounded-full
+							shadow-md hover:shadow-lg hover:translate-y-[-2px]"
+						>
+							<img src={logo} className="w-[34px] sm:w-[56px] " />
+						</div>
 						<h1
 							id="logo-name"
 							className="

@@ -31,7 +31,6 @@ export default function UserLayout  () {
 			}
 		})
 		const users = resp.data.usuarios
-		console.log(users);
 		setsearchFilter(users)
 	}
 

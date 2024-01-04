@@ -1,9 +1,17 @@
-export const SearchCards = ({image, text}) => {
+import { useParams, useSearchParams } from "react-router-dom";
+
+export const SearchCards = ({ image, text }) => {
+	const [searchParams, setSearchParams] = useSearchParams();
+
 	return (
 		<>
 			<div
+				onClick={() => {
+					setSearchParams({ q: text });
+					console.log(searchParams);
+				}}
 				className="w-[48vw] h-[20vw] bg-secondary-dark rounded-2xl relative 
-			flex place-items-center place-content-center overflow-hidden drop-shadow-md"
+				flex place-items-center place-content-center overflow-hidden drop-shadow-md"
 			>
 				<img
 					src={image}

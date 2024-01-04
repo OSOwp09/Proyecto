@@ -28,8 +28,8 @@ export const Home = () => {
 	};
 
 	useEffect(() => {
-		scrollUp()
-	}, [words])
+		scrollUp();
+	}, [words]);
 
 	return (
 		<>
@@ -39,56 +39,62 @@ export const Home = () => {
 				flex flex-col place-items-center
 				overflow-auto overflow-x-hidden relative"
 			>
-				<div
-					className={`
-						${words ? "block" : "hidden"}
+				{words && (<div className="w-screen flex place-content-center z-50">
+					<div
+						className="h-[9%] w-screen absolute 
+						top-0 left-0 
+						backdrop-blur-sm /bg-black"
+					/>
+					<div
+						className={`
 						bg-secondary-light
 						w-fit h-auto rounded-full
 						py-2 px-7
 						shadow-md
-						sticky top-5 mb-7 z-50 select-none`}
-				>
-					<div id="explore-profiles" className="flex gap-7">
-						<h1
-							onClick={() => setSearchFor("Explore")}
-							className={`${
-								searchFor == "Explore"
-									? "text-primary-dark"
-									: "text-secondary-dark"
-							}`}
-						>
-							Explore
-						</h1>
-						<h1
-							onClick={() => setSearchFor("Profiles")}
-							className={`${
-								searchFor == "Profiles"
-									? "text-primary-dark"
-									: "text-secondary-dark"
-							}`}
-						>
-							Profiles
-						</h1>
-					</div>
-					<motion.div
-						id="line"
-						className="h-[4px] w-20 bg-primary-dark
+						absolute top-5 mb-7 z-50 select-none`}
+					>
+						<div id="explore-profiles" className="flex gap-7 z-50">
+							<h1
+								onClick={() => setSearchFor("Explore")}
+								className={`${
+									searchFor == "Explore"
+										? "text-primary-dark"
+										: "text-secondary-dark"
+								}`}
+							>
+								Explore
+							</h1>
+							<h1
+								onClick={() => setSearchFor("Profiles")}
+								className={`${
+									searchFor == "Profiles"
+										? "text-primary-dark"
+										: "text-secondary-dark"
+								}`}
+							>
+								Profiles
+							</h1>
+						</div>
+						<motion.div
+							id="line"
+							className="h-[4px] w-20 bg-primary-dark
 							rounded-full"
-						animate={
-							searchFor == "Explore"
-								? { transform: "translateX(-11px)" }
-								: { transform: "translateX(75px)" }
-						}
-					/>
-				</div>
+							animate={
+								searchFor == "Explore"
+									? { transform: "translateX(-11px)" }
+									: { transform: "translateX(75px)" }
+							}
+						/>
+					</div>
+				</div>)}
 
 				<div
 					ref={divScrollRef}
 					id="images-and-imageSelected"
-					className={`relative
-					h-full overflow-auto overflow-x-hidden
-					${words ? (searchFor == "Explore" ? "block" : "hidden") : "block"}
-					w-screen flex gap-2 h-fit `}
+					className={`
+					${words ? (searchFor == "Explore" ? "block pt-[68px]" : "hidden") : "block"}
+					w-screen flex gap-2 relative
+					h-full overflow-auto overflow-x-hidden `}
 				>
 					<div id="imageLayout-container" className={`grow h-full pt-2`}>
 						<div className={`absolute w-full flex`}>
@@ -108,7 +114,7 @@ export const Home = () => {
 						className="h-[calc(100vh-90px)] w-fit mr-2
 								rounded-2xl
 								hidden md:block
-								sticky top-0 z-50"
+								sticky right-0 top-0 z-50"
 					>
 						{image.code}
 					</div>
@@ -118,7 +124,7 @@ export const Home = () => {
 					<div
 						className={`
 				${searchFor == "Profiles" ? "block" : "hidden"}
-				w-screen h-fit flex place-content-center`}
+				w-screen h-full pt-[78px] flex place-content-center overflow-auto`}
 					>
 						<Suspense>
 							<UserLayout />

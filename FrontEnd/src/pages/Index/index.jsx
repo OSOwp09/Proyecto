@@ -144,53 +144,16 @@ export default function Index() {
 										}
 									/>
 
-									{authinfo.email ? (
+									{window.innerWidth < 640 && (
 										<Route
-											path="/user"
+											path="/search"
 											element={
 												<Suspense>
-													<User />
+													<SearchPage />
 												</Suspense>
 											}
 										/>
-									) : (
-										""
 									)}
-
-									{authinfo.email ? (
-										<Route
-											path="/upload"
-											element={
-												<Suspense>
-													<UploadPhoto />
-												</Suspense>
-											}
-										/>
-									) : (
-										""
-									)}
-
-									{authinfo.email ? (
-										<Route
-											path="/chat"
-											element={
-												<Suspense>
-													<ChatPage />
-												</Suspense>
-											}
-										/>
-									) : (
-										""
-									)}
-
-									<Route
-										path="/search"
-										element={
-											<Suspense>
-												<SearchPage />
-											</Suspense>
-										}
-									/>
 
 									<Route
 										path="*"
@@ -200,6 +163,39 @@ export default function Index() {
 											</Suspense>
 										}
 									/>
+
+									{authinfo.email && (
+										<>
+											<Route
+												path="/user"
+												element={
+													<Suspense>
+														<User />
+													</Suspense>
+												}
+											/>
+
+											<Route
+												path="/upload"
+												element={
+													<Suspense>
+														<UploadPhoto />
+													</Suspense>
+												}
+											/>
+
+											{window.innerWidth < 640 && (
+												<Route
+													path="/chat"
+													element={
+														<Suspense>
+															<ChatPage />
+														</Suspense>
+													}
+												/>
+											)}
+										</>
+									)}
 								</Routes>
 							</ImageProvider>
 						</div>
