@@ -137,6 +137,7 @@ export const RegisterCard = () => {
 
 	const onSubmit = async (email, password, name, user) => {
 		try {
+			const date =  String(new Date().toJSON());
 			const resp = await CreateUserApi.post("", {
 				name: name,
 				user: user,
@@ -144,9 +145,10 @@ export const RegisterCard = () => {
 				password: password,
 				photoURL: "",
 				hashtags: "",
+				date: date
 			});
-
-			const promise = dispatch(registerAuth(email, password, name, user));
+		
+			const promise = dispatch(registerAuth(email, password, name, user, date));
 
 			promise.then((result) => {
 				navigate("/");

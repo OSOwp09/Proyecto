@@ -1,10 +1,9 @@
-
 import { Commentary } from "../shared/comentary";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef, lazy } from "react";
 //import { ImageLayout } from "../shared/imagelayout";
-const ImageLayout = lazy(()=> import("../shared/imagelayout"))
+const ImageLayout = lazy(() => import("../shared/imagelayout"));
 
 import { ShareButton, ThreeDots } from "../shared/publicationOptions";
 
@@ -259,15 +258,13 @@ export default function OpenPublication() {
 
 					const newComment = () => {
 						return (
-							<>
-								<div className="my-2" key={comments.length + 1}>
-									<Commentary
-										user={currentUserInfo.user}
-										coment={comment}
-										date={currentDate}
-									/>
-								</div>
-							</>
+							<div className="my-2" key={comments.length + 1}>
+								<Commentary
+									user={currentUserInfo.user}
+									coment={comment}
+									date={currentDate}
+								/>
+							</div>
 						);
 					};
 
@@ -646,7 +643,12 @@ export default function OpenPublication() {
 								flex gap-2 place-items-center
 								text-md "
 							>
-								<img onClick={()=> handdleUserClick()} src={usericon} alt="" className="w-8 select-none" />
+								<img
+									onClick={() => handdleUserClick()}
+									src={usericon}
+									alt=""
+									className="w-8 select-none"
+								/>
 								<h1>{userName}</h1>
 							</div>
 							<h1 className="font-semibold text-lg"> {title} </h1>

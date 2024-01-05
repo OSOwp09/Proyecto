@@ -44,7 +44,7 @@ export const UserCard = () => {
 			<div
 				className="
             bg-secondary-light
-            h-auto w-[260px] rounded-2xl
+            h-auto w-auto min-w-[260px] rounded-2xl
             font-inter text-primary-dark
             p-3 flex flex-col place-items-center"
 			>

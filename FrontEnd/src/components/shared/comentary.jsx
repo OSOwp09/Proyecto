@@ -23,8 +23,7 @@ export const Commentary = ({ user, coment, date }) => {
 
 	const timeDifference = () => {
 		if (monthsDifference == 0 && yearsDifference == 0) {
-			/*
-				---------------------------------------------
+			/*---------------------------------------------
 			Set text to 1 second for commentes inmediatly submited
 			*/
 			if (
@@ -36,7 +35,7 @@ export const Commentary = ({ user, coment, date }) => {
 			) {
 				return "1s";
 			}
-			//		-----------------------
+			//-----------------------
 
 			for (let i = 0; i < shortDateTexts.length; i++) {
 				if (differenceArray[i] != 0) {

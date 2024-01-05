@@ -89,3 +89,12 @@ export const NewMessage = axios.create({
 });
 
 //<----------------------
+
+//------ updateDB ------------------>
+
+export const UpdateDataBase = axios.create({
+	baseURL: `${pathName}/api/updateDB/`,
+});
+
+//<----------------------
+

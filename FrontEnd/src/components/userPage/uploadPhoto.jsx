@@ -338,18 +338,19 @@ export default function UploadPhoto() {
 								src={backArrow}
 								alt=""
 							/>
+							<div/>
 							<button
 								id="save-button"
-								className={`
-							${showButton ? "block" : "hidden"}
-                            px-2
-                            text-2xl text-primary-highlight
-                            border-2 border-primary-highlight
-                            hover:bg-primary-highlight
-                            hover:text-secondary-light
-                            rounded-2xl
-                            /absolute bottom-0 right-0
-                            flex gap-2`}
+									className={`
+								${showButton ? "block" : "hidden"}
+								px-2
+								text-2xl text-primary-highlight
+								border-2 border-primary-highlight
+								hover:bg-primary-highlight
+								hover:text-secondary-light
+								rounded-2xl
+								/absolute bottom-0 right-0
+								flex gap-2`}
 								onClick={() => handdleSave(imgFile)}
 							>
 								Save

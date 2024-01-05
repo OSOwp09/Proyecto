@@ -96,6 +96,7 @@ export default function FinishCreationOfUser  ({ handdleContinue, email }) {
 
 		// --------- submit info -------------
 		try {
+			const date =  String(new Date().toJSON());
 			await CreateUserApi.post("", {
 				name: name,
 				user: user,
@@ -103,6 +104,7 @@ export default function FinishCreationOfUser  ({ handdleContinue, email }) {
 				password: v4(),
 				photoURL: "",
 				hashtags: "",
+				date: date
 			});
 
             errors.id = ""

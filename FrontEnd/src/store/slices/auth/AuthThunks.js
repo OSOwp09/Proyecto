@@ -13,6 +13,7 @@ import {
 	FindUserByEmail,
 	FindUserByUser,
 } from "../../../api/Api";
+import { current } from "@reduxjs/toolkit";
 
 export const loadUser = (email) => {
 	return async (dispatch) => {
@@ -54,13 +55,14 @@ export const loadUser = (email) => {
 	};
 };
 
-export const registerAuth = (email, password, name, user) => {
+export const registerAuth = (email, password, name, user, date) => {
 	return async (dispatch) => {
 		try {
 			const response = await createUserWithEmailAndPassword(
 				auth,
 				email,
-				password
+				password,
+				date
 			);
 			if (response) {
 				await updateProfile(auth.currentUser, {
@@ -118,6 +120,7 @@ export const loginAuth = (email, password) => {
 			const response = await signInWithEmailAndPassword(auth, getEmail, password);
 
 			// Update the auth state with user information
+		
 			if (response.user) {
 				dispatch(
 					authSlice.actions.login({
@@ -129,6 +132,7 @@ export const loginAuth = (email, password) => {
 						photoUrl: photoURL,
 						token: token,
 						photoUrl: photoURL,
+						
 					})
 				);
 			}
