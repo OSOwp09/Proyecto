@@ -26,7 +26,7 @@ class Server {
 			publication: "/api/publication",
 			search: "/api/search",
 			commentary: "/api/commentary",
-			delete: "/api/delete",
+			delete: "/api/updateDB",
 			chat: "/api/chat"
 		};
 

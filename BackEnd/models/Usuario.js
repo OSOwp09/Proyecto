@@ -28,6 +28,10 @@ const UsuarioSchema = Schema(
 			type: String,
 			hashtags: true,
 		},
+		date: {
+			type: String,
+			required: true,
+		},
 	},
 	{
 		toJSON: {
