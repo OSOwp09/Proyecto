@@ -40,23 +40,24 @@ const deleteUser = async (req, res = express.request) => {
 // 	}
 // };
 
-const deleteUserStuff = async (id) => {
-	console.log(id);
+const deleteUserStuff = async (resultado) => {
+	for (let index = 0; index < resultado.length; index++) {
+		const user = resultado[index];
+		const date = new Date().toJSON();
 
-	await CommentariesSchema.deleteMany({ userId: id });
-	await PublicationScheme.deleteMany({ userId: id });
-	await ChatSchema.deleteMany({ userId: id });
-
-	await Usuario.findOneAndUpdate(
-		{ _id: id },
-		{ $set: { hashtags: "" } },
-		{ new: true }
-	);
+		await CommentariesSchema.deleteMany({ userId: user.id });
+		await PublicationScheme.deleteMany({ userId: user.id });
+		await ChatSchema.deleteMany({ userId: user.id });
+		await Usuario.findOneAndUpdate(
+			{ _id: user.id },
+			{ $set: { hashtags: "", date: date } },
+			{ new: true }
+		);
+	}
 };
 
 const updateDataBase = async (req, res = express.request) => {
 	try {
-		//deleteUserStuff("659734785801ad1b5bd1912b");
 		const fechaLimite = "2024-01-01T00:00:00.000Z";
 		const horasDeseadas = 1;
 		const pipeline = [
@@ -87,11 +88,10 @@ const updateDataBase = async (req, res = express.request) => {
 
 		const resultado = await Usuario.aggregate(pipeline);
 
-		console.log(new Date().toJSON());
+		deleteUserStuff(resultado);
 
 		return res.status(200).json({
 			ok: true,
-			msg: resultado,
 		});
 	} catch (error) {
 		return res.status(500).json({
