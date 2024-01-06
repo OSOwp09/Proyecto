@@ -107,9 +107,8 @@ export default function Index() {
 			{loadIndex ? (
 				<>
 					<div
-						//ref={divRef}
 						id="page-container"
-						className="relative overflow-hidden w-screen h-screen"
+						className="relative overflow-hidden w-screen h-full sm:h-screen"
 					>
 						<div
 							id="Navbar-container"
@@ -120,7 +119,7 @@ export default function Index() {
 
 						<div
 							id="underNavbar-container"
-							className="h-[calc(100vh-48px)] w-screen flex  relative sm:z-0 z-50"
+							className="h-[calc(100%-48px)] sm:full w-screen flex relative z-0 overflow-hidden"
 						>
 							<ImageProvider>
 								<Routes>
@@ -201,16 +200,9 @@ export default function Index() {
 						</div>
 
 						<div
-							id="Navbar-container"
-							className="sm:hidden absolute bottom-0 z-0 sm:z-50"
-						>
-							<Navbar />
-						</div>
-
-						<div
 							className={`${
 								ChatsSlice.isChatOpen ? "sm:block" : "hidden"
-							} hidden absolute top-[54px] right-[360px]`}
+							} hidden absolute top-[54px] right-[12px]`}
 						>
 							<ChatPage />
 						</div>
@@ -243,6 +235,10 @@ export default function Index() {
 							}`}
 						>
 							<MobileCommentList />
+						</div>
+
+						<div id="Navbar-container-mobile" className="sm:hidden z-50 ">
+							<Navbar />
 						</div>
 					</div>
 				</>

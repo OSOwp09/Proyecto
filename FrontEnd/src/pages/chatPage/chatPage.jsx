@@ -29,7 +29,7 @@ export default function ChatPage() {
 	return (
 		<>
 			<div className="h-full w-full relative">
-				<div className="h-full absolute top-0 left-0">
+				<div className="h-full top-0 left-0">
 					<ChatList />
 				</div>
 

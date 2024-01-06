@@ -183,7 +183,7 @@ export default function UploadPhoto() {
 			<div
 				className="
                 select-none
-                w-screen h-screen bg-primary-light sm:h-full sm:bg-transparent
+                w-screen h-[calc(100vh-98px)] bg-primary-light sm:h-full sm:bg-transparent
                 flex place-content-center place-items-center"
 			>
 				<div

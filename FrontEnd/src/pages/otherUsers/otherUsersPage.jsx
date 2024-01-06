@@ -55,7 +55,7 @@ export default function OtherUsersPage() {
 
 	return (
 		<>
-			<div className="flex md:flex-row flex-col place-items-center w-screen h-auto">
+			<div className="flex md:flex-row flex-col place-items-center w-screen h-[calc(100vh-98px)] sm:h-[calc(100vh-48px)]">
 				<div className="block md:hidden sticky top-0 z-50 h-0">
 					<div
 						className={`

@@ -17,6 +17,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
 import { loadUser } from "./store/slices/auth/AuthThunks";
 import { UpdateDataBase } from "./api/Api";
+import logo from "../src/assets/Logo.svg";
 
 function App() {
 	document.body.classList.add("bg-primary-light");
@@ -81,7 +82,9 @@ function App() {
 
 	return (
 		<>
-			<div className="font-inter ">{loadApp}</div>
+			<div className="font-inter overflow-hidden w-screen h-[100dvh]">
+				{loadApp}
+			</div>
 		</>
 	);
 }

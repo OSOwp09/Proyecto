@@ -335,7 +335,7 @@ export default function OpenPublication() {
 					ref={refDesktop}
 					id="page-container"
 					className="
-                    w-screen h-[calc(100vh-48px)] overflow-auto overflow-x-hidden
+                    w-screen sm:h-[calc(100vh-48px)] h-[calc(100vh-98px)] overflow-auto overflow-x-hidden
                     flex place-items-center flex-col"
 				>
 					<div
@@ -597,7 +597,7 @@ export default function OpenPublication() {
 				<div
 					id="page-container"
 					ref={refMobile}
-					className="w-screen h-[calc(100vh-48px)] overflow-auto overflow-x-hidden flex flex-col place-items-center relative"
+					className="w-screen h-full overflow-auto overflow-x-hidden flex flex-col place-items-center relative"
 				>
 					<div className="sticky top-0 z-50 h-0">
 						<div

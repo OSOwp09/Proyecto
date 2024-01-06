@@ -83,7 +83,7 @@ export default function SearcPage() {
 	return (
 		<>
 			<div
-				className={`${isMyInputFocused ? "h-screen" : "h-full"}  w-screen 
+				className={`${isMyInputFocused ? "h-full" : "h-full"}  w-screen 
 			/bg-secondary-light
 			flex flex-col place-content-between select-none`}
 			>

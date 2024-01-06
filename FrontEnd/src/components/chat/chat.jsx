@@ -180,7 +180,7 @@ export default function Chat({ user, id }) {
 				className={`
                 bg-secondary-light
 
-				${isMyInputFocused ? "h-screen" : "h-full"}
+				${isMyInputFocused ? "h-full" : "h-full"}
 				
 				w-screen pb-2
 

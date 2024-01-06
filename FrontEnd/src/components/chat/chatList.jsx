@@ -254,7 +254,7 @@ export default function ChatList() {
 					id="container"
 					className={`
 					bg-secondary-light
-					${isMyInputFocused ? "h-screen" : "h-full"}
+					${isMyInputFocused ? "h-full" : "h-full"}
 					verflow-auto
 					w-screen
 					flex flex-col

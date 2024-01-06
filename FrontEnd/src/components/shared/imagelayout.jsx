@@ -329,7 +329,7 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 	const loader = () => {
 		return (
 			<>
-				<div className="absolute top-[-4px] h-screen /bg-primary-light left-0 z-50 overflow-hidden">
+				<div className="absolute top-[-4px] h-full /bg-primary-light left-0 z-50 overflow-hidden">
 					<LayoutLoader />
 				</div>
 			</>
@@ -371,7 +371,7 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 			>
 				<div
 					className={`transition-all duration-700 z-50  ${
-						loaderGone ? "opacity-0 " : "opacity-100 h-screen "
+						loaderGone ? "opacity-0 " : "opacity-100 h-full "
 					}`}
 				>
 					{layoutLoaderHtml}

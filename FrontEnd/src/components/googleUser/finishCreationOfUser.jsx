@@ -136,8 +136,8 @@ export default function FinishCreationOfUser  ({ handdleContinue, email }) {
 	return (
 		<>
 			<div
-				className="w-full h-screen
-            flex place-content-center place-items-center"
+				className="w-full h-full
+            	flex place-content-center place-items-center"
 			>
 				<div
 					id="card"

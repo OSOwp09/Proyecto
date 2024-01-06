@@ -35,7 +35,7 @@ export const Home = () => {
 		<>
 			<div
 				className="
-				w-screen h-[calc(100vh-48px)]
+				w-screen h-full sm:h-[calc(100vh-48px)]
 				flex flex-col place-items-center
 				overflow-auto overflow-x-hidden relative"
 			>

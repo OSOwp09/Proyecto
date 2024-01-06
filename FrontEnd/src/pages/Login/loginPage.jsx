@@ -13,7 +13,7 @@ export default function Login() {
 	const navigate = useNavigate();
 	const [html, setHtml] = useState(
 		<>
-			<div className="h-screen w-screen flex place-items-center place-content-center">
+			<div className="h-full w-screen flex place-items-center place-content-center">
 				<div role="status">
 					<svg
 						aria-hidden="true"
@@ -57,7 +57,7 @@ export default function Login() {
 						<img
 							src={loginBgImage}
 							alt=""
-							className="object-cover h-screen w-screen"
+							className="object-cover h-full w-screen"
 						/>
 						<div
 							id="darkOverlay"

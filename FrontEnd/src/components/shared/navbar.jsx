@@ -261,7 +261,7 @@ export const Navbar = () => {
 	const mobileNavbar = () => {
 		return (
 			<>
-				<div className="absolute bottom-0 h-[48px] bg-secondary-light w-screen flex justify-between px-8 p-3 select-none">
+				<div className="/absolute /bottom-0 h-[48px] bg-secondary-light w-screen flex justify-between px-8 p-3 select-none">
 					<img onClick={() => navigate("/home")} src={homeIcon} alt="" />
 					<img
 						onClick={() => navigate("chat")}

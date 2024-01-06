@@ -1,17 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import MaintenaceCard from "./maintenanceCard";
 import "./index.css";
 
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 
-import { LayoutLoader } from "./components/loaders/layoutLoader";
-
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<Provider store={store}>
-			<App />
+			{/* <App /> */}
+				<MaintenaceCard />
 		</Provider>
 	</React.StrictMode>
 );

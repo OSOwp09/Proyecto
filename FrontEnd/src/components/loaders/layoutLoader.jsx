@@ -68,7 +68,7 @@ export const LayoutLoader = () => {
 
 	return (
 		<>
-			<div className="h-screen w-screen overflow-hidden sm:pr-1">
+			<div className="h-full w-screen overflow-hidden sm:pr-1">
 				<div className="hidden sm:flex h-auto w-auto flex-wrap place-content-center gap-[8px]">
 					{imagesDesktop}
 				</div>
