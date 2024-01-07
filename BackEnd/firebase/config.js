@@ -4,5 +4,5 @@ const serviceAccount = require("./serviceAccountKey.json");
 
 admin.initializeApp({
 	credential: admin.credential.cert(serviceAccount),
-	//databaseURL: "https://<tu-proyecto>.firebaseio.com",
+	storageBucket:  "vintarest-385f2.appspot.com",
 });

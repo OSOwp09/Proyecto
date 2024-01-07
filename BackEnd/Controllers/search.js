@@ -242,7 +242,7 @@ const listPublications = async (req, res = express.request) => {
 		const publication = await PublicationScheme.find().populate(
 			"userId",
 			"user photoURL"
-		);
+		).reverse();
 
 		return res.status(200).json({
 			ok: true,
@@ -285,7 +285,7 @@ const listPublicationsByHashtags = async (req, res = express.request) => {
 
 		return res.status(200).json({
 			ok: true,
-			publications: publications.filter((p) => p._id != publicationId),
+			publications: publications.filter((p) => p._id != publicationId).reverse(),
 		});
 	} catch (error) {
 		console.log(error);
