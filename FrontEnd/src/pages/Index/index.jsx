@@ -8,23 +8,20 @@ import { MobileThreeDots } from "../../components/shared/publicationOptions";
 import { MobileCommentList } from "../../components/shared/publicationOptions";
 import { OptionsCard } from "../../components/shared/options";
 
-//import  OpenPublication  from "../../components/index/openPublication";
+import { UpdateDataBase } from "../../api/Api";
+
 const OpenPublication = lazy(() =>
 	import("../../components/index/openPublication")
 );
 
-//import  User from "../mainUser/user";
 const User = lazy(() => import("../mainUser/user"));
 
-//import  UploadPhoto  from "../../components/userPage/uploadPhoto";
 const UploadPhoto = lazy(() => import("../../components/userPage/uploadPhoto"));
 
 import { ImageProvider } from "../../context/imageSelected/imageSelectedProvider";
 
-//import  Error  from "../ErrorPage/error";
 const Error = lazy(() => import("../ErrorPage/error"));
 
-//import  OtherUsersPage  from "../otherUsers/otherUsersPage";
 const OtherUsersPage = lazy(() => import("../otherUsers/otherUsersPage"));
 
 const ChatPage = lazy(() => import("../chatPage/chatPage"));
@@ -33,12 +30,10 @@ const SearchPage = lazy(() => import("../searchPage/searchPage"));
 
 import { useEffect, useState, createRef } from "react";
 
-import { Routes, Route, useNavigate } from "react-router-dom";
-//import { auth } from "../../firebase/config";
-//import { onAuthStateChanged } from "firebase/auth";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 
-//import  FinishCreationOfUser from "../../components/googleUser/finishCreationOfUser";
 const FinishCreationOfUser = lazy(() =>
 	import("../../components/googleUser/finishCreationOfUser")
 );
@@ -46,23 +41,8 @@ const FinishCreationOfUser = lazy(() =>
 import { FindUserByEmail } from "../../api/Api";
 import { loadUser } from "../../store/slices/auth/AuthThunks";
 
-import { useRefDimensions } from "../../customHooks/useRefDimensions";
-
 export default function Index() {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
-
-	const divRef = createRef();
-	const dimensions = useRefDimensions(divRef);
-
-	useEffect(() => {
-		if (
-			dimensions.width >= 640 &&
-			window.location.pathname.split("/").includes("chat")
-		) {
-			navigate("/home");
-		}
-	}, [dimensions]);
 
 	const [loadIndex, setLoadIndex] = useState(true);
 	const authinfo = useSelector((state) => state.auth);
@@ -72,6 +52,16 @@ export default function Index() {
 		setLoadIndex(true);
 		return;
 	};
+
+	const updateDataBase = async () => {
+		try {
+			await UpdateDataBase.get();
+		} catch (error) {}
+	};
+	const location = useLocation();
+	useEffect(() => {
+		updateDataBase();
+	}, [location]);
 
 	const loadPage = async () => {
 		if (authinfo.email) {

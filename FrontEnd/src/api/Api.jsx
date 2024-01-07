@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const pathName = 'https://vintarest-back.up.railway.app'
-//export const pathName = "http://localhost:4000";
+//export const pathName = 'https://vintarest-back.up.railway.app'
+export const pathName = "http://localhost:4000";
 
 //---- user auth, register and login ------->
 

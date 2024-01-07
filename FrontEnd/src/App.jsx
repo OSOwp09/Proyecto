@@ -17,15 +17,21 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
 import { loadUser } from "./store/slices/auth/AuthThunks";
 import { UpdateDataBase } from "./api/Api";
-import logo from "../src/assets/Logo.svg";
 
 function App() {
+	const updateDataBase = async () => {
+		try {
+			await UpdateDataBase.get("", {});
+		} catch (error) {}
+	};
+
 	document.body.classList.add("bg-primary-light");
 	const dispatch = useDispatch();
 
 	const [loadApp, setLoadApp] = useState(<></>);
 
 	useEffect(() => {
+		updateDataBase();
 		onAuthStateChanged(auth, async () => {
 			if (auth?.currentUser?.email) {
 				dispatch(loadUser(auth.currentUser.email));

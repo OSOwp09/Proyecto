@@ -214,14 +214,12 @@ export const LoginCard = () => {
 						font-inter
 						text-primary-dark"
 					>
-						<div 
-						onClick={()=> navigate("/home")}
-						className="h-fit w-fit p-4 rounded-full mt-2
-						shadow-md hover:shadow-lg hover:translate-y-[-2px]">
-							<img
-								src={logo}
-								className="w-[34px] sm:w-[56px] "
-							/>
+						<div
+							onClick={() => navigate("/home")}
+							className="h-fit w-fit p-4 rounded-full mt-2
+						shadow-md hover:shadow-lg hover:translate-y-[-2px]"
+						>
+							<img src={logo} className="w-[34px] sm:w-[56px] " />
 						</div>
 
 						<h1
