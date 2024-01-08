@@ -2,7 +2,7 @@ const express = require("express");
 const PublicationScheme = require("../models/PublicationSchema");
 const Usuario = require("../models/Usuario");
 const _ = require("lodash");
-const {uploadFile} = require("../firebase/config");
+const { uploadFile } = require("../firebase/config");
 
 const createPublication = async (req, res = express.request) => {
 	const publication = new PublicationScheme(req.body);
@@ -14,7 +14,7 @@ const createPublication = async (req, res = express.request) => {
 		const UserHashtagsAndUser = await Usuario.findOne({
 			_id: publication.userId,
 		}).select("hashtags user");
-		
+
 		const filter = { _id: publication.userId };
 		const pubHashtags = publication.hashtags.split(" ");
 		const userHashtagsAndUser = UserHashtagsAndUser.hashtags.split(" ");

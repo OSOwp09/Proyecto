@@ -6,7 +6,7 @@ const PublicationScheme = Schema(
 			type: String,
 			required: true,
 		},
-		firebaseId:{
+		firebaseId: {
 			type: String,
 			required: true,
 		},
@@ -22,6 +22,14 @@ const PublicationScheme = Schema(
 			type: String,
 			required: true,
 		},
+		hexColoraverageColor: {
+			type: String,
+			required: true,
+		},
+		imageSize: {
+			type: Array,
+			required: true,
+		},
 		userId: {
 			type: Schema.Types.ObjectId,
 			ref: "Usuario",
@@ -35,7 +43,7 @@ const PublicationScheme = Schema(
 		toObject: {
 			virtuals: true,
 		},
-	}	
+	}
 );
 
 PublicationScheme.virtual("commentaries", {
