@@ -7,7 +7,7 @@ const socketController = (socket, io) => {
 
 	socket.on("join chat", (room) => {
 		socket.join(room);
-		console.log("user join room " + room);
+		//console.log("user join room " + room);
 	});
 
 	socket.on("typing", (room) => socket.in(room).emit("typing"));

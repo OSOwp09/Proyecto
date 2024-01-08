@@ -36,7 +36,7 @@ txtMensaje.addEventListener('keyup',({keyCode})=>{
 })
 
 socket.on('recibir-mensaje', (payload)=>{
-    console.log(payload)
+    //console.log(payload)
     const className = payload.from == socket.id ? 'text-end':'text-start text-primary'
 
     if (!payload.to) {
