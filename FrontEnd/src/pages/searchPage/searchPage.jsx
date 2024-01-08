@@ -83,16 +83,22 @@ export default function SearcPage() {
 	return (
 		<>
 			<div
-				className={`${isMyInputFocused ? "h-full" : "h-full"}  w-screen 
-			/bg-secondary-light
-			flex flex-col place-content-between select-none`}
+				// style={{
+				// 	height: `${
+				// 		isMyInputFocused ? `${window.visualViewport.height}px` : "100%"
+				// 	}`,
+				// }}
+				className={`transition-all ${isMyInputFocused ? "h-[100dvh]" : "h-full"} 
+				w-screen 
+				/bg-secondary-light
+				flex flex-col place-content-between select-none`}
 			>
 				<div />
 
 				<div
 					id="dark-overlay"
 					className={`${isMyInputFocused ? "block" : "hidden"} 
-					absolute top-0 left-0 bg-primary-dark/60 h-screen w-full backdrop-blur-sm z-20`}
+					absolute top-0 left-0 bg-primary-dark/60 h-full w-full backdrop-blur-sm z-20`}
 				/>
 
 				{!searchParams.get("q") && listOfCards && (
@@ -109,7 +115,7 @@ export default function SearcPage() {
 						>
 							<div
 								className="h-[calc(100%+8px)] w-screen absolute top-[-5px] left-0 z-0
-							backdrop-blur-sm "
+								backdrop-blur-sm "
 							/>
 
 							<div
@@ -185,7 +191,7 @@ export default function SearcPage() {
 					onBlur={() => setIsMyInputFocused(false)}
 					onFocus={() => setIsMyInputFocused(true)}
 					className={`
-					${isMyInputFocused ? "rounded-t-2xl pb-2" : ""}
+					transition-all ${isMyInputFocused ? "rounded-t-2xl pb-4 pt-3" : ""}
 					w-full h-fit bg-secondary-light 
 					flex flex-col gap-3 place-items-center px-2 pt-2
 					z-50`}

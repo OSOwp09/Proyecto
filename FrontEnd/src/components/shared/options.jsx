@@ -82,14 +82,14 @@ export const OptionsCard = () => {
 	const mobileOptions = () => {
 		return (
 			<>
-				<div className="h-screen w-screen flex place-items-end">
+				<div className="h-full w-screen">
 					<div
 						onClick={() => dispatch(closeOptions())}
 						id="darkOverlay"
 						className="absolute top-0 left-0 bg-primary-dark/60 h-full w-full backdrop-blur-sm"
 					></div>
 
-					<div className="w-screen h-auto bg-secondary-light rounded-t-2xl flex flex-col place-items-center py-4 z-50">
+					<div className="absolute bottom-0 w-screen h-auto bg-secondary-light rounded-t-2xl flex flex-col place-items-center py-4 z-50">
 						<div
 							onClick={() => {
 								handdleLogout(), dispatch(closeOptions());

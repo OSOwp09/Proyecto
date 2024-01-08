@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import usericon from "../../assets/person-circle.svg";
 import { ImageContext } from "../../context/imageSelected/imageSelectedContext";
@@ -13,17 +13,16 @@ export default function ImageCard({
 	userName,
 	id,
 	hashtags,
+	hexColoraverageColor,
+	imageSize,
 }) {
 	const { handleImageSelected } = useContext(ImageContext);
 
 	const navigate = useNavigate();
-	//console.log("hashtags:",hashtags)
 
 	const handdleInput = () => {
-		//closeSelectedImage()
 		handleImageSelected(image, title, description, id, hashtags, userName);
 	};
-	const [isHoverOpen, setIsHoverOpen] = useState(false);
 
 	const handdleOnOpenBtnClick = () => {
 		navigate(`/home/publication/${id}`);
@@ -33,6 +32,10 @@ export default function ImageCard({
 		navigate(`/home/${userName}`);
 	};
 
+	const w = imageSize[0];
+	const h = imageSize[1];
+	const hex = hexColoraverageColor;
+
 	//Desktop
 	const desktopImageCard = () => {
 		return (
@@ -40,13 +43,13 @@ export default function ImageCard({
 				<div
 					id="container"
 					className="
-				group
-                bg-secondary-light
-                h-full w-[240px] rounded-2xl
-                mb-2 mx-1
-                font-inter text-[14px] text-primary-dark break-inside-avoid
-				drop-shadow
-				hover:drop-shadow-xl"
+					group
+					bg-secondary-light
+					h-full w-[240px] rounded-2xl
+					mb-2 mx-1
+					font-inter text-[14px] text-primary-dark break-inside-avoid
+					drop-shadow
+					hover:drop-shadow-xl"
 				>
 					<div
 						className="w-[240px] h-auto max-h-[448px] min-h-[120px]
@@ -55,16 +58,28 @@ export default function ImageCard({
 						overflow-hidden relative"
 					>
 						<div className="relative">
+							<svg
+								width={w}
+								height={h}
+								viewBox={`0 0 ${w} ${h}`}
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								className="w-[calc(240px)] h-full
+								object-cover pb-[0.3px]  rounded-t-2xl"
+							>
+								<rect x="0" y="0" width={w} height={h} fill={hex} />
+							</svg>
+
 							<img
 								onClick={() => {
 									handdleInput();
 								}}
 								src={image}
 								alt=""
-								className="
-							w-[240px] h-auto max-h-[480px] min-h-[120px]
-							rounded-t-2xl object-fit
-							select-none"
+								className="absolute top-0 left-0
+								w-[240px] h-full max-h-[480px] min-h-[120px]
+								object-cover
+								select-none"
 								loading="lazy"
 							/>
 
@@ -162,14 +177,28 @@ export default function ImageCard({
 	const mobileImageCard = () => {
 		return (
 			<>
-				<div className="w-screen  min-[304px]:w-[50vw]  min-[724px]:w-[30vw] py-1 px-[4px]">
+				<div className="min-[304px]:w-[48vw]  min-[724px]:w-[30vw] py-1 px-[4px] rounded-2xl relative mb-2 mx-1">
+					<svg
+						width={w}
+						height={h}
+						viewBox={`0 0 ${w} ${h}`}
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+						className="translate-x-[-3px] w-[calc(100%+6px)] 
+						scale-y-[1.01] h-full
+						min-h-[120px] object-cover rounded-2xl "
+					>
+						<rect x="0" y="0" width={w} height={h} fill={hex} />
+					</svg>
+
 					<img
 						onClick={() => {
 							handdleOnOpenBtnClick();
 						}}
 						src={image}
 						alt=""
-						className="w-full h-full min-h-[120px] object-cover rounded-2xl"
+						className="	absolute top-0 left-0 
+						w-full h-full min-h-[120px] object-cover rounded-2xl /opacity-25"
 						loading="lazy"
 					/>
 				</div>

@@ -137,7 +137,7 @@ export const loginAuth = (email, password) => {
 				);
 			}
 		} catch (error) {
-			console.error("Login error:", error);
+			console.error("Login error");
 			
 			return error;
 		}
@@ -154,8 +154,8 @@ export const logWithGoogleAuth = () => {
 			await updateProfile(auth.currentUser, { displayName, photoURL });
 			dispatch(login({ uid, email, displayName, photoURL }));
 		} catch (error) {
-			console.log(error.message);
-			return error.code;
+			console.error("Login error");
+			//return error.code;
 		}
 	};
 };
@@ -169,7 +169,7 @@ export const logoutAuth = () => {
 			// dispatch the logout action
 			dispatch(authSlice.actions.logout());
 		} catch (error) {
-			console.log(error.message);
+			console.error("error");
 		}
 	};
 };
@@ -185,7 +185,7 @@ export const DeleteUser = () => {
 				dispatch(authSlice.actions.logout());
 			} catch (error) {}
 		} catch (error) {
-			console.log(error.message);
+			console.error("error");
 		}
 	};
 };

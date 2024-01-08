@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useRef } from "react";
 
 // --- components (test) ---
 
@@ -86,9 +86,39 @@ function App() {
 		});
 	}, []);
 
+	const divRef = useRef(null);
+	const scrollToTop = () => {
+		divRef?.current?.scroll({
+			top: 0,
+		});
+	};
+
+	const [height, setHeight] = useState(0);
+
+	useEffect(() => {
+		scrollToTop();
+		const updateWindowDimensions = () => {
+			const newHeight = window.visualViewport.height;
+			setHeight(newHeight);
+		};
+
+		window.visualViewport.addEventListener("resize", updateWindowDimensions);
+		updateWindowDimensions();
+		//console.log(height)
+		return () =>
+			window.visualViewport.removeEventListener(
+				"resize",
+				updateWindowDimensions
+			);
+	}, [, height]);
+
 	return (
 		<>
-			<div className="font-inter overflow-hidden w-screen h-[100dvh]">
+			<div
+				ref={divRef}
+				//style={{ height: `${window.visualViewport.height}px` }}
+				className="transition-all font-inter overflow-hidden w-screen h-[100dvh]"
+			>
 				{loadApp}
 			</div>
 		</>

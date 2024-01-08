@@ -36,7 +36,7 @@ export default function Chat({ user, id }) {
 	const divScrollRef = useRef(null);
 
 	const scrollToBottom = () => {
-		divScrollRef.current.scroll({
+		divScrollRef?.current?.scroll({
 			top: 99999,
 		});
 		if (isScrolled == false) {
@@ -132,8 +132,13 @@ export default function Chat({ user, id }) {
 
 	useEffect(() => {
 		socket = io(ENDPOINT);
+		socket.connect();
 		socket.emit("setup", userInfo);
 		socket.on("connection", () => setSocketConnected(true));
+
+		return () => {
+			socket.disconnect();
+		};
 	}, []);
 
 	useEffect(() => {
@@ -173,17 +178,37 @@ export default function Chat({ user, id }) {
 		navigate(`/home/${user}`);
 	};
 
+	const [height, setHeight] = useState(0);
+	useEffect(() => {
+		const updateWindowDimensions = () => {
+			const newHeight = window.visualViewport.height;
+			setHeight(newHeight);
+		};
+
+		window.visualViewport.addEventListener("resize", updateWindowDimensions);
+		updateWindowDimensions();
+
+		return () =>
+			window.visualViewport.removeEventListener(
+				"resize",
+				updateWindowDimensions
+			);
+	}, [, height, isMyInputFocused]);
+
 	return (
 		<>
 			<div
+				// style={{
+				// 	height: `${
+				// 		isMyInputFocused ? `${window.visualViewport.height}px` : "100%"
+				// 	}`,
+				// }}
 				id="container"
 				className={`
                 bg-secondary-light
-
-				${isMyInputFocused ? "h-full" : "h-full"}
-				
+				transition-all
+				${isMyInputFocused ? "h-[100dvh]" : "h-full"}
 				w-screen pb-2
-
                 sm:h-[calc(100vh-88px)]
                 sm:max-h-[calc(672px-72px)] 
 				sm:w-[360px] 
@@ -281,7 +306,7 @@ export default function Chat({ user, id }) {
 					id="message-input"
 					onBlur={() => setIsMyInputFocused(false)}
 					onFocus={() => setIsMyInputFocused(true)}
-					className="w-full flex gap-2 place-items-center px-2"
+					className="w-full flex gap-2 place-items-center px-2 pt-2"
 				>
 					<div
 						className="
@@ -301,13 +326,13 @@ export default function Chat({ user, id }) {
 							<div
 								onClick={() => scrollToBottom()}
 								className={`
-							group
-							bg-secondary-light hover:bg-secondary-dark
-							border border-secondary-dark
-							rounded-full
-							px-5 py-2 
-							transition-all 
-							scale-[0.8] hover:scale-[1]`}
+								group
+								bg-secondary-light hover:bg-secondary-dark
+								border border-secondary-dark
+								rounded-full
+								px-5 py-2 
+								transition-all 
+								scale-[0.8] hover:scale-[1]`}
 							>
 								<svg
 									width="12"

@@ -11,6 +11,7 @@ import { CreatePublicationApi } from "../../api/Api";
 import { auth } from "../../firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
 import { useSelector } from "react-redux";
+import ColorThief from "colorthief";
 
 export default function UploadPhoto() {
 	const navigate = useNavigate();
@@ -43,7 +44,6 @@ export default function UploadPhoto() {
 	const onDrop = useCallback((acceptedFiles) => {
 		acceptedFiles.map((file, index) => {
 			const reader = new FileReader();
-
 			reader.onload = function (e) {
 				setImage(e.target.result);
 			};
@@ -152,25 +152,46 @@ export default function UploadPhoto() {
 
 			const url = `https://firebasestorage.googleapis.com/v0/b/${result.metadata.bucket}/o/publications%2F${result.metadata.name}?alt=media`; // get image link
 
-			const resp = await CreatePublicationApi.post(
-				"",
-				{
-					photoURL: url,
-					firebaseId: result.metadata.name,
-					title: titlevar,
-					description: descriptionvar,
-					hashtags: hashtagsvar,
-					userId: userId,
-				},
-				{
-					headers: {
-						"x-token": token,
+			const colorThief = new ColorThief();
+			const img = new Image();
+			img.crossOrigin = "Anonymous";
+			img.src = url;
+
+			const rgbToHex = (r, g, b) =>
+				"#" +
+				[r, g, b]
+					.map((x) => {
+						const hex = x.toString(16);
+						return hex.length === 1 ? "0" + hex : hex;
+					})
+					.join("");
+
+			img.addEventListener("load", async function () {
+				const value = await colorThief.getColor(img);
+				const hexColor = rgbToHex(value[0], value[1], value[2]);
+				const imageSize = [img.width, img.height];
+				await CreatePublicationApi.post(
+					"",
+					{
+						photoURL: url,
+						firebaseId: result.metadata.name,
+						title: titlevar,
+						description: descriptionvar,
+						hashtags: hashtagsvar,
+						userId: userId,
+						hexColoraverageColor: hexColor,
+						imageSize: imageSize,
 					},
-				}
-			);
-			// console.log(resp);
-			setImgFile("");
-			navigate("/home/user");
+					{
+						headers: {
+							"x-token": token,
+						},
+					}
+				);
+				// console.log(resp);
+				setImgFile("");
+				navigate("/home/user");
+			});
 		} catch (error) {
 			await deleteFile(result?.metadata?.name);
 			console.log(error);
@@ -183,7 +204,7 @@ export default function UploadPhoto() {
 			<div
 				className="
                 select-none
-                w-screen h-[calc(100vh-98px)] bg-primary-light sm:h-full sm:bg-transparent
+                w-screen h-full bg-primary-light sm:h-full sm:bg-transparent
                 flex place-content-center place-items-center"
 			>
 				<div
@@ -217,8 +238,8 @@ export default function UploadPhoto() {
 						
 						${
 							image == ""
-								? "h-[448px] max-[560px]:h-[40vh]  max-[560px]:w-[40vw]"
-								: "h-fit max-[560px]:max-h-[50vh]  max-[560px]:w-[30vw]"
+								? "h-[448px] max-[560px]:h-[60vw]  max-[560px]:w-[35vw]"
+								: "h-fit max-[560px]:max-h-[60vw]  max-[560px]:w-[35vw]"
 						}
 						overflow-hidden
                         bg-secondary-highlight
@@ -230,11 +251,11 @@ export default function UploadPhoto() {
 							src={closeIcon}
 							alt=""
 							className={`
-						${image != "" ? "block" : "hidden"}
-						hover:opacity-100
-						absolute top-2 left-2 h-6
-						bg-secondary-light rounded-full opacity-50
-						$`}
+							${image != "" ? "block" : "hidden"}
+							hover:opacity-100
+							absolute top-2 left-2 h-6
+							bg-secondary-light rounded-full opacity-50
+							$`}
 							whileHover={{
 								scale: 1.2,
 								transition: { duration: 0.1 },
@@ -338,10 +359,10 @@ export default function UploadPhoto() {
 								src={backArrow}
 								alt=""
 							/>
-							<div/>
+							<div />
 							<button
 								id="save-button"
-									className={`
+								className={`
 								${showButton ? "block" : "hidden"}
 								px-2
 								text-2xl text-primary-highlight

@@ -17,7 +17,7 @@ export default function Error() {
 			<div className="w-screen h-screen flex place-content-center place-items-center relative overflow-hidden">
 				<div className="absolute top-0 left-0 z-0 grid content-center justify-center
 						h-screen overflow-hidden">
-					<img
+					<img	
 						src={BgImageMobil}
 						alt=""
 						className="block sm:hidden object-cover w-screen h-screen"

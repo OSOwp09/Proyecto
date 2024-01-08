@@ -13,7 +13,7 @@ export const DropArea = ({ onDrop, img }) => {
 	} = useDropzone({
 		accept: "image/*",
 		onDrop,
-		noClick: true,
+		//noClick: window.innerWidth > 640 ? true : false,
 		noKeyboard: true,
 	});
 
@@ -21,10 +21,12 @@ export const DropArea = ({ onDrop, img }) => {
 		<>
 			<div
 				id="photoArea"
-				{...getRootProps({ isdragaccept, isfocused, isdragdeject })}
-				onClick={open}
+				{...getRootProps({
+					className: "dropzone",
+				})}
+				//onClick={open}
 				className={`
-				${img == "" ? "block":"hidden"}
+				${img == "" ? "block" : "hidden"}
 				select-none
 				w-full
 				rounded-2xl
@@ -34,6 +36,7 @@ export const DropArea = ({ onDrop, img }) => {
 				m-6 
 				flex place-content-center place-items-center`}
 			>
+				<input {...getInputProps()} />
 				<div
 					id="dashedOutline"
 					className={`
@@ -48,7 +51,7 @@ export const DropArea = ({ onDrop, img }) => {
 						<h1>or</h1>
 						<h1>Click to upload</h1>
 					</div>
-					
+
 					<div className="sm:hidden flex flex-col place-items-center text-sm w-full text-center px-1">
 						<h1>Click to upload</h1>
 					</div>
@@ -57,4 +60,3 @@ export const DropArea = ({ onDrop, img }) => {
 		</>
 	);
 };
-

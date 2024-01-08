@@ -1,6 +1,5 @@
 import { lazy, Suspense } from "react";
 
-//import  ImageCard  from "./imagecard";
 const ImageCard = lazy(() => import("./imagecard"));
 
 //import publicationsJson from "../../fakeData/publications.json";
@@ -57,21 +56,9 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 		} catch (error) {
 			console.log(error);
 		}
-
-		// try {
-		// 	const respUser = await FindUserByEmail.get("", {
-		// 		params: {
-		// 			email: user,
-		// 		},
-		// 	});
-		// 	setsearchFilter(respUser.data.usuario);
-		// } catch (error) {
-		// 	console.log(error);
-		// }
 	};
 
 	const handdleListPublicationsByHashtags = async () => {
-		//console.log("object");
 		try {
 			const resp = await ListPublicationsByHashtags.get("", {
 				params: {
@@ -101,42 +88,15 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 	useMemo(() => {
 		if (searchByWordsOrUid != "") {
 			if (searchByUseridOrHashtag == "hashtags") {
-				// var searchFilter = [];
-
-				// const searchParamsArry = searchByWordsOrUid.split(" ");
-				// searchParamsArry.map((hashtag = searchParamsArry, i) => {
-				// 	if (i == 0) {
-				// 		searchFilter = publicationsJson.filter((p) =>
-				// 			p.hashtags.includes(searchParamsArry[0])
-				// 		);
-
-				// 		setsearchFilter(searchFilter);
-				// 		return;
-				// 	}
-
-				// 	searchFilter = _.union(
-				// 		publicationsJson.filter((p) =>
-				// 			p.hashtags.includes(searchParamsArry[i])
-				// 		),
-				// 		searchFilter
-				// 	);
-				// });
-
-				// searchFilter = searchFilter.filter((p) => p.publicationid != pid);
-				// setsearchFilter(searchFilter);
 				handdleListPublicationsByHashtags();
 				return;
 			}
 
 			if (searchByUseridOrHashtag == "userid") {
-				//setsearchFilter(publicationsJson.filter((p) => p.userid == uid));
 				handdleFindUser(uid);
 				return;
 			}
 		} else {
-			// setsearchFilter(
-			// 	publicationsJson.filter((p) => p.hashtags.includes(""))
-			// );
 			hanndleListAllPublications();
 		}
 	}, [searchByWordsOrUid, searchByUseridOrHashtag]);
@@ -145,10 +105,6 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 		-------- depending of the number of columns that depends ------------------------
 		-------- on the width of the container of the layout ----------------------------
 		*/
-	const hanndleResize = (element) => {
-		// element.target.style.height = "38px";
-		// element.target.style.height = element.target.scrollHeight + "px";
-	};
 
 	const [imgs, setImgs] = useState([]);
 	const divRef = createRef();
@@ -156,8 +112,6 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 	const dimensions = useRefDimensions(divRef); //Width of the divRef elemnt
 
 	const [treshholdWidth, setTreshholdWidth] = useState(240);
-	//const treshholdWidth = 248
-
 	const numOfColumns = width / treshholdWidth - ((width / treshholdWidth) % 1);
 	const [html, setHtml] = useState(<></>);
 
@@ -193,19 +147,6 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 	useEffect(() => {
 		if (searchByWordsOrUid != "") {
 			if (searchByUseridOrHashtag == "hashtags") {
-				// const images = [...Array(searchFilter.length)].map(
-				// 	(image = searchFilter, i) => (
-				// 		<ImageCard
-				// 			key={i}
-				// 			id={image[i].publicationid}
-				// 			//selectImg={//selectImg}
-				// 			image={image[i].photoURL}
-				// 			description={image[i].title}
-				// 			userName={image[i].userName}
-				// 			hashtags={image[i].hashtags}
-				// 		/>
-				// 	)
-				// );
 				const images = [...Array(searchFilter.length)].map(
 					(image = searchFilter, i) => (
 						<Suspense key={i}>
@@ -217,6 +158,8 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 								description={image[i].description}
 								userName={image.user}
 								hashtags={image[i].hashtags}
+								hexColoraverageColor={image[i].hexColoraverageColor}
+								imageSize={image[i].imageSize}
 							/>
 						</Suspense>
 					)
@@ -226,49 +169,41 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 			}
 			if (searchByUseridOrHashtag == "userid") {
 				const images = [...Array(searchFilter.publications.length)].map(
-					(image = searchFilter, i) => (
-						<Suspense key={i}>
-							<ImageCard
-								id={image.publications[i]._id}
-								//selectImg={//selectImg}
-								image={image.publications[i].photoURL}
-								title={image.publications[i].title}
-								description={image.publications[i].description}
-								userName={image.user}
-								hashtags={image.publications[i].hashtags}
-							/>
-						</Suspense>
-					)
+					(image = searchFilter, i) => {
+						return (
+							<Suspense key={i}>
+								<ImageCard
+									id={image.publications[i]._id}
+									image={image.publications[i].photoURL}
+									title={image.publications[i].title}
+									description={image.publications[i].description}
+									userName={image.user}
+									hashtags={image.publications[i].hashtags}
+									hexColoraverageColor={
+										image.publications[i].hexColoraverageColor
+									}
+									imageSize={image.publications[i].imageSize}
+								/>
+							</Suspense>
+						);
+					}
 				);
 
 				setImgs(images);
 			}
 		} else {
-			// const images = [...Array(searchFilter.length)].map(
-			// 	(image = searchFilter, i) => (
-			// 		<ImageCard
-			// 			key={i}
-			// 			id={image[i].publicationid}
-			// 			//selectImg={//selectImg}
-			// 			image={image[i].photoURL}
-			// 			description={image[i].title}
-			// 			userName={image[i].userName}
-			// 			hashtags={image[i].hashtags}
-			// 		/>
-			// 	)
-			// );
-
 			const images = [...Array(searchFilter.length)].map(
 				(image = searchFilter, i) => (
 					<Suspense key={i}>
 						<ImageCard
 							id={image[i]._id}
-							//selectImg={//selectImg}
 							image={image[i].photoURL}
 							title={image[i].title}
 							description={image[i].description}
 							userName={image[i].userId.user}
 							hashtags={image[i].hashtags}
+							hexColoraverageColor={image[i].hexColoraverageColor}
+							imageSize={image[i].imageSize}
 						/>
 					</Suspense>
 				)
@@ -378,9 +313,9 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 				</div>
 				<div
 					className={`
-					transition-all 
+					transition-all
 					${loaderGone ? "opacity-100 delay-150" : "opacity-0"}
-						flex place-content-center `}
+					flex place-content-center`}
 				>
 					{html}
 				</div>

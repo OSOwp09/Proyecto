@@ -134,7 +134,7 @@ export const MobileShareButton = () => {
 	const dispatch = useDispatch();
 	return (
 		<>
-			<div className="w-screen h-screen flex flex-col justify-end">
+			<div className="w-screen h-full flex flex-col justify-end">
 				<div
 					onClick={() => dispatch(closeShareOptions())}
 					id="darkOverlay"
@@ -319,7 +319,7 @@ export const MobileThreeDots = () => {
 
 	return (
 		<>
-			<div className="w-screen h-screen flex flex-col justify-end">
+			<div className="w-screen h-full	 flex flex-col justify-end">
 				<div
 					onClick={() => dispatch(closePublicationsOptions())}
 					id="darkOverlay"
@@ -455,7 +455,7 @@ export const MobileCommentList = () => {
 
 	return (
 		<>
-			<div className="w-screen h-screen flex flex-col justify-end">
+			<div className="w-screen h-full flex flex-col justify-end">
 				<div
 					onClick={() => dispatch(closeListOfComments())}
 					id="darkOverlay"

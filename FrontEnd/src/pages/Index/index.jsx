@@ -98,18 +98,18 @@ export default function Index() {
 				<>
 					<div
 						id="page-container"
-						className="relative overflow-hidden w-screen h-full sm:h-screen"
+						className="relative overflow-hidden h-full w-screen sm:h-screen"
 					>
 						<div
 							id="Navbar-container"
-							className="hidden sm:block sticky top-0 z-50"
+							className="hidden sm:block sticky top-0 sm:z-50"
 						>
 							<Navbar />
 						</div>
 
 						<div
 							id="underNavbar-container"
-							className="h-[calc(100%-48px)] sm:full w-screen flex relative z-0 overflow-hidden"
+							className="h-[calc(100%-48px)] sm:full w-screen flex relative z-10"
 						>
 							<ImageProvider>
 								<Routes>
@@ -189,45 +189,35 @@ export default function Index() {
 							</ImageProvider>
 						</div>
 
-						<div
-							className={`${
-								ChatsSlice.isChatOpen ? "sm:block" : "hidden"
-							} hidden absolute top-[54px] right-[12px]`}
-						>
-							<ChatPage />
-						</div>
+						{window.innerWidth < 640 && (
+							<div
+								id="mobile-options"
+								className={`absolute h-full bottom-0 z-20`}
+							>
+								{navbarOptions.code && <OptionsCard />}
+
+								{shareOptions.code && <MobileShareButton />}
+
+								{publicationsOptions.code && <MobileThreeDots />}
+
+								{commentsList.code && <MobileCommentList />}
+							</div>
+						)}
+
+						{window.innerWidth >= 640 && (
+							<div
+								className={`${
+									ChatsSlice.isChatOpen ? "sm:block" : "hidden"
+								} hidden absolute top-[54px] right-[12px] z-50`}
+							>
+								<ChatPage />
+							</div>
+						)}
 
 						<div
-							className={`absolute bottom-0 z-50 ${
-								navbarOptions.code != "" ? "block" : "hidden"
-							}`}
+							id="Navbar-container-mobile"
+							className="sm:hidden absolute bottom-0 z-0 "
 						>
-							<OptionsCard />
-						</div>
-						<div
-							className={`absolute bottom-0 z-50 ${
-								shareOptions.code != "" ? "block" : "hidden"
-							}`}
-						>
-							<MobileShareButton />
-						</div>
-						<div
-							className={`absolute bottom-0 z-50 ${
-								publicationsOptions.code != "" ? "block" : "hidden"
-							}`}
-						>
-							<MobileThreeDots />
-						</div>
-
-						<div
-							className={`absolute bottom-0 z-50 ${
-								commentsList.code != "" ? "block" : "hidden"
-							}`}
-						>
-							<MobileCommentList />
-						</div>
-
-						<div id="Navbar-container-mobile" className="sm:hidden z-50 ">
 							<Navbar />
 						</div>
 					</div>
