@@ -23,7 +23,7 @@ export const LayoutLoader = () => {
 	};
 
 	const imagesDesktop = [...Array(numOfCols)].map((_, i) => (
-		<div key={i} className="flex flex-col gap-4 mt-2">
+		<div key={i} className="flex flex-col gap-2 mt-2">
 			{card()}
 			{card()}
 			{card()}

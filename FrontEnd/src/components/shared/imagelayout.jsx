@@ -17,7 +17,7 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 		(state) => state.search
 	).words.toLowerCase();
 
-	const [searchByWordsOrUid, setSearchByWordsOrUid] = useState();
+	const [searchByWordsOrUid, setSearchByWordsOrUid] = useState(null);
 	const [searchByUseridOrHashtag, setSearchByUseridOrHashtag] = useState();
 	const [searchFilter, setsearchFilter] = useState([]);
 
@@ -85,8 +85,9 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 		} catch (error) {}
 	};
 
-	useMemo(() => {
-		if (searchByWordsOrUid != "") {
+	// ! problemas con este useEffect, si es useMemo si funciona pero necesito que sea un useEffect
+	useEffect(() => {
+		if (searchByWordsOrUid) {
 			if (searchByUseridOrHashtag == "hashtags") {
 				handdleListPublicationsByHashtags();
 				return;
@@ -119,7 +120,7 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 
 	const [html, setHtml] = useState(<></>);
 
-	useMemo(() => {
+	useEffect(() => {
 		window.innerWidth >= 450 ? setTreshholdWidth(240) : setTreshholdWidth(150);
 		/* widths in terms of the treshholdWidth, 
 			meaning how many columns it can have depending of
@@ -171,7 +172,7 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 
 				setImgs(images);
 			}
-			if (searchByUseridOrHashtag == "userid") {
+			if (searchByUseridOrHashtag == "userid" && searchFilter.publications) {
 				const images = [...Array(searchFilter.publications.length)].map(
 					(image = searchFilter, i) => {
 						return (
@@ -241,14 +242,14 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 		}
 
 		const layout = [...Array(numOfColumns)].map((x, i) => (
-			<div key={i} className="h-fit">
+			<div key={i} className="h-auto">
 				{matrix[i]}
 			</div>
 		));
 		if (imgs[0] != undefined) {
 			setLoaded(true);
 		}
-		return layout;
+		setHtml(layout);
 	};
 
 	/* This `useEffect` hook is checking if the division of the length of the `imgs` array by the
@@ -259,9 +260,9 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 	useEffect(() => {
 		const checkForInfinityOrNaN = imgs.length / numOfColumns;
 		if (checkForInfinityOrNaN != Infinity && checkForInfinityOrNaN != NaN) {
-			setHtml(handdleReorder());
+			handdleReorder();
 		}
-	}, [, width, imgs]);
+	}, [width, imgs]);
 
 	/*--------------------------------------------------------------------------------------------------------------*/
 
@@ -309,10 +310,10 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 				className="relative w-full overflow-x-hidden overflow-hidden"
 			>
 				<div
-					className={` transition-all duration-700 z-50 h-screen ${
-						loaderGone ? "opacity-0 " : "opacity-100 "
-					}
-					${layoutLoaderHtml ? "block" : "hidden"}`}
+					className={` transition-all duration-700 z-50 h-screen 
+					${loaderGone ? "opacity-0 " : "opacity-100 "}
+					${layoutLoaderHtml ? "block" : "hidden"}
+					`}
 				>
 					{layoutLoaderHtml}
 				</div>
