@@ -1,7 +1,7 @@
 import { lazy, Suspense, useRef } from "react";
 
-//import { ImageLayout } from "../../components/shared/imagelayout";
-const ImageLayout = lazy(() => import("../../components/shared/imagelayout"));
+import ImageLayout from "../../components/shared/imagelayout";
+//const ImageLayout = lazy(() => import("../../components/shared/imagelayout"));
 
 //import UserLayout from "../../components/index/userLayout";
 const UserLayout = lazy(() => import("../../components/index/userLayout"));
@@ -39,54 +39,56 @@ export const Home = () => {
 				flex flex-col place-items-center
 				overflow-auto overflow-x-hidden relative"
 			>
-				{words && (<div className="w-screen flex place-content-center z-50">
-					<div
-						className="h-[9%] w-screen absolute 
+				{words && (
+					<div className="w-screen flex place-content-center z-50">
+						<div
+							className="h-[9%] w-screen absolute 
 						top-0 left-0 
 						backdrop-blur-sm /bg-black"
-					/>
-					<div
-						className={`
+						/>
+						<div
+							className={`
 						bg-secondary-light
 						w-fit h-auto rounded-full
 						py-2 px-7
 						shadow-md
 						absolute top-5 mb-7 z-50 select-none`}
-					>
-						<div id="explore-profiles" className="flex gap-7 z-50">
-							<h1
-								onClick={() => setSearchFor("Explore")}
-								className={`${
-									searchFor == "Explore"
-										? "text-primary-dark"
-										: "text-secondary-dark"
-								}`}
-							>
-								Explore
-							</h1>
-							<h1
-								onClick={() => setSearchFor("Profiles")}
-								className={`${
-									searchFor == "Profiles"
-										? "text-primary-dark"
-										: "text-secondary-dark"
-								}`}
-							>
-								Profiles
-							</h1>
-						</div>
-						<motion.div
-							id="line"
-							className="h-[4px] w-20 bg-primary-dark
+						>
+							<div id="explore-profiles" className="flex gap-7 z-50">
+								<h1
+									onClick={() => setSearchFor("Explore")}
+									className={`${
+										searchFor == "Explore"
+											? "text-primary-dark"
+											: "text-secondary-dark"
+									}`}
+								>
+									Explore
+								</h1>
+								<h1
+									onClick={() => setSearchFor("Profiles")}
+									className={`${
+										searchFor == "Profiles"
+											? "text-primary-dark"
+											: "text-secondary-dark"
+									}`}
+								>
+									Profiles
+								</h1>
+							</div>
+							<motion.div
+								id="line"
+								className="h-[4px] w-20 bg-primary-dark
 							rounded-full"
-							animate={
-								searchFor == "Explore"
-									? { transform: "translateX(-11px)" }
-									: { transform: "translateX(75px)" }
-							}
-						/>
+								animate={
+									searchFor == "Explore"
+										? { transform: "translateX(-11px)" }
+										: { transform: "translateX(75px)" }
+								}
+							/>
+						</div>
 					</div>
-				</div>)}
+				)}
 
 				<div
 					ref={divScrollRef}
@@ -97,7 +99,7 @@ export const Home = () => {
 					h-full overflow-auto overflow-x-hidden `}
 				>
 					<div id="imageLayout-container" className={`grow h-full pt-2`}>
-						<div className={`absolute w-full flex`}>
+						<div className={`absolute w-full flex h-auto`}>
 							<ImageLayout words={words ? words : ""} />
 
 							<div

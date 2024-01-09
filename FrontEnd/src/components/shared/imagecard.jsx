@@ -176,33 +176,33 @@ export default function ImageCard({
 	//Mobile
 	const mobileImageCard = () => {
 		return (
-			<>
-				<div className="min-[304px]:w-[48vw]  min-[724px]:w-[30vw] py-1 px-[4px] rounded-2xl relative mb-2 mx-1">
-					<svg
-						width={w}
-						height={h}
-						viewBox={`0 0 ${w} ${h}`}
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-						className="translate-x-[-3px] w-[calc(100%+6px)] 
+			<div className="min-[304px]:w-[48vw]  min-[724px]:w-[30vw] 
+			py-1 px-[4px] rounded-2xl relative mb-2 mx-1
+			drop-shadow-md">
+				<svg
+					width={w}
+					height={h}
+					viewBox={`0 0 ${w} ${h}`}
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+					className="translate-x-[-3px] w-[calc(100%+6px)] 
 						scale-y-[1.01] h-full
 						min-h-[120px] object-cover rounded-2xl "
-					>
-						<rect x="0" y="0" width={w} height={h} fill={hex} />
-					</svg>
+				>
+					<rect x="0" y="0" width={w} height={h} fill={hex} />
+				</svg>
 
-					<img
-						onClick={() => {
-							handdleOnOpenBtnClick();
-						}}
-						src={image}
-						alt=""
-						className="	absolute top-0 left-0 
+				<img
+					onClick={() => {
+						handdleOnOpenBtnClick();
+					}}
+					src={image}
+					alt=""
+					className="	absolute top-0 left-0 
 						w-full h-full min-h-[120px] object-cover rounded-2xl /opacity-25"
-						loading="lazy"
-					/>
-				</div>
-			</>
+					loading="lazy"
+				/>
+			</div>
 		);
 	};
 

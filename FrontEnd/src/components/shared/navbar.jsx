@@ -56,14 +56,15 @@ export const Navbar = () => {
 		if (words.split(" ").slice(-1)[0] == "") {
 			searchWords = words.replace(/.$/, "");
 		}
+
+		if (window.location.pathname !== "/home") {
+			navigate("/home?q=" + searchWords);
+			setWordsInput("");
+			return;
+		}
 		setSearchParams({ q: searchWords });
-		// navigate("/home");
-		// if (words.split(" ").slice(-1)[0] == "") {
-		// 	dispatch(searchPublications(words.replace(/.$/, "")));
-		// 	return;
-		// }
-		// dispatch(searchPublications(words));
-	};
+		setWordsInput("");
+	};	
 
 	//Desktop
 	const desktopNavbar = () => {

@@ -7,11 +7,7 @@ import userJson from "../../fakeData/users.json";
 import { useSelector } from "react-redux";
 import { memo, useEffect, useMemo, useState, createRef } from "react";
 import { useRefDimensions } from "../../customHooks/useRefDimensions";
-import {
-	FindUserByUser,
-	FindUserByEmail,
-	ListPublicationsByHashtags,
-} from "../../api/Api";
+import { FindUserByUser, ListPublicationsByHashtags } from "../../api/Api";
 import { LayoutLoader } from "../../components/loaders/layoutLoader";
 
 export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
@@ -52,6 +48,9 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 					user: user,
 				},
 			});
+			if (respUser.data.usuario.publications.length == 0) {
+				setLoaded(true);
+			}
 			setsearchFilter(respUser.data.usuario);
 		} catch (error) {
 			console.log(error);
@@ -66,7 +65,9 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 					publicationId: pid,
 				},
 			});
-
+			if (resp.data.publications.length == 0) {
+				setLoaded(true);
+			}
 			const publicationsList = resp.data;
 			setsearchFilter(publicationsList.publications);
 		} catch (error) {}
@@ -79,7 +80,6 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 					hashtags: " ",
 				},
 			});
-
 			const publicationsList = resp.data;
 			setsearchFilter(publicationsList.publications.filter((p) => p.id != pid));
 		} catch (error) {}
@@ -112,7 +112,11 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 	const dimensions = useRefDimensions(divRef); //Width of the divRef elemnt
 
 	const [treshholdWidth, setTreshholdWidth] = useState(240);
-	const numOfColumns = width / treshholdWidth - ((width / treshholdWidth) % 1);
+	const numOfColumns =
+		window.innerWidth >= 450
+			? width / treshholdWidth - ((width / treshholdWidth) % 1)
+			: 2;
+
 	const [html, setHtml] = useState(<></>);
 
 	useMemo(() => {
@@ -257,7 +261,7 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 		if (checkForInfinityOrNaN != Infinity && checkForInfinityOrNaN != NaN) {
 			setHtml(handdleReorder());
 		}
-	}, [width, imgs]);
+	}, [, width, imgs]);
 
 	/*--------------------------------------------------------------------------------------------------------------*/
 
@@ -279,22 +283,22 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 			setLoaderGone(true);
 		}, time);
 		setTimeout(() => {
-			setLayoutLoaderHtml(<></>);
+			setLayoutLoaderHtml(null);
 		}, time + 200);
 	};
 
+	const urlParams = new URLSearchParams(location.search).get("q");
 	useEffect(() => {
 		if (loaded) {
+			setLoaderGone(false);
 			hideLoader();
 		}
-	}, [, loaded]);
-
-	const urlParams = new URLSearchParams(location.search).get("q");
+	}, [, loaded, urlParams]);
 
 	useEffect(() => {
 		setLoaderGone(false);
 		setLayoutLoaderHtml(loader());
-		hideLoader();
+		setLoaded(false);
 	}, [urlParams]);
 
 	return (
@@ -305,15 +309,16 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 				className="relative w-full overflow-x-hidden overflow-hidden"
 			>
 				<div
-					className={`transition-all duration-700 z-50  ${
-						loaderGone ? "opacity-0 " : "opacity-100 h-full "
-					}`}
+					className={` transition-all duration-700 z-50 h-screen ${
+						loaderGone ? "opacity-0 " : "opacity-100 "
+					}
+					${layoutLoaderHtml ? "block" : "hidden"}`}
 				>
 					{layoutLoaderHtml}
 				</div>
 				<div
 					className={`
-					transition-all
+					transition-all h-full
 					${loaderGone ? "opacity-100 delay-150" : "opacity-0"}
 					flex place-content-center`}
 				>

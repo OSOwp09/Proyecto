@@ -12,7 +12,7 @@ export const LayoutLoader = () => {
 		return (
 			<motion.div
 				style={{ height: `${random(min, max).toString()}px` }}
-				className={`w-[48.5vw] sm:w-[240px] bg-secondary-light rounded-2xl`}
+				className={`animate-pulse w-[48.5vw] sm:w-[240px] bg-secondary-light rounded-2xl`}
 				initial={{ opacity: inicialOp, y: 100 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{
@@ -35,34 +35,33 @@ export const LayoutLoader = () => {
 		</div>
 	));
 
-	const cardMobile = () => {
+	const cardMobile = (i) => {
 		const min = 35;
 		const max = 100;
 
 		const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
 		return (
-			<motion.div
-				style={{ height: `calc(${random(min, max).toString()}vw)` }}
-				className={`w-[48.5vw] sm:w-[240px] bg-secondary-light rounded-2xl`}
-				initial={{ opacity: inicialOp, y: 100 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{
-					duration: 0.4,
-				}}
-			/>
+			<div className="animate-pulse">
+				<motion.div
+					style={{ height: `calc(${random(min, max).toString()}vw)` }}
+					className={`w-[48.5vw] sm:w-[240px] bg-secondary-light rounded-2xl`}
+					initial={{ opacity: inicialOp, y: 250 + i * 50 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{
+						duration: 0.5,
+					}}
+				/>
+			</div>
 		);
 	};
 	const imagesMobile = [...Array(2)].map((_, i) => (
-		<div key={i} className="flex flex-col gap-2 mt-2">
-			{cardMobile()}
-			{cardMobile()}
-			{cardMobile()}
-			{cardMobile()}
-			{cardMobile()}
-			{cardMobile()}
-			{cardMobile()}
-			{cardMobile()}
+		<div key={i} className="flex flex-col gap-[2px] mt-2">
+			{[...Array(5)].map((_, i) => (
+				<div key={i} className="flex flex-col gap-2 mt-2">
+					{cardMobile(i)}
+				</div>
+			))}
 		</div>
 	));
 

@@ -163,7 +163,7 @@ export default function SearcPage() {
 						<div
 							ref={divScrollPublicationsRef}
 							className={`${searchFor == "Explore" ? "block " : "hidden"}
-							absolute left-0 top-0 pt-[68px]
+							absolute left-0 top-0 pt-[74px]
 							h-full overflow-auto`}
 						>
 							<div className="h-full w-screen">
