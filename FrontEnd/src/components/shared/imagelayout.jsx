@@ -53,7 +53,7 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 			}
 			setsearchFilter(respUser.data.usuario);
 		} catch (error) {
-			console.log(error);
+			console.log(error.message);
 		}
 	};
 
@@ -85,7 +85,6 @@ export default function ImageLayout({ words = "", uid = "", pid = "-" }) {
 		} catch (error) {}
 	};
 
-	// ! problemas con este useEffect, si es useMemo si funciona pero necesito que sea un useEffect
 	useEffect(() => {
 		if (searchByWordsOrUid) {
 			if (searchByUseridOrHashtag == "hashtags") {

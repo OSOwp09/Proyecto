@@ -4,16 +4,16 @@ export const LayoutLoader = () => {
 	const inicialOp = 0;
 	const numOfCols = window.innerWidth / 240 - ((window.innerWidth / 240) % 1);
 
-	const card = () => {
-		const min = 240;
-		const max = 448;
+	const card = (i) => {
+		const min = 200;
+		const max = 420;
 
 		const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 		return (
 			<motion.div
 				style={{ height: `${random(min, max).toString()}px` }}
 				className={`animate-pulse w-[48.5vw] sm:w-[240px] bg-secondary-light rounded-2xl`}
-				initial={{ opacity: inicialOp, y: 100 }}
+				initial={{ opacity: inicialOp, y: 250 + i * 50 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{
 					duration: 0.4,
@@ -24,14 +24,11 @@ export const LayoutLoader = () => {
 
 	const imagesDesktop = [...Array(numOfCols)].map((_, i) => (
 		<div key={i} className="flex flex-col gap-2 mt-2">
-			{card()}
-			{card()}
-			{card()}
-			{card()}
-			{card()}
-			{card()}
-			{card()}
-			{card()}
+			{[...Array(8)].map((_, i) => (
+				<div key={i} className="flex flex-col gap-2">
+					{card(i)}
+				</div>
+			))}
 		</div>
 	));
 
